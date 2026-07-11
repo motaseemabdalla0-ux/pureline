@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { CalendarDays, Sprout, TrendingUp } from 'lucide-react'
 import Reveal from '../ui/Reveal'
+import SatelliteImage from '../ui/SatelliteImage'
+import GisFrame from '../ui/GisFrame'
 
 /* NDVI color scale: red (low) -> yellow (moderate) -> green (healthy) */
 function ndviColor(v: number) {
@@ -102,7 +104,7 @@ export default function NDVIAnalytics() {
         <div className="mt-16 grid items-center gap-8 lg:grid-cols-5">
           {/* Heatmap */}
           <Reveal className="lg:col-span-3">
-            <div className="overflow-hidden rounded-3xl border border-black/10 bg-white p-3 shadow-xl dark:border-white/10 dark:bg-slate-900">
+            <GisFrame scanline className="p-3 shadow-xl shadow-primary/10">
               <svg viewBox={`0 0 ${gridW} ${gridH}`} className="block w-full rounded-2xl" role="img" aria-label={t('ndvi.map.aria')}>
                 {cells.map((csx, i) => (
                   <g key={i}>
@@ -120,11 +122,20 @@ export default function NDVIAnalytics() {
                   </g>
                 ))}
               </svg>
-            </div>
+              <p className="gis-readout mt-2 px-1">{t('ndvi.overlayCaption')}</p>
+            </GisFrame>
           </Reveal>
 
           {/* Legend + score cards */}
           <div className="space-y-6 lg:col-span-2">
+            <Reveal delay={0.02}>
+              <div className="overflow-hidden rounded-2xl border border-black/5 shadow-sm dark:border-white/10">
+                <SatelliteImage source="alula_valley" alt={t('ndvi.baseImagery.alt')} className="aspect-[16/9] w-full" />
+                <div className="bg-white px-4 py-2 text-xs font-semibold text-neutral-dark/60 dark:bg-slate-900 dark:text-neutral-light/60">
+                  {t('ndvi.baseImagery.label')}
+                </div>
+              </div>
+            </Reveal>
             <Reveal delay={0.05}>
               <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
                 <h3 className="font-bold">{t('ndvi.legend.title')}</h3>

@@ -5,6 +5,12 @@ import {
   ImageDown, Cpu, LayoutDashboard, ChevronRight,
 } from 'lucide-react'
 import Reveal from '../ui/Reveal'
+import SatelliteTimelineViewer from '../satellite/SatelliteTimelineViewer'
+import FarmComparisonPanel from '../satellite/FarmComparisonPanel'
+import dataset from '../../data/ndvi-farms.json'
+import type { NdviDataset } from '../../types/ndvi'
+
+const ndviData = dataset as NdviDataset
 
 const stack = [
   { key: 'satellite', icon: Satellite },
@@ -34,21 +40,31 @@ export default function FarmIntelligence() {
           <Reveal delay={0.1}><p className="mt-4 text-lg text-neutral-dark/60 dark:text-neutral-light/60">{t('farmIntel.subtitle')}</p></Reveal>
         </div>
 
-        {/* Tech stack grid */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {stack.map((s, i) => (
-            <Reveal key={s.key} delay={i * 0.05}>
-              <motion.div whileHover={{ y: -6 }} className="group flex h-full gap-5 rounded-2xl border border-black/5 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl dark:border-white/10 dark:bg-white/5">
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-secondary to-primary text-white shadow-lg shadow-primary/25">
-                  <s.icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold">{t(`farmIntel.stack.${s.key}.title`)}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-neutral-dark/60 dark:text-neutral-light/60">{t(`farmIntel.stack.${s.key}.desc`)}</p>
-                </div>
-              </motion.div>
-            </Reveal>
-          ))}
+        {/* Real regional imagery timeline + tech stack grid */}
+        <div className="mt-16 grid items-start gap-8 lg:grid-cols-5">
+          <Reveal className="lg:col-span-2">
+            <h3 className="text-lg font-bold">{t('farmIntel.timeline.title')}</h3>
+            <p className="mt-1.5 text-sm text-neutral-dark/60 dark:text-neutral-light/60">{t('farmIntel.timeline.subtitle')}</p>
+            <div className="mt-5">
+              <SatelliteTimelineViewer />
+            </div>
+          </Reveal>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:col-span-3">
+            {stack.map((s, i) => (
+              <Reveal key={s.key} delay={i * 0.05}>
+                <motion.div whileHover={{ y: -6 }} className="group flex h-full gap-5 rounded-2xl border border-black/5 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl dark:border-white/10 dark:bg-white/5">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-secondary to-primary text-white shadow-lg shadow-primary/25">
+                    <s.icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold">{t(`farmIntel.stack.${s.key}.title`)}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-dark/60 dark:text-neutral-light/60">{t(`farmIntel.stack.${s.key}.desc`)}</p>
+                  </div>
+                </motion.div>
+              </Reveal>
+            ))}
+          </div>
         </div>
 
         {/* Data-flow diagram */}
@@ -71,6 +87,15 @@ export default function FarmIntelligence() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Real farm comparison */}
+        <div className="mt-20">
+          <Reveal><h3 className="text-center text-2xl font-bold">{t('farmIntel.comparison.title')}</h3></Reveal>
+          <Reveal delay={0.05}><p className="mx-auto mt-2 max-w-xl text-center text-sm text-neutral-dark/60 dark:text-neutral-light/60">{t('farmIntel.comparison.subtitle')}</p></Reveal>
+          <Reveal delay={0.1} className="mt-8">
+            <FarmComparisonPanel farms={ndviData.farms.slice(0, 3)} />
+          </Reveal>
         </div>
       </div>
     </section>

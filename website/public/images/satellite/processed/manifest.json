@@ -1,0 +1,162 @@
+{
+  "alula_wide": {
+    "label": "AlUla Region \u2014 Wide Area",
+    "acquired": "2025-06-15",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "alula_wide-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "alula_wide-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "alula_wide-400.webp"
+      }
+    ],
+    "dark": "alula_wide-dark.webp"
+  },
+  "alula_valley": {
+    "label": "AlUla Valley",
+    "acquired": "2025-06-15",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "alula_valley-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "alula_valley-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "alula_valley-400.webp"
+      }
+    ],
+    "dark": "alula_valley-dark.webp"
+  },
+  "alula_valley_2024": {
+    "label": "AlUla Valley",
+    "acquired": "2024-06-10",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "alula_valley_2024-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "alula_valley_2024-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "alula_valley_2024-400.webp"
+      }
+    ],
+    "dark": "alula_valley_2024-dark.webp"
+  },
+  "alula_valley_2023": {
+    "label": "AlUla Valley",
+    "acquired": "2023-06-10",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "alula_valley_2023-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "alula_valley_2023-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "alula_valley_2023-400.webp"
+      }
+    ],
+    "dark": "alula_valley_2023-dark.webp"
+  },
+  "alula_north": {
+    "label": "AlUla North",
+    "acquired": "2025-06-15",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "alula_north-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "alula_north-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "alula_north-400.webp"
+      }
+    ],
+    "dark": "alula_north-dark.webp"
+  },
+  "alula_south": {
+    "label": "AlUla South",
+    "acquired": "2025-01-15",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "alula_south-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "alula_south-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "alula_south-400.webp"
+      }
+    ],
+    "dark": "alula_south-dark.webp"
+  },
+  "hijaz_region": {
+    "label": "Hijaz Region \u2014 Regional Context",
+    "acquired": "2025-06-15",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "hijaz_region-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "hijaz_region-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "hijaz_region-400.webp"
+      }
+    ],
+    "dark": "hijaz_region-dark.webp"
+  },
+  "madain_saleh": {
+    "label": "Madain Saleh Corridor",
+    "acquired": "2025-03-01",
+    "source": "NASA GIBS (VIIRS Corrected Reflectance True Color) \u2014 public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "madain_saleh-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "madain_saleh-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "madain_saleh-400.webp"
+      }
+    ],
+    "dark": "madain_saleh-dark.webp"
+  }
+}

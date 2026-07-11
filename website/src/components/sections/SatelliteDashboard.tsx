@@ -4,56 +4,16 @@ import {
   Bell, Search, Layers, Leaf, Wind, ArrowRight,
 } from 'lucide-react'
 import Reveal from '../ui/Reveal'
+import SatelliteImage from '../ui/SatelliteImage'
+import GisFrame from '../ui/GisFrame'
+import NdviHeatmapSwatch from '../ui/NdviHeatmapSwatch'
+import FarmHealthWidget from '../satellite/FarmHealthWidget'
+import dataset from '../../data/ndvi-farms.json'
+import type { NdviDataset } from '../../types/ndvi'
 
-/* Mini layered satellite tile (compact adaptation of the section-1 map). */
-function MiniSat() {
-  return (
-    <svg viewBox="0 0 200 120" className="block h-full w-full">
-      <rect width="200" height="120" fill="#0d4a2d" />
-      <rect x="0" y="0" width="100" height="60" fill="#12603a" />
-      <rect x="100" y="60" width="100" height="60" fill="#14663d" />
-      <path d="M15 12 L80 8 L88 50 L20 56 Z" fill="#3CB371" opacity="0.7" />
-      <path d="M110 12 L185 16 L180 52 L115 50 Z" fill="#c9d64a" opacity="0.7" />
-      <path d="M20 70 L85 66 L92 108 L26 112 Z" fill="#e0913a" opacity="0.7" />
-      <g fill="none" stroke="#fff" strokeWidth="1.2" strokeDasharray="4 3" opacity="0.7">
-        <path d="M15 12 L80 8 L88 50 L20 56 Z" />
-        <path d="M110 12 L185 16 L180 52 L115 50 Z" />
-      </g>
-      <g fill="none" stroke="#8fe3ff" strokeWidth="1.2" opacity="0.7">
-        <circle cx="150" cy="88" r="26" strokeDasharray="3 3" />
-        <line x1="150" y1="88" x2="176" y2="88" />
-      </g>
-    </svg>
-  )
-}
-
-/* Mini NDVI heatmap grid. */
-const miniCells = [
-  '#2f9e5c', '#7cc24a', '#d8c53a', '#2f9e5c',
-  '#7cc24a', '#e0913a', '#2f9e5c', '#d8c53a',
-  '#d15236', '#7cc24a', '#2f9e5c', '#7cc24a',
-]
-function MiniNdvi() {
-  return (
-    <div className="grid grid-cols-4 gap-1">
-      {miniCells.map((c, i) => (
-        <div key={i} className="aspect-square rounded" style={{ backgroundColor: c }} />
-      ))}
-    </div>
-  )
-}
-
-function Ring({ value }: { value: number }) {
-  const r = 26
-  const c = 2 * Math.PI * r
-  const offset = c * (1 - value / 100)
-  return (
-    <svg viewBox="0 0 64 64" className="h-16 w-16 -rotate-90">
-      <circle cx="32" cy="32" r={r} fill="none" stroke="currentColor" strokeWidth="6" className="text-black/10 dark:text-white/10" />
-      <circle cx="32" cy="32" r={r} fill="none" stroke="#3CB371" strokeWidth="6" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset} />
-    </svg>
-  )
-}
+const ndviData = dataset as NdviDataset
+const avgNdvi = ndviData.farms.reduce((sum, f) => sum + f.ndviValue, 0) / ndviData.farms.length
+const spotlightFarm = ndviData.farms[0]
 
 function Dashboard() {
   const { t } = useTranslation()
@@ -129,15 +89,13 @@ function Dashboard() {
 
           <div className="grid gap-4 lg:grid-cols-3">
             {/* Satellite imagery panel */}
-            <div className="rounded-xl border border-black/5 bg-white p-4 lg:col-span-2 dark:border-white/5 dark:bg-slate-900">
-              <div className="mb-3 flex items-center justify-between">
-                <h4 className="flex items-center gap-2 font-bold text-slate-900 dark:text-white"><Satellite className="h-4 w-4 text-primary dark:text-secondary" />{t('satDash.imagery.title')}</h4>
+            <GisFrame className="lg:col-span-2">
+              <div className="flex items-center justify-between p-4 pb-3">
+                <h4 className="flex items-center gap-2 font-bold text-white"><Satellite className="h-4 w-4 text-secondary" />{t('satDash.imagery.title')}</h4>
                 <span className="text-[10px] text-slate-400">{t('satDash.imagery.updated')}</span>
               </div>
-              <div className="overflow-hidden rounded-lg">
-                <MiniSat />
-              </div>
-            </div>
+              <SatelliteImage source="alula_north" alt={t('satDash.imagery.title')} className="aspect-[16/9] w-full" />
+            </GisFrame>
 
             {/* Weather */}
             <div className="rounded-xl border border-black/5 bg-gradient-to-br from-primary to-primary-700 p-4 text-white">
@@ -158,8 +116,10 @@ function Dashboard() {
             {/* NDVI panel */}
             <div className="rounded-xl border border-black/5 bg-white p-4 dark:border-white/5 dark:bg-slate-900">
               <h4 className="mb-3 flex items-center gap-2 font-bold text-slate-900 dark:text-white"><Map className="h-4 w-4 text-primary dark:text-secondary" />{t('satDash.ndvi.title')}</h4>
-              <MiniNdvi />
-              <div className="mt-3 text-xs text-slate-400">{t('satDash.ndvi.avg')}: <span className="font-bold text-secondary">0.68</span></div>
+              <div className="overflow-hidden rounded-lg border border-black/10 dark:border-white/10">
+                <NdviHeatmapSwatch value={avgNdvi} />
+              </div>
+              <div className="mt-3 text-xs text-slate-400">{t('satDash.ndvi.avg')}: <span className="font-bold text-secondary">{Math.round(avgNdvi * 100)}%</span></div>
             </div>
 
             {/* Soil moisture */}
@@ -177,15 +137,8 @@ function Dashboard() {
               </div>
             </div>
 
-            {/* Crop health score */}
-            <div className="rounded-xl border border-black/5 bg-white p-4 dark:border-white/5 dark:bg-slate-900">
-              <h4 className="mb-2 font-bold text-slate-900 dark:text-white">{t('satDash.cropHealth.title')}</h4>
-              <div className="relative mx-auto grid place-items-center">
-                <Ring value={87} />
-                <span className="absolute text-lg font-black text-slate-900 dark:text-white">87</span>
-              </div>
-              <div className="mt-2 text-center text-xs font-semibold text-secondary">{t('satDash.cropHealth.status')}</div>
-            </div>
+            {/* Crop health score -- real farm spotlight */}
+            <FarmHealthWidget farm={spotlightFarm} />
 
             {/* Irrigation recommendations */}
             <div className="rounded-xl border border-black/5 bg-white p-4 dark:border-white/5 dark:bg-slate-900">

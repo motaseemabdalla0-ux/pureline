@@ -16,7 +16,9 @@
     "learnMore": "Learn More",
     "contactUs": "Contact Us",
     "scroll": "Scroll to explore",
-    "statLabel": "Trusted across the Kingdom"
+    "statLabel": "Trusted across the Kingdom",
+    "imageAlt": "Real NASA satellite imagery of the AlUla region, Saudi Arabia",
+    "coords": "26.61°N, 37.92°E · AlUla, Saudi Arabia"
   },
   "about": {
     "eyebrow": "About Us",
@@ -141,10 +143,10 @@
     "title": "See every field from space",
     "subtitle": "High-resolution satellite imagery and analytics that turn orbital data into on-farm decisions.",
     "map": {
-      "aria": "Stylized satellite view of farm fields with health overlays and irrigation networks",
-      "live": "LIVE",
-      "resolution": "10m / pixel",
-      "ndvi": "Avg NDVI"
+      "aria": "Real NASA satellite imagery of the AlUla valley region, shown as regional agricultural context",
+      "badge": "Regional Context",
+      "resolution": "~375m / pixel · VIIRS",
+      "source": "NASA GIBS · Real Imagery"
     },
     "features": {
       "ndvi": { "title": "NDVI Monitoring", "desc": "Track the vegetation index across every field to measure crop vigor week over week." },
@@ -170,6 +172,8 @@
     "title": "Vegetation health, mapped in color",
     "subtitle": "An interactive NDVI heatmap that grades every parcel from thriving green to stressed red.",
     "map": { "aria": "NDVI heatmap of irregular field cells graded green to red" },
+    "overlayCaption": "NDVI overlay rendered above real regional satellite context",
+    "baseImagery": { "alt": "Real satellite base imagery of the AlUla valley beneath the NDVI overlay", "label": "Base Imagery · AlUla Valley" },
     "legend": {
       "title": "NDVI Legend",
       "healthy": "Healthy vegetation",
@@ -270,7 +274,28 @@
         "gis": "GIS Mapping",
         "dashboard": "Farmer Dashboard"
       }
+    },
+    "timeline": {
+      "title": "Real Regional Imagery, Season Over Season",
+      "subtitle": "The same AlUla region, captured by NASA satellites across three real acquisition years."
+    },
+    "comparison": {
+      "title": "Real Farms, Compared",
+      "subtitle": "Live NDVI readings pulled directly from the RCU NDVI Analysis Portal."
     }
+  },
+  "satelliteImage": {
+    "source": "NASA GIBS · Real Satellite Imagery"
+  },
+  "satelliteFarmCard": {
+    "imageAlt": "Real regional satellite context near {{name}}"
+  },
+  "satelliteTimeline": {
+    "imageAlt": "AlUla valley, real satellite capture, {{year}}",
+    "caption": "Same region, real NASA GIBS captures across years"
+  },
+  "vegetationTrendChart": {
+    "range": "{{first}}% → {{last}}%"
   },
   "contact": {
     "eyebrow": "Get in Touch",
