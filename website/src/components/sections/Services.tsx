@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import { Sprout, Building2, Droplets, Warehouse, ClipboardList, MonitorSmartphone, ArrowUpRight } from 'lucide-react'
+import {
+  Sprout, Building2, Droplets, Warehouse, ClipboardList, MonitorSmartphone, ArrowUpRight,
+  Satellite, ScanLine, Crosshair, Map, Layers, Radar,
+} from 'lucide-react'
 import Reveal from '../ui/Reveal'
 
 const items = [
@@ -10,6 +13,12 @@ const items = [
   { key: 'greenhouse', icon: Warehouse },
   { key: 'consulting', icon: ClipboardList },
   { key: 'digital', icon: MonitorSmartphone },
+  { key: 'satelliteMonitoring', icon: Satellite },
+  { key: 'ndviServices', icon: ScanLine },
+  { key: 'precisionAg', icon: Crosshair },
+  { key: 'farmMapping', icon: Map },
+  { key: 'gis', icon: Layers },
+  { key: 'remoteSensing', icon: Radar },
 ]
 
 export default function Services() {

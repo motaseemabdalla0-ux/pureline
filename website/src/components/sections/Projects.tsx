@@ -4,19 +4,22 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import Reveal from '../ui/Reveal'
 
-type Cat = 'smartFarms' | 'irrigation' | 'greenhouses' | 'construction' | 'monitoring' | 'precision'
-const cats: Cat[] = ['smartFarms', 'irrigation', 'greenhouses', 'construction', 'monitoring', 'precision']
+type Cat = 'satelliteViews' | 'greenhouses' | 'irrigation' | 'infrastructure' | 'precision' | 'controlCenters'
+const cats: Cat[] = ['satelliteViews', 'greenhouses', 'irrigation', 'infrastructure', 'precision', 'controlCenters']
 
 const data: { id: string; cat: Cat; grad: string }[] = [
-  { id: 'p1', cat: 'smartFarms', grad: 'from-primary to-secondary' },
+  { id: 'p1', cat: 'satelliteViews', grad: 'from-primary to-secondary' },
   { id: 'p2', cat: 'irrigation', grad: 'from-secondary to-primary-700' },
   { id: 'p3', cat: 'greenhouses', grad: 'from-primary-600 to-secondary' },
-  { id: 'p4', cat: 'construction', grad: 'from-primary-700 to-primary-400' },
-  { id: 'p5', cat: 'monitoring', grad: 'from-primary to-accent' },
+  { id: 'p4', cat: 'infrastructure', grad: 'from-primary-700 to-primary-400' },
+  { id: 'p5', cat: 'controlCenters', grad: 'from-primary to-accent' },
   { id: 'p6', cat: 'precision', grad: 'from-secondary to-accent' },
   { id: 'p7', cat: 'greenhouses', grad: 'from-primary-500 to-primary-300' },
-  { id: 'p8', cat: 'monitoring', grad: 'from-primary-700 to-secondary' },
+  { id: 'p8', cat: 'satelliteViews', grad: 'from-primary-700 to-secondary' },
   { id: 'p9', cat: 'irrigation', grad: 'from-secondary to-primary' },
+  { id: 'p10', cat: 'infrastructure', grad: 'from-primary-600 to-accent' },
+  { id: 'p11', cat: 'precision', grad: 'from-primary to-primary-400' },
+  { id: 'p12', cat: 'controlCenters', grad: 'from-primary-700 to-accent' },
 ]
 
 export default function Projects() {

@@ -2,11 +2,17 @@ import { useTranslation } from 'react-i18next'
 import Counter from '../ui/Counter'
 import Reveal from '../ui/Reveal'
 
-const stats = [
+type Stat = { to?: number; suffix?: string; static?: string; label: string }
+
+const stats: Stat[] = [
   { to: 100, suffix: '+', label: 'stats.projects' },
   { to: 50, suffix: '+', label: 'stats.clients' },
   { to: 10, suffix: '+', label: 'stats.experience' },
   { to: 95, suffix: '%', label: 'stats.satisfaction' },
+  { to: 10000, suffix: '+', label: 'stats.hectares' },
+  { to: 500, suffix: '+', label: 'stats.reports' },
+  { to: 95, suffix: '%', label: 'stats.accuracy' },
+  { static: '24/7', label: 'stats.monitoring' },
 ]
 
 export default function Stats() {
@@ -20,7 +26,7 @@ export default function Stats() {
         {stats.map((s, i) => (
           <Reveal key={s.label} delay={i * 0.1} className="text-center">
             <div className="text-5xl font-black tracking-tight sm:text-6xl gold-text">
-              <Counter to={s.to} suffix={s.suffix} />
+              {s.static ? s.static : <Counter to={s.to ?? 0} suffix={s.suffix} />}
             </div>
             <div className="mt-2 text-sm font-medium text-white/80">{t(s.label)}</div>
           </Reveal>

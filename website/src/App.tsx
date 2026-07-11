@@ -6,6 +6,10 @@ import About from './components/sections/About'
 import Services from './components/sections/Services'
 import Stats from './components/sections/Stats'
 import WhyChooseUs from './components/sections/WhyChooseUs'
+import SatelliteIntelligence from './components/sections/SatelliteIntelligence'
+import NDVIAnalytics from './components/sections/NDVIAnalytics'
+import SatelliteDashboard from './components/sections/SatelliteDashboard'
+import FarmIntelligence from './components/sections/FarmIntelligence'
 import Projects from './components/sections/Projects'
 import Technology from './components/sections/Technology'
 import Platform from './components/sections/Platform'
@@ -22,6 +26,10 @@ export default function App() {
         <Services />
         <Stats />
         <WhyChooseUs />
+        <SatelliteIntelligence />
+        <NDVIAnalytics />
+        <SatelliteDashboard />
+        <FarmIntelligence />
         <Projects />
         <Technology />
         <Platform />

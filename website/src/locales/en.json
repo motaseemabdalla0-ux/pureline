@@ -41,14 +41,24 @@
       "irrigation": { "title": "Advanced Irrigation Systems", "desc": "Precision drip and smart irrigation that cut water use while boosting yield." },
       "greenhouse": { "title": "Greenhouse Solutions", "desc": "Climate-controlled greenhouses engineered for year-round high-value production." },
       "consulting": { "title": "Agricultural Consulting", "desc": "Expert agronomy, feasibility and optimization studies grounded in data." },
-      "digital": { "title": "Agricultural Digital Transformation", "desc": "Bring legacy farms online with dashboards, analytics and connected operations." }
+      "digital": { "title": "Agricultural Digital Transformation", "desc": "Bring legacy farms online with dashboards, analytics and connected operations." },
+      "satelliteMonitoring": { "title": "Satellite Crop Monitoring", "desc": "Continuous multispectral tracking of crop health across every field from orbit." },
+      "ndviServices": { "title": "NDVI Analysis Services", "desc": "Vegetation-index mapping that reveals stress and vigor long before the eye can." },
+      "precisionAg": { "title": "Precision Agriculture Solutions", "desc": "Variable-rate inputs and zone management driven by real field data." },
+      "farmMapping": { "title": "Farm Mapping Services", "desc": "High-accuracy field boundary, asset and topography mapping for your whole estate." },
+      "gis": { "title": "Agricultural GIS Solutions", "desc": "Spatial data layers that turn your farm into an analyzable, decision-ready map." },
+      "remoteSensing": { "title": "Remote Sensing Services", "desc": "Satellite and aerial sensing for soil, water, canopy and yield intelligence." }
     }
   },
   "stats": {
     "projects": "Projects Delivered",
     "clients": "Happy Clients",
     "experience": "Years Experience",
-    "satisfaction": "Client Satisfaction"
+    "satisfaction": "Client Satisfaction",
+    "hectares": "Hectares Monitored",
+    "reports": "Satellite Reports",
+    "accuracy": "Detection Accuracy",
+    "monitoring": "Monitoring"
   },
   "why": {
     "eyebrow": "Why Choose Us",
@@ -68,23 +78,26 @@
     "subtitle": "A selection of smart farms, irrigation networks and greenhouse builds.",
     "all": "All",
     "categories": {
-      "smartFarms": "Smart Farms",
+      "satelliteViews": "Satellite Farm Views",
+      "greenhouses": "Greenhouse Projects",
       "irrigation": "Irrigation Projects",
-      "greenhouses": "Greenhouses",
-      "construction": "Farm Construction",
-      "monitoring": "Monitoring Systems",
-      "precision": "Precision Agriculture"
+      "infrastructure": "Agricultural Infrastructure",
+      "precision": "Precision Farming Systems",
+      "controlCenters": "Smart Farm Control Centers"
     },
     "items": {
-      "p1": "AlUla Smart Date Farm",
+      "p1": "AlUla Satellite Farm Survey",
       "p2": "Riyadh Precision Irrigation Grid",
       "p3": "Qassim Climate Greenhouse Cluster",
-      "p4": "Tabuk Desert Farm Development",
-      "p5": "Eastern Province Sensor Network",
+      "p4": "Tabuk Agricultural Infrastructure Hub",
+      "p5": "Eastern Province Farm Control Center",
       "p6": "Hail Precision Wheat Program",
       "p7": "Jeddah Vertical Greenhouse",
-      "p8": "Najran Satellite Monitoring Farm",
-      "p9": "AlKharj Automated Drip System"
+      "p8": "Najran Satellite Monitoring Estate",
+      "p9": "AlKharj Automated Drip System",
+      "p10": "Jouf Reservoir & Pivot Network",
+      "p11": "Qassim Variable-Rate Farming System",
+      "p12": "Riyadh Agricultural Operations Center"
     }
   },
   "tech": {
@@ -122,6 +135,120 @@
     "cropChart": { "title": "Crop Analytics", "subtitle": "Yield per hectare (tons)" },
     "sensorTable": { "title": "Sensor Data", "sensor": "Sensor", "location": "Location", "value": "Value", "status": "Status" },
     "reports": { "title": "Reports", "view": "View" }
+  },
+  "satIntel": {
+    "eyebrow": "Satellite Agricultural Intelligence",
+    "title": "See every field from space",
+    "subtitle": "High-resolution satellite imagery and analytics that turn orbital data into on-farm decisions.",
+    "map": {
+      "aria": "Stylized satellite view of farm fields with health overlays and irrigation networks",
+      "live": "LIVE",
+      "resolution": "10m / pixel",
+      "ndvi": "Avg NDVI"
+    },
+    "features": {
+      "ndvi": { "title": "NDVI Monitoring", "desc": "Track the vegetation index across every field to measure crop vigor week over week." },
+      "stress": { "title": "Crop Stress Detection", "desc": "Spot water, nutrient and disease stress days before it becomes visible on the ground." },
+      "irrigation": { "title": "Irrigation Analysis", "desc": "Map soil moisture and pivot coverage to eliminate over- and under-watering." },
+      "vegetation": { "title": "Vegetation Health", "desc": "Quantify canopy density and biomass to benchmark performance zone by zone." },
+      "yield": { "title": "Yield Forecasting", "desc": "Predictive models estimate harvest volumes early and refine them all season." },
+      "mapping": { "title": "Farm Mapping", "desc": "Precise field boundaries and asset maps that anchor every layer of analysis." }
+    },
+    "workflow": {
+      "title": "Farm Monitoring Workflow",
+      "steps": {
+        "capture": { "title": "Capture", "desc": "Satellites image your fields on a regular revisit cycle." },
+        "process": { "title": "Process", "desc": "Raw bands are calibrated into vegetation indices." },
+        "analyze": { "title": "Analyze", "desc": "AI models detect stress, trends and anomalies." },
+        "alert": { "title": "Alert", "desc": "Priority issues are pushed to your team instantly." },
+        "act": { "title": "Act", "desc": "Field teams intervene exactly where it matters." }
+      }
+    }
+  },
+  "ndvi": {
+    "eyebrow": "NDVI Analytics",
+    "title": "Vegetation health, mapped in color",
+    "subtitle": "An interactive NDVI heatmap that grades every parcel from thriving green to stressed red.",
+    "map": { "aria": "NDVI heatmap of irregular field cells graded green to red" },
+    "legend": {
+      "title": "NDVI Legend",
+      "healthy": "Healthy vegetation",
+      "moderate": "Moderate vegetation",
+      "low": "Low vegetation"
+    },
+    "scores": {
+      "north": "North Field",
+      "west": "West Orchard",
+      "south": "South Block",
+      "east": "East Plot"
+    },
+    "status": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "fair": "Fair",
+      "poor": "Needs Attention"
+    },
+    "useCases": {
+      "weekly": { "title": "Weekly Crop Monitoring", "desc": "Fresh imagery every week keeps a live pulse on field-by-field health." },
+      "seasonal": { "title": "Seasonal Crop Analysis", "desc": "Full-season index curves reveal how each crop develops from sowing to harvest." },
+      "trend": { "title": "Vegetation Trend Tracking", "desc": "Long-term trend lines expose gradual decline or improvement across years." }
+    }
+  },
+  "satDash": {
+    "eyebrow": "Satellite Dashboard",
+    "title": "Your orbital command center",
+    "subtitle": "A single enterprise dashboard that fuses satellite imagery, NDVI, weather and field intelligence.",
+    "browserUrl": "app.pureline.com/satellite",
+    "nav": {
+      "imagery": "Imagery",
+      "ndvi": "NDVI",
+      "weather": "Weather",
+      "soil": "Soil",
+      "layers": "Layers",
+      "reports": "Reports"
+    },
+    "topbar": { "title": "Satellite Intelligence Center", "subtitle": "Last pass · 2h ago", "search": "Search fields…" },
+    "kpi": { "area": "Hectares", "health": "Avg Health", "coverage": "Coverage", "captures": "Captures" },
+    "imagery": { "title": "Satellite Imagery", "updated": "Updated 2h ago" },
+    "ndvi": { "title": "NDVI Index", "avg": "Field average" },
+    "weather": { "title": "Weather", "condition": "Clear Sky", "humidity": "Humidity", "wind": "Wind" },
+    "soil": { "title": "Soil Moisture", "zone": "Zone" },
+    "cropHealth": { "title": "Crop Health Score", "status": "Healthy" },
+    "recs": {
+      "title": "Irrigation Recommendations",
+      "a": "Field {{field}}: irrigate in 2 days",
+      "b": "Field {{field}}: low moisture — irrigate now",
+      "c": "Field {{field}}: schedule optimal, no action"
+    },
+    "alerts": {
+      "title": "Alerts & Notifications",
+      "stress": "Crop stress detected in C-02",
+      "moisture": "Soil moisture below target in B",
+      "report": "Weekly NDVI report is ready"
+    }
+  },
+  "farmIntel": {
+    "eyebrow": "Farm Intelligence",
+    "title": "The technology behind the insight",
+    "subtitle": "A layered stack of satellite, sensing and AI technologies working as one intelligence engine.",
+    "stack": {
+      "satellite": { "title": "Satellite Imagery", "desc": "Multispectral orbital imagery captured across your fields on a regular cycle." },
+      "ndvi": { "title": "NDVI Technology", "desc": "Vegetation indices that translate light into a precise measure of crop health." },
+      "gis": { "title": "GIS Mapping", "desc": "Geospatial layers that give every data point an exact location on your farm." },
+      "remote": { "title": "Remote Sensing", "desc": "Non-contact sensing of soil, water and canopy from satellite and aerial platforms." },
+      "ai": { "title": "AI Crop Analysis", "desc": "Machine-learning models that detect stress, forecast yield and flag anomalies." },
+      "precision": { "title": "Precision Agriculture", "desc": "Data-driven, zone-level action that applies the right input in the right place." }
+    },
+    "flow": {
+      "title": "How Data Flows",
+      "steps": {
+        "satellite": "Satellite",
+        "processing": "Imagery Processing",
+        "ai": "AI Analysis",
+        "gis": "GIS Mapping",
+        "dashboard": "Farmer Dashboard"
+      }
+    }
   },
   "contact": {
     "eyebrow": "Get in Touch",

@@ -58,3 +58,38 @@ Style: **clean modern enterprise SaaS UI, high-fidelity product screenshot, deep
 3. **Irrigation Control Panel** — Operations UI showing irrigation zones as toggle cards (ON / AUTO / OFF), flow-rate gauges, a schedule timeline and a live valve diagram. Tactile controls, status color coding, deep-green chrome, industrial-yet-friendly SaaS aesthetic.
 4. **Satellite Monitoring Interface** — Map-centric UI with an embedded satellite/NDVI field map, layer toggles, a field list panel and health-index legend, plus a detail drawer. GIS-app polish, dark map with green-gold overlays, precise and data-dense but uncluttered.
 5. **Agricultural Intelligence Platform** — A flagship overview screen combining AI insight cards, predictive yield forecasts, sensor status, satellite thumbnail and recommendation feed. Premium enterprise design system, deep-green + gold identity, confident typography, the "command center" of the product.
+
+---
+
+## Agricultural Intelligence & Satellite Monitoring (expansion set)
+Style: **ultra-realistic commercial/corporate photography, cinematic lighting, photorealistic 8K, no cartoon, no illustration, no generic-stock-photo look, no watermark, no text overlays.** Recommended suffix for MJ: `--ar 16:9 --style raw --v 6.0`.
+
+## 11. Satellite Imagery of Large Farms
+Ultra-high-resolution nadir satellite photograph of a vast commercial farming estate, thousands of hectares of geometric and center-pivot fields in a mosaic of greens and tans stretching to the horizon, crisp field-boundary lines, service roads forming a precise grid, faint terrain relief shading. Natural-color remote-sensing aesthetic, sharp and clinical, the scale and order of industrial-grade agriculture rendered with documentary realism.
+
+## 12. NDVI Vegetation Maps
+A realistic false-color NDVI vegetation-index map overlaid on satellite farmland imagery: individual field parcels rendered in a smooth green-to-yellow-to-red health gradient, thin white field-boundary vectors, small sensor-marker dots, a subtle analytics-panel framing at the edge. Looks like an authentic precision-agriculture dashboard export — crisp, data-driven, photoreal satellite base beneath the color overlay.
+
+## 13. Center Pivot Irrigation Systems
+Aerial photograph of classic center-pivot irrigation circles from a mid-altitude drone, dozens of perfect green circles inscribed in tan desert land, fine mist trailing behind slow-moving pivot arms catching afternoon light, long mechanical shadows. 35mm-equivalent aerial lens, warm golden-hour color, crisp geometric beauty, engineering precision meeting agriculture.
+
+## 14. Greenhouses From Aerial View
+High-altitude aerial/drone photograph of a large-scale greenhouse complex, rows of gleaming glass-and-polycarbonate structures catching the sun in long parallel lines, service pathways and water-storage tanks between blocks, surrounding cultivated land for scale. Crisp midday light, realistic reflections on glass roofing, orderly industrial-agricultural composition, premium and immaculate.
+
+## 15. Precision Agriculture Monitoring
+A field technician on one knee inspecting a soil-sensor probe and a rugged tablet displaying live field analytics, healthy crop rows receding into soft focus behind them. Natural outdoor light, shallow depth of field on the tablet screen showing subtle chart UI, authentic workwear, respectful and professional Gulf-context styling, technology-in-the-field authenticity.
+
+## 16. Smart Irrigation Systems
+Close-mid shot of a smart irrigation control node — a weatherproof valve enclosure with a small solar panel and antenna — mounted at the head of a drip-irrigation line, healthy crop rows extending behind it under clear sky. Crisp technical detail on the hardware, natural morning light, shallow depth of field, conveys unattended automated precision.
+
+## 17. Agricultural Operations Centers
+Wide interior photograph of a modern agricultural operations center: a bank of analysts at clean workstations beneath a large wall display showing farm maps, satellite tiles and KPI dashboards in green-and-gold accent tones, soft architectural lighting. 24mm lens, balanced exposure, corporate command-center authority, calm and highly organized atmosphere.
+
+## 18. Drone Crop Monitoring (expansion)
+A multirotor agricultural drone in low hover above a healthy crop field at sunrise, downward-facing multispectral sensor visible beneath the body, soft mist over the canopy, rows sharply receding into the background. Backlit rim light on the airframe, 85mm compression, crisp mechanical detail balanced against an organic, thriving field — technology quietly at work.
+
+---
+
+## Notes for the two new website sections
+- **Satellite Agricultural Intelligence section**: the live "satellite map" visual on the site itself is hand-built SVG/CSS (field-boundary overlays, irrigation lines, crop-health color grading) rather than a photo, so it never breaks and needs no hosting — the prompts above (11-18) are for future real photography/renders to eventually replace or accompany it.
+- **NDVI Analytics section**: the in-app NDVI heatmap is likewise a coded SVG/CSS grid with a live legend, not an image; prompt #12 above is for supplementary marketing imagery only, not a dependency of the running site.
