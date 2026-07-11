@@ -8,12 +8,14 @@ import type { NdviDataset, NdviFarm } from '../../types/ndvi'
 const data = dataset as NdviDataset
 
 /* NDVI color scale: red (low) -> yellow (moderate) -> green (healthy).
-   Kept in sync with the scale in NDVIAnalytics.tsx. */
+   Calibrated to AlUla's real arid-farm NDVI band (RCU portal readings run
+   roughly 8%-28%, well below generic cropland NDVI) rather than the 0-1
+   scale used for illustrative content in NDVIAnalytics.tsx. */
 function ndviColor(v: number) {
-  if (v >= 0.6) return '#2f9e5c'
-  if (v >= 0.45) return '#7cc24a'
-  if (v >= 0.3) return '#d8c53a'
-  if (v >= 0.15) return '#e0913a'
+  if (v >= 0.22) return '#2f9e5c'
+  if (v >= 0.15) return '#7cc24a'
+  if (v >= 0.10) return '#d8c53a'
+  if (v >= 0.07) return '#e0913a'
   return '#d15236'
 }
 
