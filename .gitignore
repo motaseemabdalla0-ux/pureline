@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+*.log
+.env
+chatbot/backend/data/chroma_db/
+chatbot/backend/data/.index_manifest.json
+.DS_Store
+Thumbs.db

@@ -1,0 +1,7 @@
+# RAG runtime artifacts (regenerated from the knowledge base)
+data/chroma_db/
+.hf_cache/
+__pycache__/
+*.pyc
+
+# Keep the knowledge-base documents tracked, but not the vector store.

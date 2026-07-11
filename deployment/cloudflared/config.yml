@@ -1,0 +1,25 @@
+# =============================================================================
+# PURE LINE — Cloudflare Tunnel config (credentials-file / native approach)
+#
+# NOTE: The docker-compose stack runs cloudflared with a TUNNEL_TOKEN instead
+# (simpler, nothing to mount). This file documents the equivalent native config
+# if you prefer running `cloudflared` as a Windows service outside Docker.
+#
+# The tunnel forwards public hostnames to the local edge nginx (published on
+# host port 8080). TLS is terminated at Cloudflare's edge.
+# =============================================================================
+
+tunnel: pureline
+credentials-file: C:\Users\Administrator\.cloudflared\<TUNNEL-UUID>.json
+
+ingress:
+  # Primary site (website + /chat + /api + /admin are all routed by nginx)
+  - hostname: pureline.com
+    service: http://localhost:8080
+  - hostname: www.pureline.com
+    service: http://localhost:8080
+  # Optional dedicated subdomains (nginx still routes by path, these are extras)
+  - hostname: app.pureline.com
+    service: http://localhost:8080
+  # Catch-all (required, must be last)
+  - service: http_status:404

@@ -1,0 +1,161 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "projects": "Projects",
+    "technology": "Technology",
+    "platform": "Platform",
+    "contact": "Contact",
+    "assistant": "AI Agricultural Assistant"
+  },
+  "hero": {
+    "badge": "Agricultural Technology · Smart Farming",
+    "title": "Future Agriculture Starts Here",
+    "subtitle": "We build intelligent farms powered by technology, data, and innovation.",
+    "learnMore": "Learn More",
+    "contactUs": "Contact Us",
+    "scroll": "Scroll to explore",
+    "statLabel": "Trusted across the Kingdom"
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "title": "Cultivating the future of farming",
+    "lead": "PURE LINE is an agricultural technology company transforming traditional farms into intelligent, data-driven operations.",
+    "whoTitle": "Who We Are",
+    "whoText": "A team of agronomists, engineers and data scientists building end-to-end smart farming systems for the modern Gulf.",
+    "whatTitle": "What We Do",
+    "whatText": "We design, develop and operate smart farms — from IoT sensor networks and precision irrigation to satellite monitoring and AI analytics.",
+    "expertiseTitle": "Our Expertise",
+    "expertiseText": "A decade of field experience across arid-climate agriculture, greenhouse engineering and agricultural digital transformation.",
+    "missionTitle": "Our Mission",
+    "missionText": "To make every farm more productive, more sustainable and fully connected — feeding the future with less water and less waste."
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Complete smart-farming solutions",
+    "subtitle": "Six integrated services covering the full lifecycle of a modern farm.",
+    "items": {
+      "smart": { "title": "Smart Farming Solutions", "desc": "IoT-connected farms with real-time sensing, automation and AI-driven decisions." },
+      "development": { "title": "Farm Development", "desc": "Turnkey design and construction of productive, future-ready agricultural sites." },
+      "irrigation": { "title": "Advanced Irrigation Systems", "desc": "Precision drip and smart irrigation that cut water use while boosting yield." },
+      "greenhouse": { "title": "Greenhouse Solutions", "desc": "Climate-controlled greenhouses engineered for year-round high-value production." },
+      "consulting": { "title": "Agricultural Consulting", "desc": "Expert agronomy, feasibility and optimization studies grounded in data." },
+      "digital": { "title": "Agricultural Digital Transformation", "desc": "Bring legacy farms online with dashboards, analytics and connected operations." }
+    }
+  },
+  "stats": {
+    "projects": "Projects Delivered",
+    "clients": "Happy Clients",
+    "experience": "Years Experience",
+    "satisfaction": "Client Satisfaction"
+  },
+  "why": {
+    "eyebrow": "Why Choose Us",
+    "title": "Built on expertise, driven by innovation",
+    "items": {
+      "expertise": { "title": "Industry Expertise", "desc": "Deep agronomy and engineering knowledge across arid-climate farming." },
+      "innovative": { "title": "Innovative Solutions", "desc": "We pair proven agriculture with cutting-edge technology." },
+      "support": { "title": "Reliable Support", "desc": "Dedicated teams and monitoring that keep your farm running." },
+      "sustainable": { "title": "Sustainable Practices", "desc": "Less water, less waste, and long-term soil and resource health." },
+      "technology": { "title": "Modern Technology", "desc": "IoT, satellite imaging and AI analytics built into every project." },
+      "results": { "title": "Proven Results", "desc": "Measurable gains in yield, efficiency and profitability." }
+    }
+  },
+  "projects": {
+    "eyebrow": "Our Work",
+    "title": "Projects that redefine the field",
+    "subtitle": "A selection of smart farms, irrigation networks and greenhouse builds.",
+    "all": "All",
+    "categories": {
+      "smartFarms": "Smart Farms",
+      "irrigation": "Irrigation Projects",
+      "greenhouses": "Greenhouses",
+      "construction": "Farm Construction",
+      "monitoring": "Monitoring Systems",
+      "precision": "Precision Agriculture"
+    },
+    "items": {
+      "p1": "AlUla Smart Date Farm",
+      "p2": "Riyadh Precision Irrigation Grid",
+      "p3": "Qassim Climate Greenhouse Cluster",
+      "p4": "Tabuk Desert Farm Development",
+      "p5": "Eastern Province Sensor Network",
+      "p6": "Hail Precision Wheat Program",
+      "p7": "Jeddah Vertical Greenhouse",
+      "p8": "Najran Satellite Monitoring Farm",
+      "p9": "AlKharj Automated Drip System"
+    }
+  },
+  "tech": {
+    "eyebrow": "Smart Farming Technology",
+    "title": "The connected intelligence behind every farm",
+    "subtitle": "A unified technology stack that senses, decides and acts across your entire operation.",
+    "items": {
+      "iot": { "title": "IoT Sensors", "desc": "Soil, moisture, climate and crop sensors streaming live field data." },
+      "irrigation": { "title": "Smart Irrigation", "desc": "Automated, weather-aware watering delivered exactly where it's needed." },
+      "satellite": { "title": "Satellite Monitoring", "desc": "Multispectral imagery tracking crop health across every hectare." },
+      "ai": { "title": "AI Analytics", "desc": "Predictive models that forecast yield, disease and resource needs." },
+      "precision": { "title": "Precision Agriculture", "desc": "Variable-rate inputs applied plant-by-plant for maximum efficiency." }
+    }
+  },
+  "platform": {
+    "eyebrow": "Farm Management Platform",
+    "title": "PURE LINE FARM MANAGEMENT PLATFORM",
+    "subtitle": "One enterprise dashboard to monitor, control and optimize your entire farm in real time.",
+    "browserUrl": "app.pureline.com/dashboard",
+    "sidebar": {
+      "overview": "Overview",
+      "monitoring": "Monitoring",
+      "irrigation": "Irrigation",
+      "satellite": "Satellite",
+      "analytics": "Analytics",
+      "sensors": "Sensors",
+      "reports": "Reports"
+    },
+    "topbar": { "greeting": "Farm Control Center", "season": "Season 2026 · Active" },
+    "kpi": { "yield": "Yield Forecast", "water": "Water Saved", "uptime": "System Uptime", "alerts": "Active Alerts" },
+    "monitoring": { "title": "Farm Monitoring", "field": "Field", "healthy": "Healthy", "attention": "Attention", "critical": "Critical" },
+    "irrigationPanel": { "title": "Irrigation Control", "zone": "Zone", "on": "ON", "off": "OFF", "auto": "AUTO" },
+    "weather": { "title": "Weather", "temp": "Temperature", "humidity": "Humidity", "wind": "Wind", "condition": "Clear Sky" },
+    "satellitePanel": { "title": "Satellite View", "ndvi": "NDVI Index", "updated": "Updated 2h ago" },
+    "cropChart": { "title": "Crop Analytics", "subtitle": "Yield per hectare (tons)" },
+    "sensorTable": { "title": "Sensor Data", "sensor": "Sensor", "location": "Location", "value": "Value", "status": "Status" },
+    "reports": { "title": "Reports", "view": "View" }
+  },
+  "contact": {
+    "eyebrow": "Get in Touch",
+    "title": "Let's build your smart farm",
+    "subtitle": "Tell us about your project and our team will get back within 24 hours.",
+    "phone": "Phone",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "location": "Location",
+    "locationValue": "Riyadh, Saudi Arabia",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "message": "Your Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Thank you! Your message has been sent.",
+      "namePh": "Enter your name",
+      "emailPh": "you@example.com",
+      "phonePh": "+966 5X XXX XXXX",
+      "messagePh": "Tell us about your project..."
+    }
+  },
+  "footer": {
+    "desc": "PURE LINE is an agricultural technology company building intelligent, sustainable farms powered by data and innovation.",
+    "quickLinks": "Quick Links",
+    "servicesTitle": "Services",
+    "assistant": "AI Agricultural Assistant",
+    "rights": "All rights reserved.",
+    "made": "Engineering the future of agriculture."
+  },
+  "common": {
+    "toggleTheme": "Toggle theme",
+    "language": "العربية"
+  }
+}

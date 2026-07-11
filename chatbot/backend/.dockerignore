@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+# data/ is bind-mounted from the host at runtime (knowledge-base + chroma_db);
+# keep it out of the build context so caches/DB aren't baked into the image.
+data/
+.hf_cache/
