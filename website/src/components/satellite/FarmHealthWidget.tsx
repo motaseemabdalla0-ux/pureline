@@ -11,7 +11,18 @@ interface FarmHealthWidgetProps {
   className?: string
 }
 
-/** Small multi-metric sidebar stat block: NDVI, trend, status, last-captured. */
+function MiniStat({ label, value, tone }: { label: string; value: string; tone?: 'up' | 'down' }) {
+  const toneClass = tone === 'up' ? 'text-secondary' : tone === 'down' ? 'text-red-500' : 'text-slate-600 dark:text-slate-300'
+  return (
+    <div className="min-w-0">
+      <div className="truncate text-[10px] text-slate-400">{label}</div>
+      <div className={`text-xs font-bold ${toneClass}`}>{value}</div>
+    </div>
+  )
+}
+
+/** Small multi-metric sidebar stat block: current/previous NDVI, 12- and
+ * 36-month real trend %, improvement/degradation %, and last-captured date. */
 export default function FarmHealthWidget({ farm, locale, className = '' }: FarmHealthWidgetProps) {
   const { t, i18n } = useTranslation()
   const lang = locale ?? (i18n.language.startsWith('ar') ? 'ar' : 'en')
@@ -22,6 +33,14 @@ export default function FarmHealthWidget({ farm, locale, className = '' }: FarmH
   const captured = new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', {
     year: 'numeric', month: 'short', day: 'numeric',
   }).format(new Date(farm.lastCaptured))
+  const previousPct = farm.previousNdvi !== undefined ? Math.round(farm.previousNdvi * 100) : null
+
+  const hasStats =
+    previousPct !== null ||
+    farm.ndvi12moTrendPercent !== undefined ||
+    farm.ndvi36moTrendPercent !== undefined ||
+    farm.improvementPercent !== undefined ||
+    farm.degradationPercent !== undefined
 
   return (
     <div className={`rounded-xl border border-black/5 bg-white p-4 dark:border-white/5 dark:bg-slate-900 ${className}`}>
@@ -45,6 +64,34 @@ export default function FarmHealthWidget({ farm, locale, className = '' }: FarmH
           {t(`liveNdvi.trend.${farm.trend}`)}
         </div>
       </div>
+
+      {hasStats && (
+        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 border-t border-black/5 pt-3 dark:border-white/10">
+          {previousPct !== null && (
+            <MiniStat label={t('liveNdvi.stats.previous')} value={`${previousPct}%`} />
+          )}
+          {farm.ndvi12moTrendPercent !== undefined && (
+            <MiniStat
+              label={t('liveNdvi.stats.trend12mo')}
+              value={`${farm.ndvi12moTrendPercent > 0 ? '+' : ''}${farm.ndvi12moTrendPercent.toFixed(1)}%`}
+              tone={farm.ndvi12moTrendPercent >= 0 ? 'up' : 'down'}
+            />
+          )}
+          {farm.ndvi36moTrendPercent !== undefined && (
+            <MiniStat
+              label={t('liveNdvi.stats.trend36mo')}
+              value={`${farm.ndvi36moTrendPercent > 0 ? '+' : ''}${farm.ndvi36moTrendPercent.toFixed(1)}%`}
+              tone={farm.ndvi36moTrendPercent >= 0 ? 'up' : 'down'}
+            />
+          )}
+          {farm.improvementPercent !== undefined && (
+            <MiniStat label={t('liveNdvi.stats.improvement')} value={`+${farm.improvementPercent.toFixed(1)}%`} tone="up" />
+          )}
+          {farm.degradationPercent !== undefined && (
+            <MiniStat label={t('liveNdvi.stats.degradation')} value={`-${farm.degradationPercent.toFixed(1)}%`} tone="down" />
+          )}
+        </div>
+      )}
 
       <div className="gis-readout mt-3 border-t border-black/5 pt-2 text-slate-400 dark:border-white/10">
         {t('liveNdvi.card.lastCaptured')}: <span className="text-slate-500 dark:text-slate-300">{captured}</span>

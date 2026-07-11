@@ -3,23 +3,26 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import Reveal from '../ui/Reveal'
+import { getProjectImagery, PROJECT_IMAGE_BASE_PATH, type ProjectImageKey } from '../../lib/projectImagery'
 
 type Cat = 'satelliteViews' | 'greenhouses' | 'irrigation' | 'infrastructure' | 'precision' | 'controlCenters'
 const cats: Cat[] = ['satelliteViews', 'greenhouses', 'irrigation', 'infrastructure', 'precision', 'controlCenters']
 
-const data: { id: string; cat: Cat; grad: string }[] = [
-  { id: 'p1', cat: 'satelliteViews', grad: 'from-primary to-secondary' },
-  { id: 'p2', cat: 'irrigation', grad: 'from-secondary to-primary-700' },
-  { id: 'p3', cat: 'greenhouses', grad: 'from-primary-600 to-secondary' },
-  { id: 'p4', cat: 'infrastructure', grad: 'from-primary-700 to-primary-400' },
-  { id: 'p5', cat: 'controlCenters', grad: 'from-primary to-accent' },
-  { id: 'p6', cat: 'precision', grad: 'from-secondary to-accent' },
-  { id: 'p7', cat: 'greenhouses', grad: 'from-primary-500 to-primary-300' },
-  { id: 'p8', cat: 'satelliteViews', grad: 'from-primary-700 to-secondary' },
-  { id: 'p9', cat: 'irrigation', grad: 'from-secondary to-primary' },
-  { id: 'p10', cat: 'infrastructure', grad: 'from-primary-600 to-accent' },
-  { id: 'p11', cat: 'precision', grad: 'from-primary to-primary-400' },
-  { id: 'p12', cat: 'controlCenters', grad: 'from-primary-700 to-accent' },
+/** Each of the 12 project cards maps to one of the 12 real Wikimedia-sourced
+ * photos in the projects manifest — used exactly once, two per category. */
+const data: { id: string; cat: Cat; image: ProjectImageKey }[] = [
+  { id: 'p1', cat: 'satelliteViews', image: 'proj_satellite1' },
+  { id: 'p2', cat: 'irrigation', image: 'proj_irrigation1' },
+  { id: 'p3', cat: 'greenhouses', image: 'proj_greenhouse1' },
+  { id: 'p4', cat: 'infrastructure', image: 'proj_infra1' },
+  { id: 'p5', cat: 'controlCenters', image: 'proj_control1' },
+  { id: 'p6', cat: 'precision', image: 'proj_precision1' },
+  { id: 'p7', cat: 'greenhouses', image: 'proj_greenhouse2' },
+  { id: 'p8', cat: 'satelliteViews', image: 'proj_satellite2' },
+  { id: 'p9', cat: 'irrigation', image: 'proj_irrigation2' },
+  { id: 'p10', cat: 'infrastructure', image: 'proj_infra2' },
+  { id: 'p11', cat: 'precision', image: 'proj_precision2' },
+  { id: 'p12', cat: 'controlCenters', image: 'proj_control2' },
 ]
 
 export default function Projects() {
@@ -47,22 +50,44 @@ export default function Projects() {
 
         <motion.div layout className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
-            {filtered.map((p) => (
-              <motion.div key={p.id} layout
-                initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.35 }}
-                className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl">
-                <div className={`absolute inset-0 bg-gradient-to-br ${p.grad}`} />
-                <div className="absolute inset-0 opacity-20"
-                  style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg,#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-                <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/40" />
-                <div className="absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-90 transition group-hover:translate-y-0 group-hover:opacity-100">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-white/70">{t(`projects.categories.${p.cat}`)}</span>
-                  <h3 className="mt-1 text-lg font-bold text-white">{t(`projects.items.${p.id}`)}</h3>
-                </div>
-                <ArrowUpRight className="absolute right-5 top-5 h-6 w-6 text-white opacity-0 transition group-hover:opacity-100 rtl:-scale-x-100" />
-              </motion.div>
-            ))}
+            {filtered.map((p, i) => {
+              const imagery = getProjectImagery(p.image)
+              const sortedVariants = imagery ? [...imagery.variants].sort((a, b) => a.width - b.width) : []
+              const largest = sortedVariants[sortedVariants.length - 1]
+              const srcSet = sortedVariants.map((v) => `${PROJECT_IMAGE_BASE_PATH}${v.file} ${v.width}w`).join(', ')
+              const isFirst = i === 0
+
+              return (
+                <motion.div key={p.id} layout
+                  initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.35 }}
+                  className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-neutral-dark">
+                  {imagery && largest && (
+                    <img
+                      src={`${PROJECT_IMAGE_BASE_PATH}${largest.file}`}
+                      srcSet={srcSet}
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      alt={imagery.title}
+                      loading={isFirst ? 'eager' : 'lazy'}
+                      decoding={isFirst ? 'sync' : 'async'}
+                      fetchPriority={isFirst ? 'high' : 'auto'}
+                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/25 transition group-hover:bg-black/50" />
+                  <div className="absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-90 transition group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-white/70">{t(`projects.categories.${p.cat}`)}</span>
+                    <h3 className="mt-1 text-lg font-bold text-white">{t(`projects.items.${p.id}`)}</h3>
+                    {imagery?.credit && (
+                      <p className="mt-1 text-[10px] text-white/60 opacity-0 transition group-hover:opacity-100">
+                        {t('projects.photoCredit', { credit: imagery.credit })}
+                      </p>
+                    )}
+                  </div>
+                  <ArrowUpRight className="absolute right-5 top-5 h-6 w-6 text-white opacity-0 transition group-hover:opacity-100 rtl:-scale-x-100" />
+                </motion.div>
+              )
+            })}
           </AnimatePresence>
         </motion.div>
       </div>

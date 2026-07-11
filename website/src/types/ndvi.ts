@@ -11,6 +11,16 @@ export interface NdviFarm {
   trendHistory: number[]
   status: NdviStatus
   lastCaptured: string
+  /** Real NDVI value 12 months before the latest reading (values[len-13]). */
+  previousNdvi?: number
+  /** % change from previousNdvi to ndviValue (12-month trend). */
+  ndvi12moTrendPercent?: number
+  /** % change over the full real 36-month series (Q4'23 avg -> Q4'25 avg). */
+  ndvi36moTrendPercent?: number
+  /** Set (positive magnitude) when ndvi36moTrendPercent is positive. */
+  improvementPercent?: number
+  /** Set (positive magnitude) when ndvi36moTrendPercent is negative. */
+  degradationPercent?: number
 }
 
 export interface NdviDataset {

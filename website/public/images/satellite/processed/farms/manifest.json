@@ -1,0 +1,170 @@
+{
+  "UDH-000338": {
+    "bbox": [
+      38.0355061179778,
+      26.6915008115001,
+      38.0475061179778,
+      26.7035008115001
+    ],
+    "pixelSize": [
+      1000,
+      1000
+    ],
+    "variants": [
+      {
+        "width": 1200,
+        "file": "UDH-000338-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "UDH-000338-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "UDH-000338-400.webp"
+      }
+    ],
+    "source": "Esri World Imagery (ArcGIS Online) \u2014 sub-meter satellite/aerial composite",
+    "acquired": "current Esri World Imagery basemap layer"
+  },
+  "KHP-00002": {
+    "bbox": [
+      39.2461503485847,
+      25.7292281112476,
+      39.2581503485847,
+      25.7412281112476
+    ],
+    "pixelSize": [
+      1000,
+      1000
+    ],
+    "variants": [
+      {
+        "width": 1200,
+        "file": "KHP-00002-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "KHP-00002-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "KHP-00002-400.webp"
+      }
+    ],
+    "source": "Esri World Imagery (ArcGIS Online) \u2014 sub-meter satellite/aerial composite",
+    "acquired": "current Esri World Imagery basemap layer"
+  },
+  "KHP-00007": {
+    "bbox": [
+      39.239294642509,
+      25.7300428282531,
+      39.251294642509,
+      25.7420428282531
+    ],
+    "pixelSize": [
+      1000,
+      1000
+    ],
+    "variants": [
+      {
+        "width": 1200,
+        "file": "KHP-00007-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "KHP-00007-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "KHP-00007-400.webp"
+      }
+    ],
+    "source": "Esri World Imagery (ArcGIS Online) \u2014 sub-meter satellite/aerial composite",
+    "acquired": "current Esri World Imagery basemap layer"
+  },
+  "UDH-000337": {
+    "bbox": [
+      38.0627481665151,
+      26.6974545192527,
+      38.0747481665151,
+      26.7094545192527
+    ],
+    "pixelSize": [
+      1000,
+      1000
+    ],
+    "variants": [
+      {
+        "width": 1200,
+        "file": "UDH-000337-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "UDH-000337-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "UDH-000337-400.webp"
+      }
+    ],
+    "source": "Esri World Imagery (ArcGIS Online) \u2014 sub-meter satellite/aerial composite",
+    "acquired": "current Esri World Imagery basemap layer"
+  },
+  "UDH-000002": {
+    "bbox": [
+      37.9215146660793,
+      26.7153654062107,
+      37.9335146660793,
+      26.7273654062107
+    ],
+    "pixelSize": [
+      1000,
+      1000
+    ],
+    "variants": [
+      {
+        "width": 1200,
+        "file": "UDH-000002-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "UDH-000002-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "UDH-000002-400.webp"
+      }
+    ],
+    "source": "Esri World Imagery (ArcGIS Online) \u2014 sub-meter satellite/aerial composite",
+    "acquired": "current Esri World Imagery basemap layer"
+  },
+  "UDH-000373": {
+    "bbox": [
+      37.9799716794481,
+      26.7361912110692,
+      37.9919716794481,
+      26.7481912110692
+    ],
+    "pixelSize": [
+      1000,
+      1000
+    ],
+    "variants": [
+      {
+        "width": 1200,
+        "file": "UDH-000373-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "UDH-000373-800.webp"
+      },
+      {
+        "width": 400,
+        "file": "UDH-000373-400.webp"
+      }
+    ],
+    "source": "Esri World Imagery (ArcGIS Online) \u2014 sub-meter satellite/aerial composite",
+    "acquired": "current Esri World Imagery basemap layer"
+  }
+}

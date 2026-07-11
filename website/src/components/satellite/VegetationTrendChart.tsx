@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import Sparkline from '../ui/Sparkline'
 import { ndviColor } from '../../lib/ndvi'
@@ -9,14 +10,21 @@ interface VegetationTrendChartProps {
   className?: string
 }
 
-/** Small SVG line chart rendering a farm's real trendHistory readings. */
+/** Small SVG line chart rendering a farm's real trendHistory readings
+ * (the full real 36-month NDVI series where available). */
 export default function VegetationTrendChart({ farm, locale, className = '' }: VegetationTrendChartProps) {
   const { t, i18n } = useTranslation()
   const lang = locale ?? (i18n.language.startsWith('ar') ? 'ar' : 'en')
   const displayName = lang === 'ar' && farm.nameAr ? farm.nameAr : farm.name
   const color = ndviColor(farm.ndviValue)
-  const first = Math.round(farm.trendHistory[0] * 100)
-  const last = Math.round(farm.trendHistory[farm.trendHistory.length - 1] * 100)
+
+  const { first, last } = useMemo(
+    () => ({
+      first: Math.round(farm.trendHistory[0] * 100),
+      last: Math.round(farm.trendHistory[farm.trendHistory.length - 1] * 100),
+    }),
+    [farm.trendHistory],
+  )
 
   return (
     <div className={`rounded-xl border border-black/5 bg-white p-4 dark:border-white/10 dark:bg-white/5 ${className}`}>

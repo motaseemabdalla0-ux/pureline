@@ -1,0 +1,218 @@
+{
+  "proj_satellite1": {
+    "title": "Center-pivot irrigation circles, Saudi Arabia (astronaut photograph)",
+    "credit": "NASA / Wikimedia Commons, public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_satellite1-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_satellite1-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_satellite1-500.webp"
+      }
+    ]
+  },
+  "proj_satellite2": {
+    "title": "The Nile River and Crop Circles",
+    "credit": "NASA Earth Observatory / Wikimedia Commons, public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_satellite2-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_satellite2-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_satellite2-500.webp"
+      }
+    ]
+  },
+  "proj_greenhouse1": {
+    "title": "Greenhouse tomato production",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_greenhouse1-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_greenhouse1-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_greenhouse1-500.webp"
+      }
+    ]
+  },
+  "proj_greenhouse2": {
+    "title": "Greenhouse crop rows",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_greenhouse2-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_greenhouse2-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_greenhouse2-500.webp"
+      }
+    ]
+  },
+  "proj_irrigation1": {
+    "title": "Center-pivot irrigated corn field",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_irrigation1-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_irrigation1-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_irrigation1-500.webp"
+      }
+    ]
+  },
+  "proj_irrigation2": {
+    "title": "Center-pivot irrigated grain field",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_irrigation2-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_irrigation2-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_irrigation2-500.webp"
+      }
+    ]
+  },
+  "proj_infra1": {
+    "title": "Canal headworks intake infrastructure",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_infra1-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_infra1-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_infra1-500.webp"
+      }
+    ]
+  },
+  "proj_infra2": {
+    "title": "Rural agricultural water supply infrastructure",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_infra2-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_infra2-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_infra2-500.webp"
+      }
+    ]
+  },
+  "proj_precision1": {
+    "title": "Technology contributing to agriculture",
+    "credit": "USDA / Wikimedia Commons, public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_precision1-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_precision1-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_precision1-500.webp"
+      }
+    ]
+  },
+  "proj_precision2": {
+    "title": "Agricultural drone aerial survey",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_precision2-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_precision2-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_precision2-500.webp"
+      }
+    ]
+  },
+  "proj_control1": {
+    "title": "Industrial control room operations",
+    "credit": "Wikimedia Commons, CC BY-SA",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_control1-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_control1-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_control1-500.webp"
+      }
+    ]
+  },
+  "proj_control2": {
+    "title": "Mission control / operations center",
+    "credit": "NASA / Wikimedia Commons, public domain",
+    "variants": [
+      {
+        "width": 1200,
+        "file": "proj_control2-1200.webp"
+      },
+      {
+        "width": 800,
+        "file": "proj_control2-800.webp"
+      },
+      {
+        "width": 500,
+        "file": "proj_control2-500.webp"
+      }
+    ]
+  }
+}

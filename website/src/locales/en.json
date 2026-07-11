@@ -100,7 +100,8 @@
       "p10": "Jouf Reservoir & Pivot Network",
       "p11": "Qassim Variable-Rate Farming System",
       "p12": "Riyadh Agricultural Operations Center"
-    }
+    },
+    "photoCredit": "Photo: {{credit}}"
   },
   "tech": {
     "eyebrow": "Smart Farming Technology",
@@ -218,6 +219,14 @@
       "ndviMap": "NDVI Map",
       "ndviValue": "NDVI Index",
       "lastCaptured": "Last captured"
+    },
+    "stats": {
+      "current": "Current NDVI",
+      "previous": "Previous NDVI (12mo)",
+      "trend12mo": "12-Month Trend",
+      "trend36mo": "36-Month Trend",
+      "improvement": "Improvement",
+      "degradation": "Degradation"
     }
   },
   "satDash": {
@@ -288,7 +297,9 @@
     "source": "NASA GIBS · Real Satellite Imagery"
   },
   "satelliteFarmCard": {
-    "imageAlt": "Real regional satellite context near {{name}}"
+    "imageAlt": "Real regional satellite context near {{name}}",
+    "realImageAlt": "Real high-resolution satellite imagery of {{name}}, with field boundary overlay",
+    "realSourceLabel": "Real Satellite/Aerial Imagery"
   },
   "satelliteTimeline": {
     "imageAlt": "AlUla valley, real satellite capture, {{year}}",
