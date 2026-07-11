@@ -8,6 +8,7 @@ import Stats from './components/sections/Stats'
 import WhyChooseUs from './components/sections/WhyChooseUs'
 import SatelliteIntelligence from './components/sections/SatelliteIntelligence'
 import NDVIAnalytics from './components/sections/NDVIAnalytics'
+import LiveNDVIMonitoring from './components/sections/LiveNDVIMonitoring'
 import SatelliteDashboard from './components/sections/SatelliteDashboard'
 import FarmIntelligence from './components/sections/FarmIntelligence'
 import Projects from './components/sections/Projects'
@@ -28,6 +29,7 @@ export default function App() {
         <WhyChooseUs />
         <SatelliteIntelligence />
         <NDVIAnalytics />
+        <LiveNDVIMonitoring />
         <SatelliteDashboard />
         <FarmIntelligence />
         <Projects />

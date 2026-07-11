@@ -194,6 +194,28 @@
       "trend": { "title": "Vegetation Trend Tracking", "desc": "Long-term trend lines expose gradual decline or improvement across years." }
     }
   },
+  "liveNdvi": {
+    "eyebrow": "Live NDVI Monitoring",
+    "title": "Real-time vegetation health, farm by farm",
+    "subtitle": "Live satellite-derived NDVI readings for monitored farms, updated as each field is recaptured from orbit.",
+    "caption": "Data source: {{source}} · Last updated {{date}}",
+    "status": {
+      "healthy": "Healthy",
+      "moderate": "Moderate",
+      "degraded": "Degraded"
+    },
+    "trend": {
+      "up": "Increasing",
+      "down": "Decreasing",
+      "stable": "Stable"
+    },
+    "card": {
+      "satellite": "Satellite",
+      "ndviMap": "NDVI Map",
+      "ndviValue": "NDVI Index",
+      "lastCaptured": "Last captured"
+    }
+  },
   "satDash": {
     "eyebrow": "Satellite Dashboard",
     "title": "Your orbital command center",
