@@ -228,9 +228,17 @@ export default function OperationsDashboardPage() {
               <Reveal key={f.id} delay={0.03 * (i + 1)}>
                 <div className="flex items-start gap-3 rounded-2xl border border-accent/30 bg-accent/5 p-5">
                   <ScanLine className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm font-bold text-accent">{lang === 'ar' && f.nameAr ? f.nameAr : f.name}</div>
                     <p className="mt-1 text-xs text-neutral-dark/60 dark:text-neutral-light/60">{t('platformDashboard.alerts.ndviHint')}</p>
+                    <div className="mt-2 flex flex-wrap gap-3">
+                      <Link to={`/ndvi-analytics?farm=${encodeURIComponent(f.id)}`} className="flex items-center gap-1 text-xs font-semibold text-accent hover:underline">
+                        {t('platformDashboard.alerts.viewNdvi')} <ArrowUpRight className="h-3.5 w-3.5 rtl:-scale-x-100" />
+                      </Link>
+                      <Link to={`/satellite-intelligence?farm=${encodeURIComponent(f.id)}`} className="flex items-center gap-1 text-xs font-semibold text-accent hover:underline">
+                        {t('platformDashboard.alerts.viewSatellite')} <ArrowUpRight className="h-3.5 w-3.5 rtl:-scale-x-100" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </Reveal>

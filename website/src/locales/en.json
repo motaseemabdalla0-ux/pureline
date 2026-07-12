@@ -552,6 +552,7 @@
     "platformDashboard": "Ops Dashboard",
     "myFarms": "My Farms",
     "pestManagement": "Pest Management",
+    "irrigationManagement": "Irrigation",
     "logout": "Logout"
   },
   "serviceDetail": {
@@ -806,7 +807,9 @@
       "pestHint": "Reported across monitored farms — review and dispatch a pest-control operation.",
       "ndviHint": "Vegetation health has declined — review satellite intelligence for this farm.",
       "delayedHint": "This operation has fallen behind schedule — review and reassign.",
-      "none": "No active alerts. Everything is on track."
+      "none": "No active alerts. Everything is on track.",
+      "viewNdvi": "View NDVI Analytics",
+      "viewSatellite": "View Satellite Intelligence"
     },
     "farmOverview": "Farm Overview",
     "viewAllFarms": "View All Farms",
@@ -828,6 +831,8 @@
     "notFound": "This farm could not be found in the registry.",
     "ndviSection": "Satellite & NDVI Intelligence",
     "noNdviMatch": "No NDVI analytics are available for this farm yet.",
+    "viewNdviAnalytics": "View NDVI Analytics",
+    "viewSatelliteIntel": "View Satellite Intelligence",
     "fields": {
       "region": "Region",
       "cropType": "Crop Type",
@@ -950,6 +955,60 @@
       "effectiveness": "Effectiveness rating (optional)",
       "selectRating": "No rating",
       "submit": "Log Treatment"
+    }
+  },
+  "platformIrrigation": {
+    "eyebrow": "Irrigation Management",
+    "title": "Irrigation Management",
+    "subtitle": "Track irrigation zones, schedule events and monitor water usage across the farm portfolio.",
+    "kpi": {
+      "todayScheduled": "Today's Scheduled Irrigation",
+      "weeklyUsage": "Weekly Water Usage",
+      "zonesByStatus": "Zones by Status"
+    },
+    "zoneStatus": {
+      "active": "Active",
+      "maintenance": "Maintenance",
+      "offline": "Offline"
+    },
+    "equipment": {
+      "drip": "Drip",
+      "sprinkler": "Sprinkler",
+      "flood": "Flood"
+    },
+    "eventStatus": {
+      "scheduled": "Scheduled",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "skipped": "Skipped"
+    },
+    "zonesSection": "Irrigation Zones",
+    "newZone": "New Zone",
+    "noZones": "No irrigation zones have been registered yet.",
+    "newZoneForm": {
+      "title": "Create Irrigation Zone",
+      "zoneName": "Zone name",
+      "area": "Area (hectares)",
+      "submit": "Create Zone"
+    },
+    "eventsSection": "Irrigation Events",
+    "scheduleEvent": "Schedule Event",
+    "allFarms": "All Farms",
+    "allZones": "All Zones",
+    "allStatuses": "All Statuses",
+    "noEvents": "No irrigation events match your filters.",
+    "scheduled": "Scheduled",
+    "actual": "Actual",
+    "newEventForm": {
+      "title": "Schedule Irrigation Event",
+      "submit": "Schedule Event"
+    },
+    "editForm": {
+      "edit": "Edit",
+      "actualStart": "Actual start",
+      "actualEnd": "Actual end",
+      "waterVolume": "Water volume (m³)",
+      "save": "Save"
     }
   }
 }

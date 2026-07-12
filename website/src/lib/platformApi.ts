@@ -5,12 +5,17 @@ import type {
   AdminLoginResponse,
   Consultation,
   CreateConsultationPayload,
+  CreateIrrigationEventPayload,
+  CreateIrrigationZonePayload,
   CreateOperationPayload,
   CreatePestDetectionPayload,
   CreatePestTrapPayload,
   CreatePestTreatmentPayload,
   CreateQuotationPayload,
   CreateServiceRequestPayload,
+  IrrigationDashboard,
+  IrrigationEvent,
+  IrrigationZone,
   Operation,
   OpsDashboard,
   PestDashboard,
@@ -25,6 +30,7 @@ import type {
   RegistryFarm,
   RequestStatus,
   ServiceRequest,
+  UpdateIrrigationEventPayload,
 } from '../types/platform'
 
 const BASE = '/api/platform'
@@ -348,4 +354,41 @@ export function createPestTreatment(payload: CreatePestTreatmentPayload) {
 
 export function getPestDashboard() {
   return platformRequest<PestDashboard>('/pests/dashboard')
+}
+
+/* ---------- Irrigation management ---------- */
+
+export function listIrrigationZones(params?: { farm_code?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  const query = qs.toString()
+  return platformRequest<IrrigationZone[]>(`/irrigation/zones${query ? `?${query}` : ''}`)
+}
+
+export function createIrrigationZone(payload: CreateIrrigationZonePayload) {
+  return platformRequest<IrrigationZone>('/irrigation/zones', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function listIrrigationEvents(params?: { zone_id?: string; farm_code?: string; status?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.zone_id) qs.set('zone_id', params.zone_id)
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  if (params?.status) qs.set('status', params.status)
+  const query = qs.toString()
+  return platformRequest<IrrigationEvent[]>(`/irrigation/events${query ? `?${query}` : ''}`)
+}
+
+export function createIrrigationEvent(payload: CreateIrrigationEventPayload) {
+  return platformRequest<IrrigationEvent>('/irrigation/events', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateIrrigationEvent(eventId: string, payload: UpdateIrrigationEventPayload) {
+  return platformRequest<IrrigationEvent>(`/irrigation/events/${encodeURIComponent(eventId)}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function getIrrigationDashboard() {
+  return platformRequest<IrrigationDashboard>('/irrigation/dashboard')
 }

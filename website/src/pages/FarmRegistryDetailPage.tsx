@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, Loader2, AlertTriangle, MapPin, Tractor, User, Ruler, Calendar, ScanLine } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, Loader2, AlertTriangle, MapPin, Tractor, User, Ruler, Calendar, ScanLine } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import GisFrame from '../components/ui/GisFrame'
@@ -142,9 +142,27 @@ export default function FarmRegistryDetailPage() {
         </div>
 
         <div className="mt-16">
-          <h2 className="flex items-center gap-2 text-lg font-bold">
-            <ScanLine className="h-5 w-5 text-primary dark:text-secondary" /> {t('platformFarms.ndviSection')}
-          </h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
+              <ScanLine className="h-5 w-5 text-primary dark:text-secondary" /> {t('platformFarms.ndviSection')}
+            </h2>
+            {ndviFarm && (
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to={`/ndvi-analytics?farm=${encodeURIComponent(ndviFarm.id)}`}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary dark:text-secondary"
+                >
+                  {t('platformFarms.viewNdviAnalytics')} <ArrowUpRight className="h-4 w-4 rtl:-scale-x-100" />
+                </Link>
+                <Link
+                  to={`/satellite-intelligence?farm=${encodeURIComponent(ndviFarm.id)}`}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary dark:text-secondary"
+                >
+                  {t('platformFarms.viewSatelliteIntel')} <ArrowUpRight className="h-4 w-4 rtl:-scale-x-100" />
+                </Link>
+              </div>
+            )}
+          </div>
           {ndviFarm ? (
             <>
               <Reveal delay={0.05} className="mt-6 max-w-sm">

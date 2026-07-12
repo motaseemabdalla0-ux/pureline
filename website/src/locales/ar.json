@@ -551,6 +551,7 @@
     "platformDashboard": "لوحة العمليات",
     "myFarms": "مزارعي",
     "pestManagement": "إدارة الآفات",
+    "irrigationManagement": "الري",
     "logout": "تسجيل الخروج"
   },
   "serviceDetail": {
@@ -804,7 +805,9 @@
       "pestHint": "تم الإبلاغ عنها عبر المزارع المراقَبة — راجع وأرسل عملية مكافحة آفات.",
       "ndviHint": "تراجعت صحة الغطاء النباتي — راجع الاستخبارات الفضائية لهذه المزرعة.",
       "delayedHint": "تأخرت هذه العملية عن الجدول الزمني — راجعها وأعد التكليف.",
-      "none": "لا توجد تنبيهات نشطة. كل شيء يسير كما هو مخطط."
+      "none": "لا توجد تنبيهات نشطة. كل شيء يسير كما هو مخطط.",
+      "viewNdvi": "عرض تحليلات NDVI",
+      "viewSatellite": "عرض الاستخبارات الفضائية"
     },
     "farmOverview": "نظرة عامة على المزارع",
     "viewAllFarms": "عرض جميع المزارع",
@@ -826,6 +829,8 @@
     "notFound": "تعذر العثور على هذه المزرعة في السجل.",
     "ndviSection": "الاستخبارات الفضائية وNDVI",
     "noNdviMatch": "لا تتوفر تحليلات NDVI لهذه المزرعة بعد.",
+    "viewNdviAnalytics": "عرض تحليلات NDVI",
+    "viewSatelliteIntel": "عرض الاستخبارات الفضائية",
     "fields": {
       "region": "المنطقة",
       "cropType": "نوع المحصول",
@@ -948,6 +953,60 @@
       "effectiveness": "تقييم الفعالية (اختياري)",
       "selectRating": "بدون تقييم",
       "submit": "تسجيل المعالجة"
+    }
+  },
+  "platformIrrigation": {
+    "eyebrow": "إدارة الري",
+    "title": "إدارة الري",
+    "subtitle": "تتبع مناطق الري وجدولة الأحداث وراقب استهلاك المياه عبر محفظة المزارع.",
+    "kpi": {
+      "todayScheduled": "الري المجدول اليوم",
+      "weeklyUsage": "استهلاك المياه الأسبوعي",
+      "zonesByStatus": "المناطق حسب الحالة"
+    },
+    "zoneStatus": {
+      "active": "نشطة",
+      "maintenance": "قيد الصيانة",
+      "offline": "متوقفة"
+    },
+    "equipment": {
+      "drip": "تنقيط",
+      "sprinkler": "رش",
+      "flood": "غمر"
+    },
+    "eventStatus": {
+      "scheduled": "مجدولة",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "skipped": "متجاوزة"
+    },
+    "zonesSection": "مناطق الري",
+    "newZone": "منطقة جديدة",
+    "noZones": "لم يتم تسجيل مناطق ري بعد.",
+    "newZoneForm": {
+      "title": "إنشاء منطقة ري",
+      "zoneName": "اسم المنطقة",
+      "area": "المساحة (هكتار)",
+      "submit": "إنشاء المنطقة"
+    },
+    "eventsSection": "أحداث الري",
+    "scheduleEvent": "جدولة حدث",
+    "allFarms": "كل المزارع",
+    "allZones": "كل المناطق",
+    "allStatuses": "كل الحالات",
+    "noEvents": "لا توجد أحداث ري مطابقة لعوامل التصفية.",
+    "scheduled": "مجدول",
+    "actual": "فعلي",
+    "newEventForm": {
+      "title": "جدولة حدث ري",
+      "submit": "جدولة الحدث"
+    },
+    "editForm": {
+      "edit": "تعديل",
+      "actualStart": "وقت البدء الفعلي",
+      "actualEnd": "وقت الانتهاء الفعلي",
+      "waterVolume": "كمية المياه (م³)",
+      "save": "حفظ"
     }
   }
 }

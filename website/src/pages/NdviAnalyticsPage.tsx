@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import NdviStatusCard from '../components/satellite/NdviStatusCard'
@@ -14,8 +15,13 @@ const ndviData = dataset as NdviDataset
 export default function NdviAnalyticsPage() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language.startsWith('ar') ? 'ar' : 'en'
+  const [searchParams] = useSearchParams()
   const [statusFilter, setStatusFilter] = useState<NdviStatus | 'all'>('all')
-  const [selectedId, setSelectedId] = useState(ndviData.farms[0]?.id ?? '')
+  const [selectedId, setSelectedId] = useState(() => {
+    const farmParam = searchParams.get('farm')
+    if (farmParam && ndviData.farms.some((f) => f.id === farmParam)) return farmParam
+    return ndviData.farms[0]?.id ?? ''
+  })
   const [compareIds, setCompareIds] = useState<string[]>(ndviData.farms.slice(0, 3).map((f) => f.id))
 
   const filteredFarms = useMemo(

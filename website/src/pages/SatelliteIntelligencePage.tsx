@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import { AlertTriangle, ShieldCheck } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
@@ -18,6 +19,16 @@ const ALERT_THRESHOLD_PERCENT = 5
 export default function SatelliteIntelligencePage() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language.startsWith('ar') ? 'ar' : 'en'
+  const [searchParams] = useSearchParams()
+  const highlightedId = searchParams.get('farm')
+  const highlightRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (highlightedId && highlightRef.current) {
+      highlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [highlightedId])
 
   const alerts = useMemo(
     () =>
@@ -95,32 +106,35 @@ export default function SatelliteIntelligencePage() {
             {ndviData.farms.map((farm, i) => {
               const displayName = lang === 'ar' && farm.nameAr ? farm.nameAr : farm.name
               const real = getRealFarmImagery(farm.id)
+              const isHighlighted = highlightedId === farm.id
               return (
                 <Reveal key={farm.id} delay={i * 0.04}>
-                  <GisFrame scanline>
-                    <div className="relative">
-                      {real ? (
-                        <SatelliteImage
-                          real={{ variants: real.variants, basePath: REAL_FARM_IMAGE_BASE_PATH, attribution: `Esri World Imagery · ${t('satelliteFarmCard.realSourceLabel')}` }}
-                          alt={t('satelliteFarmCard.realImageAlt', { name: displayName })}
-                          className="aspect-[4/3] w-full"
-                        >
-                          <FieldBoundary polygon={real.polygon} bbox={real.bbox} />
-                        </SatelliteImage>
-                      ) : (
-                        <SatelliteImage
-                          source={regionalSourceForFarm(farm.id)}
-                          variant="dark"
-                          alt={t('satelliteFarmCard.imageAlt', { name: displayName })}
-                          className="aspect-[4/3] w-full"
-                        />
-                      )}
-                    </div>
-                    <div className="flex items-center justify-between border-t border-white/10 px-4 py-3">
-                      <span className="text-sm font-bold text-white">{displayName}</span>
-                      <span className="gis-readout text-slate-400">{farm.id}</span>
-                    </div>
-                  </GisFrame>
+                  <div ref={isHighlighted ? highlightRef : undefined} className={isHighlighted ? 'rounded-3xl ring-2 ring-secondary' : ''}>
+                    <GisFrame scanline>
+                      <div className="relative">
+                        {real ? (
+                          <SatelliteImage
+                            real={{ variants: real.variants, basePath: REAL_FARM_IMAGE_BASE_PATH, attribution: `Esri World Imagery · ${t('satelliteFarmCard.realSourceLabel')}` }}
+                            alt={t('satelliteFarmCard.realImageAlt', { name: displayName })}
+                            className="aspect-[4/3] w-full"
+                          >
+                            <FieldBoundary polygon={real.polygon} bbox={real.bbox} />
+                          </SatelliteImage>
+                        ) : (
+                          <SatelliteImage
+                            source={regionalSourceForFarm(farm.id)}
+                            variant="dark"
+                            alt={t('satelliteFarmCard.imageAlt', { name: displayName })}
+                            className="aspect-[4/3] w-full"
+                          />
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between border-t border-white/10 px-4 py-3">
+                        <span className="text-sm font-bold text-white">{displayName}</span>
+                        <span className="gis-readout text-slate-400">{farm.id}</span>
+                      </div>
+                    </GisFrame>
+                  </div>
                 </Reveal>
               )
             })}
