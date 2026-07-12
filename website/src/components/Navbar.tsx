@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, Moon, Sun, Languages, Bot, ChevronDown, LayoutGrid, Send, Gauge,
-  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor, Bug, Droplets, Wrench,
+  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor, Bug, Droplets, Wrench, Users,
 } from 'lucide-react'
 import Logo from './ui/Logo'
 import { applyLangSideEffects } from '../i18n'
@@ -150,6 +150,12 @@ export default function Navbar() {
               <Link to="/platform/assets" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
                 <Wrench className="h-4 w-4" /> {t('navPlatform.assetManagement')}
               </Link>
+              <Link to="/platform/workforce" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <Users className="h-4 w-4" /> {t('navPlatform.workforce')}
+              </Link>
+              <Link to="/platform/reports" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <FileText className="h-4 w-4" /> {t('navPlatform.reports')}
+              </Link>
               <button onClick={handleLogout} className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-500/10">
                 <LogOut className="h-4 w-4" /> {t('navPlatform.logout')}
               </button>
@@ -228,6 +234,12 @@ export default function Navbar() {
                   </Link>
                   <Link to="/platform/assets" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
                     <Wrench className="h-4 w-4 shrink-0" /> {t('navPlatform.assetManagement')}
+                  </Link>
+                  <Link to="/platform/workforce" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Users className="h-4 w-4 shrink-0" /> {t('navPlatform.workforce')}
+                  </Link>
+                  <Link to="/platform/reports" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <FileText className="h-4 w-4 shrink-0" /> {t('navPlatform.reports')}
                   </Link>
                   <button onClick={() => { setOpen(false); handleLogout() }} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-red-500 hover:bg-red-500/10">
                     <LogOut className="h-4 w-4 shrink-0" /> {t('navPlatform.logout')}

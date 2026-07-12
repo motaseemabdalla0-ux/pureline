@@ -553,6 +553,8 @@
     "pestManagement": "إدارة الآفات",
     "irrigationManagement": "الري",
     "assetManagement": "الأصول",
+    "workforce": "القوى العاملة",
+    "reports": "التقارير",
     "logout": "تسجيل الخروج"
   },
   "serviceDetail": {
@@ -1061,5 +1063,42 @@
       "nextDueDate": "تاريخ الاستحقاق القادم",
       "submit": "تسجيل الصيانة"
     }
+  },
+  "platformWorkforce": {
+    "eyebrow": "إدارة القوى العاملة",
+    "title": "القوى العاملة",
+    "subtitle": "تتبع الفرق والفنيين والمهندسين الزراعيين والمفتشين عبر جميع المزارع.",
+    "restricted": {
+      "title": "الوصول مقيد",
+      "message": "إدارة القوى العاملة متاحة لموظفي وإداريي بيور لاين فقط."
+    },
+    "directorySection": "دليل الموظفين",
+    "noStaff": "لا يوجد موظفون.",
+    "noTitle": "عضو الفريق",
+    "performanceSection": "الأداء",
+    "performanceHint": "انقر على صف لعرض أحدث المهام الخاصة بهذا الموظف.",
+    "table": {
+      "name": "الاسم",
+      "total": "الإجمالي",
+      "completed": "المكتمل",
+      "completionRate": "معدل الإنجاز"
+    },
+    "noAssignments": "لا توجد مهام مسجلة بعد.",
+    "assignmentType": {
+      "operation": "عملية ميدانية",
+      "pest_detection": "رصد آفة"
+    }
+  },
+  "platformReports": {
+    "eyebrow": "مركز التقارير",
+    "title": "التقارير",
+    "subtitle": "أنشئ تقارير PDF لكل مزرعة وراجع الملخصات التشغيلية عبر المنصة.",
+    "printBtn": "طباعة التقرير",
+    "farmReportsSection": "تقارير المزارع",
+    "operationalSummarySection": "الملخصات التشغيلية",
+    "operationsByStatus": "العمليات حسب الحالة",
+    "pestsByRisk": "رصد الآفات حسب مستوى الخطورة",
+    "irrigationUsage": "استهلاك مياه الري",
+    "totalRecordedVolume": "إجمالي الحجم المسجل"
   }
 }

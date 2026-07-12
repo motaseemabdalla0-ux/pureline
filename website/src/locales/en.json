@@ -554,6 +554,8 @@
     "pestManagement": "Pest Management",
     "irrigationManagement": "Irrigation",
     "assetManagement": "Assets",
+    "workforce": "Workforce",
+    "reports": "Reports",
     "logout": "Logout"
   },
   "serviceDetail": {
@@ -1063,5 +1065,42 @@
       "nextDueDate": "Next due date",
       "submit": "Log Maintenance"
     }
+  },
+  "platformWorkforce": {
+    "eyebrow": "Workforce Management",
+    "title": "Workforce",
+    "subtitle": "Track teams, technicians, agronomists and inspectors across the farm portfolio.",
+    "restricted": {
+      "title": "Access Restricted",
+      "message": "Workforce management is available to Pure Line staff and administrators only."
+    },
+    "directorySection": "Staff Directory",
+    "noStaff": "No staff members found.",
+    "noTitle": "Team Member",
+    "performanceSection": "Performance",
+    "performanceHint": "Click a row to view that staff member's recent assignments.",
+    "table": {
+      "name": "Name",
+      "total": "Total",
+      "completed": "Completed",
+      "completionRate": "Completion Rate"
+    },
+    "noAssignments": "No assignments recorded yet.",
+    "assignmentType": {
+      "operation": "Field Operation",
+      "pest_detection": "Pest Detection"
+    }
+  },
+  "platformReports": {
+    "eyebrow": "Reporting Center",
+    "title": "Reports",
+    "subtitle": "Generate per-farm PDF reports and review operational summaries across the platform.",
+    "printBtn": "Print Report",
+    "farmReportsSection": "Farm Reports",
+    "operationalSummarySection": "Operational Summaries",
+    "operationsByStatus": "Operations by Status",
+    "pestsByRisk": "Pest Detections by Risk",
+    "irrigationUsage": "Irrigation Water Usage",
+    "totalRecordedVolume": "Total recorded volume"
   }
 }

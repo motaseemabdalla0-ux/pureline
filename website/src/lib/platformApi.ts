@@ -34,7 +34,10 @@ import type {
   RegistryFarm,
   RequestStatus,
   ServiceRequest,
+  StaffMember,
+  StaffPerformance,
   UpdateIrrigationEventPayload,
+  WorkforceAssignment,
 } from '../types/platform'
 
 const BASE = '/api/platform'
@@ -432,5 +435,19 @@ export function createAssetMaintenance(assetCode: string, payload: CreateAssetMa
     method: 'POST',
     body: JSON.stringify(payload),
   })
+}
+
+/* ---------- Workforce management (staff/admin only) ---------- */
+
+export function listStaff() {
+  return platformRequest<StaffMember[]>('/workforce/staff')
+}
+
+export function getStaffAssignments(staffId: number) {
+  return platformRequest<WorkforceAssignment[]>(`/workforce/staff/${staffId}/assignments`)
+}
+
+export function getWorkforcePerformance() {
+  return platformRequest<StaffPerformance[]>('/workforce/performance')
 }
 

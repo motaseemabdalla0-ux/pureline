@@ -434,27 +434,33 @@ export interface CreateAssetMaintenancePayload {
 /* ---------- Workforce ---------- */
 
 export interface StaffMember {
-  id: string
+  id: number
   username: string
   full_name: string
-  staff_title?: string
-  phone?: string
-  email?: string
+  role: PlatformRole
+  staff_title?: string | null
+  phone?: string | null
+  email?: string | null
 }
 
-export interface StaffAssignment {
-  id: string
-  type: string
-  title: string
+export type WorkforceAssignmentType = 'operation' | 'pest_detection'
+
+/** Merged, time-sorted feed of a staff member's field-operation and
+ * pest-detection assignments, as returned by
+ * `GET /workforce/staff/{id}/assignments`. */
+export interface WorkforceAssignment {
+  type: WorkforceAssignmentType
+  reference: string | null
+  farm_code?: string | null
   status: string
   date: string
-  farm_code?: string
 }
 
 export interface StaffPerformance {
-  staff_id: string
+  staff_id: number
   full_name: string
+  staff_title?: string | null
   total_assignments: number
-  completed_count: number
-  completion_rate: number
+  completed_assignments: number
+  completion_rate_percent: number
 }
