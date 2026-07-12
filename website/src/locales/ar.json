@@ -552,6 +552,7 @@
     "myFarms": "مزارعي",
     "pestManagement": "إدارة الآفات",
     "irrigationManagement": "الري",
+    "assetManagement": "الأصول",
     "logout": "تسجيل الخروج"
   },
   "serviceDetail": {
@@ -1007,6 +1008,58 @@
       "actualEnd": "وقت الانتهاء الفعلي",
       "waterVolume": "كمية المياه (م³)",
       "save": "حفظ"
+    }
+  },
+  "platformAssets": {
+    "eyebrow": "إدارة الأصول",
+    "title": "إدارة الأصول",
+    "subtitle": "تتبع المعدات والمركبات والأجهزة عبر محفظة المزارع، مع سجل صيانة كامل.",
+    "category": {
+      "pump": "مضخة",
+      "sensor": "حساس",
+      "irrigation_equipment": "معدات ري",
+      "vehicle": "مركبة",
+      "drone": "طائرة مسيّرة",
+      "monitoring_device": "جهاز مراقبة"
+    },
+    "status": {
+      "operational": "تعمل",
+      "maintenance": "قيد الصيانة",
+      "offline": "متوقفة",
+      "retired": "خارج الخدمة"
+    },
+    "newAsset": "أصل جديد",
+    "allCategories": "كل الفئات",
+    "allStatuses": "كل الحالات",
+    "allFarms": "كل المزارع",
+    "noFarm": "غير مخصص / مستودع",
+    "empty": "لا توجد أصول مطابقة لعوامل التصفية.",
+    "newForm": {
+      "title": "تسجيل أصل جديد",
+      "name": "اسم الأصل",
+      "noFarm": "بدون مزرعة (مشترك / مستودع)",
+      "purchaseDate": "تاريخ الشراء",
+      "submit": "تسجيل الأصل"
+    }
+  },
+  "platformAssetDetail": {
+    "title": "تفاصيل الأصل",
+    "backToList": "كل الأصول",
+    "notFound": "الأصل غير موجود.",
+    "purchasedOn": "تاريخ الشراء",
+    "lastServiceOn": "آخر صيانة",
+    "changeStatus": "تغيير الحالة",
+    "updateStatus": "تحديث الحالة",
+    "maintenanceSection": "سجل الصيانة",
+    "noMaintenance": "لم يتم تسجيل أي صيانة لهذا الأصل بعد.",
+    "nextDue": "الموعد القادم",
+    "logMaintenance": {
+      "title": "تسجيل صيانة",
+      "performedBy": "تمت بواسطة",
+      "description": "وصف العمل",
+      "cost": "التكلفة",
+      "nextDueDate": "تاريخ الاستحقاق القادم",
+      "submit": "تسجيل الصيانة"
     }
   }
 }

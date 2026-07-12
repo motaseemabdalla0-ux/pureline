@@ -3,7 +3,11 @@ import type {
   AdminCustomer,
   AdminKpis,
   AdminLoginResponse,
+  Asset,
+  AssetMaintenance,
   Consultation,
+  CreateAssetMaintenancePayload,
+  CreateAssetPayload,
   CreateConsultationPayload,
   CreateIrrigationEventPayload,
   CreateIrrigationZonePayload,
@@ -392,3 +396,41 @@ export function updateIrrigationEvent(eventId: string, payload: UpdateIrrigation
 export function getIrrigationDashboard() {
   return platformRequest<IrrigationDashboard>('/irrigation/dashboard')
 }
+
+/* ---------- Asset management ---------- */
+
+export function listAssets(params?: { category?: string; status?: string; farm_code?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.category) qs.set('category', params.category)
+  if (params?.status) qs.set('status', params.status)
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  const query = qs.toString()
+  return platformRequest<Asset[]>(`/assets${query ? `?${query}` : ''}`)
+}
+
+export function getAsset(assetCode: string) {
+  return platformRequest<Asset>(`/assets/${encodeURIComponent(assetCode)}`)
+}
+
+export function createAsset(payload: CreateAssetPayload) {
+  return platformRequest<Asset>('/assets', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateAssetStatus(assetCode: string, status: string) {
+  return platformRequest<Asset>(`/assets/${encodeURIComponent(assetCode)}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  })
+}
+
+export function listAssetMaintenance(assetCode: string) {
+  return platformRequest<AssetMaintenance[]>(`/assets/${encodeURIComponent(assetCode)}/maintenance`)
+}
+
+export function createAssetMaintenance(assetCode: string, payload: CreateAssetMaintenancePayload) {
+  return platformRequest<AssetMaintenance>(`/assets/${encodeURIComponent(assetCode)}/maintenance`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+

@@ -553,6 +553,7 @@
     "myFarms": "My Farms",
     "pestManagement": "Pest Management",
     "irrigationManagement": "Irrigation",
+    "assetManagement": "Assets",
     "logout": "Logout"
   },
   "serviceDetail": {
@@ -1009,6 +1010,58 @@
       "actualEnd": "Actual end",
       "waterVolume": "Water volume (m³)",
       "save": "Save"
+    }
+  },
+  "platformAssets": {
+    "eyebrow": "Asset Management",
+    "title": "Asset Management",
+    "subtitle": "Track equipment, vehicles and devices across the farm portfolio, with full maintenance history.",
+    "category": {
+      "pump": "Pump",
+      "sensor": "Sensor",
+      "irrigation_equipment": "Irrigation Equipment",
+      "vehicle": "Vehicle",
+      "drone": "Drone",
+      "monitoring_device": "Monitoring Device"
+    },
+    "status": {
+      "operational": "Operational",
+      "maintenance": "Maintenance",
+      "offline": "Offline",
+      "retired": "Retired"
+    },
+    "newAsset": "New Asset",
+    "allCategories": "All Categories",
+    "allStatuses": "All Statuses",
+    "allFarms": "All Farms",
+    "noFarm": "Unassigned / Depot",
+    "empty": "No assets match your filters.",
+    "newForm": {
+      "title": "Register New Asset",
+      "name": "Asset name",
+      "noFarm": "No farm (shared / depot)",
+      "purchaseDate": "Purchase date",
+      "submit": "Register Asset"
+    }
+  },
+  "platformAssetDetail": {
+    "title": "Asset Detail",
+    "backToList": "All Assets",
+    "notFound": "Asset not found.",
+    "purchasedOn": "Purchased",
+    "lastServiceOn": "Last serviced",
+    "changeStatus": "Change Status",
+    "updateStatus": "Update Status",
+    "maintenanceSection": "Maintenance History",
+    "noMaintenance": "No maintenance has been logged for this asset yet.",
+    "nextDue": "Next due",
+    "logMaintenance": {
+      "title": "Log Maintenance",
+      "performedBy": "Performed by",
+      "description": "Description of work",
+      "cost": "Cost",
+      "nextDueDate": "Next due date",
+      "submit": "Log Maintenance"
     }
   }
 }
