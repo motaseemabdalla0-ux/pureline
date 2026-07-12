@@ -12,6 +12,9 @@ import VegetationTrendChart from '../components/satellite/VegetationTrendChart'
 import { getRegistryFarm, PlatformApiError } from '../lib/platformApi'
 import { regionalSourceForFarm } from '../lib/ndvi'
 import { getRealFarmImagery, REAL_FARM_IMAGE_BASE_PATH } from '../lib/realFarmImagery'
+import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
+import WeatherWidget from '../components/gis/WeatherWidget'
+import { getGisFarm, getGisFarms } from '../lib/gisData'
 import dataset from '../data/ndvi-farms.json'
 import type { NdviDataset } from '../types/ndvi'
 import type { RegistryFarm } from '../types/platform'
@@ -138,6 +141,33 @@ export default function FarmRegistryDetailPage() {
                 value={new Intl.DateTimeFormat(lang, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(farm.created_at))}
               />
             </div>
+          </Reveal>
+        </div>
+
+        {/* Interactive GIS + live agro-weather */}
+        <div className="mt-16 grid gap-6 lg:grid-cols-3">
+          <Reveal className="lg:col-span-2">
+            <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+              <MapPin className="h-5 w-5 text-primary dark:text-secondary" /> {t('gisMap.farmMapTitle')}
+            </h2>
+            {getGisFarm(farm.farm_code) ? (
+              <LazyFarmGisMap farms={getGisFarms()} focusFarmId={farm.farm_code} height="380px" />
+            ) : (
+              <p className="rounded-2xl border border-black/5 bg-white p-6 text-sm text-neutral-dark/50 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-neutral-light/50">
+                {t('gisMap.noGeometry')}
+              </p>
+            )}
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="mb-4 text-lg font-bold">{t('weather.sectionTitle')}</h2>
+            {(() => {
+              const gis = getGisFarm(farm.farm_code)
+              const lat = farm.coordinates_lat ?? gis?.center[0]
+              const lng = farm.coordinates_lng ?? gis?.center[1]
+              return lat != null && lng != null
+                ? <WeatherWidget lat={lat} lng={lng} label={farm.name} />
+                : <p className="text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('platformFarms.notRecorded')}</p>
+            })()}
           </Reveal>
         </div>
 

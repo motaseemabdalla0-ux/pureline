@@ -1,7 +1,6 @@
 {
   "nav": {
     "home": "Home",
-
     "about": "About",
     "services": "Services",
     "projects": "Projects",
@@ -45,15 +44,43 @@
         "desc": "IoT-connected farms with real-time sensing, automation and AI-driven decisions.",
         "heroDesc": "A dense network of soil, climate and crop sensors giving you real-time, field-level visibility.",
         "fullDescription": "We design and install IoT sensor networks — soil moisture and EC probes, weather stations, canopy sensors and flow meters — that stream live data to the PURE LINE platform. Automated alerts and historical logging turn raw readings into decisions your team can act on immediately.",
-        "benefits": ["Real-time visibility into soil, climate and water conditions", "Automated alerts before conditions become critical", "Historical data logging for season-over-season comparison", "Low-power, solar-ready hardware for remote fields"],
-        "specs": ["Soil moisture, EC and temperature probes", "On-site weather stations (temp, humidity, wind, rainfall)", "Flow meters and pressure sensors for irrigation lines", "LoRaWAN/cellular gateways for remote connectivity", "Solar power kits for off-grid installations"],
-        "deliverables": ["Sensor network design and placement plan", "Installed and calibrated hardware", "Live dashboard access with historical logs", "Battery/solar maintenance schedule"],
+        "benefits": [
+          "Real-time visibility into soil, climate and water conditions",
+          "Automated alerts before conditions become critical",
+          "Historical data logging for season-over-season comparison",
+          "Low-power, solar-ready hardware for remote fields"
+        ],
+        "specs": [
+          "Soil moisture, EC and temperature probes",
+          "On-site weather stations (temp, humidity, wind, rainfall)",
+          "Flow meters and pressure sensors for irrigation lines",
+          "LoRaWAN/cellular gateways for remote connectivity",
+          "Solar power kits for off-grid installations"
+        ],
+        "deliverables": [
+          "Sensor network design and placement plan",
+          "Installed and calibrated hardware",
+          "Live dashboard access with historical logs",
+          "Battery/solar maintenance schedule"
+        ],
         "pricing": "Priced per sensor node and gateway coverage area — request a quote based on your field layout.",
         "faq": [
-          { "q": "How long do sensor batteries or solar kits last?", "a": "Solar-powered nodes run indefinitely with routine panel cleaning; battery-only nodes typically last 12-18 months between replacements." },
-          { "q": "What's the wireless range of the sensors?", "a": "LoRaWAN gateways typically cover 3-8km in open desert terrain, meaning one gateway can often serve an entire farm." },
-          { "q": "Can sensors trigger irrigation automatically?", "a": "Yes, when paired with our Smart Irrigation service, soil-moisture thresholds can trigger automated valve activation." },
-          { "q": "What happens if a sensor fails?", "a": "The dashboard flags offline or out-of-range sensors automatically, and our support team schedules replacement or recalibration." }
+          {
+            "q": "How long do sensor batteries or solar kits last?",
+            "a": "Solar-powered nodes run indefinitely with routine panel cleaning; battery-only nodes typically last 12-18 months between replacements."
+          },
+          {
+            "q": "What's the wireless range of the sensors?",
+            "a": "LoRaWAN gateways typically cover 3-8km in open desert terrain, meaning one gateway can often serve an entire farm."
+          },
+          {
+            "q": "Can sensors trigger irrigation automatically?",
+            "a": "Yes, when paired with our Smart Irrigation service, soil-moisture thresholds can trigger automated valve activation."
+          },
+          {
+            "q": "What happens if a sensor fails?",
+            "a": "The dashboard flags offline or out-of-range sensors automatically, and our support team schedules replacement or recalibration."
+          }
         ]
       },
       "development": {
@@ -61,15 +88,43 @@
         "desc": "Rigorous technical and economic feasibility studies before you commit capital to a new agricultural project.",
         "heroDesc": "Rigorous technical and economic feasibility studies before you commit capital to a new agricultural project.",
         "fullDescription": "Before breaking ground, our feasibility studies evaluate soil and water resources, climate suitability, crop selection, infrastructure requirements and projected returns — giving investors and operators a clear, evidence-based go/no-go decision and a roadmap for execution.",
-        "benefits": ["Evidence-based go/no-go decision before capital is committed", "Realistic cost, yield and return projections", "Identification of water, soil or regulatory risks early", "A clear implementation roadmap if the project proceeds"],
-        "specs": ["Soil and water resource assessment", "Climate and crop-suitability analysis", "CAPEX/OPEX and ROI projections", "Regulatory and permitting review", "Site infrastructure requirements study"],
-        "deliverables": ["Full feasibility study report", "Financial projection model", "Risk register with mitigation options", "Recommended project roadmap"],
+        "benefits": [
+          "Evidence-based go/no-go decision before capital is committed",
+          "Realistic cost, yield and return projections",
+          "Identification of water, soil or regulatory risks early",
+          "A clear implementation roadmap if the project proceeds"
+        ],
+        "specs": [
+          "Soil and water resource assessment",
+          "Climate and crop-suitability analysis",
+          "CAPEX/OPEX and ROI projections",
+          "Regulatory and permitting review",
+          "Site infrastructure requirements study"
+        ],
+        "deliverables": [
+          "Full feasibility study report",
+          "Financial projection model",
+          "Risk register with mitigation options",
+          "Recommended project roadmap"
+        ],
         "pricing": "Custom quote based on project scale and study depth — from rapid desk assessments to full investment-grade studies.",
         "faq": [
-          { "q": "How long does a feasibility study take?", "a": "A standard study takes 4-8 weeks depending on site access, data availability and study depth." },
-          { "q": "Can this be used to support financing applications?", "a": "Yes, our studies are structured to support investor and lender due diligence, with financial projections included." },
-          { "q": "What if the study concludes the project isn't viable?", "a": "We report findings honestly — a negative or conditional result at this stage saves significant capital versus discovering issues after construction." },
-          { "q": "Do you also handle the resulting project construction?", "a": "Yes, PURE LINE can carry projects from feasibility through greenhouse construction, irrigation and platform deployment." }
+          {
+            "q": "How long does a feasibility study take?",
+            "a": "A standard study takes 4-8 weeks depending on site access, data availability and study depth."
+          },
+          {
+            "q": "Can this be used to support financing applications?",
+            "a": "Yes, our studies are structured to support investor and lender due diligence, with financial projections included."
+          },
+          {
+            "q": "What if the study concludes the project isn't viable?",
+            "a": "We report findings honestly — a negative or conditional result at this stage saves significant capital versus discovering issues after construction."
+          },
+          {
+            "q": "Do you also handle the resulting project construction?",
+            "a": "Yes, PURE LINE can carry projects from feasibility through greenhouse construction, irrigation and platform deployment."
+          }
         ]
       },
       "irrigation": {
@@ -77,15 +132,43 @@
         "desc": "Precision drip and smart irrigation that cut water use while boosting yield.",
         "heroDesc": "Automated, sensor-driven irrigation that delivers exactly the right amount of water, exactly when your crops need it.",
         "fullDescription": "PURE LINE designs and installs smart irrigation systems that combine soil-moisture sensing, weather data and automated valves to cut water consumption while improving yield consistency. From drip networks in open fields to fertigation-ready greenhouse loops, every system is engineered for AlUla's arid climate and can be monitored and adjusted remotely from the PURE LINE platform.",
-        "benefits": ["Reduce water consumption by up to 40% compared with flood irrigation", "Deliver nutrients precisely through fertigation-ready lines", "Remote scheduling and manual override from any device", "Fewer labor hours spent on manual valve operation"],
-        "specs": ["Soil-moisture and EC sensors at configurable depths", "Solar or mains-powered automated valve controllers", "Drip, micro-sprinkler or subsurface options", "Cellular/LoRa connectivity for remote sites", "Fertigation dosing pumps (optional)"],
-        "deliverables": ["Site-specific irrigation design and hydraulic plan", "Installed sensor and valve network", "Mobile/dashboard access to scheduling and history", "Commissioning report and 12-month calibration support"],
+        "benefits": [
+          "Reduce water consumption by up to 40% compared with flood irrigation",
+          "Deliver nutrients precisely through fertigation-ready lines",
+          "Remote scheduling and manual override from any device",
+          "Fewer labor hours spent on manual valve operation"
+        ],
+        "specs": [
+          "Soil-moisture and EC sensors at configurable depths",
+          "Solar or mains-powered automated valve controllers",
+          "Drip, micro-sprinkler or subsurface options",
+          "Cellular/LoRa connectivity for remote sites",
+          "Fertigation dosing pumps (optional)"
+        ],
+        "deliverables": [
+          "Site-specific irrigation design and hydraulic plan",
+          "Installed sensor and valve network",
+          "Mobile/dashboard access to scheduling and history",
+          "Commissioning report and 12-month calibration support"
+        ],
         "pricing": "Priced per hectare based on field layout, water source and automation level — request a free site assessment for a firm quotation.",
         "faq": [
-          { "q": "How much water can I actually save?", "a": "Most AlUla farms see 25-40% reduction in water use versus flood irrigation, depending on crop type and existing infrastructure." },
-          { "q": "Can the system work with my existing well or pivot?", "a": "Yes. We integrate with existing water sources, pumps and pivots wherever possible to avoid unnecessary rebuilding." },
-          { "q": "Do I need internet access on the farm?", "a": "No. Sites without reliable connectivity use LoRa or scheduled offline controllers that sync when a connection is available." },
-          { "q": "How long does installation take?", "a": "A typical 5-10 hectare system is designed and installed within 3-6 weeks, depending on field access and material lead times." }
+          {
+            "q": "How much water can I actually save?",
+            "a": "Most AlUla farms see 25-40% reduction in water use versus flood irrigation, depending on crop type and existing infrastructure."
+          },
+          {
+            "q": "Can the system work with my existing well or pivot?",
+            "a": "Yes. We integrate with existing water sources, pumps and pivots wherever possible to avoid unnecessary rebuilding."
+          },
+          {
+            "q": "Do I need internet access on the farm?",
+            "a": "No. Sites without reliable connectivity use LoRa or scheduled offline controllers that sync when a connection is available."
+          },
+          {
+            "q": "How long does installation take?",
+            "a": "A typical 5-10 hectare system is designed and installed within 3-6 weeks, depending on field access and material lead times."
+          }
         ]
       },
       "greenhouse": {
@@ -93,15 +176,43 @@
         "desc": "Climate-controlled greenhouses engineered for year-round high-value production.",
         "heroDesc": "Climate-controlled greenhouse structures engineered for AlUla's heat, built for reliable year-round production.",
         "fullDescription": "We design, build and commission greenhouses ranging from simple shade-net structures to fully climate-controlled glasshouses with fogging, ventilation and CO2 enrichment. Every greenhouse is engineered for the local climate and integrated with our irrigation and sensor systems for a single connected operation.",
-        "benefits": ["Grow high-value crops year-round regardless of outside temperature", "Cut water and pesticide use through a controlled microclimate", "Extend growing seasons and increase cycles per year", "Integrated with irrigation, sensors and remote monitoring"],
-        "specs": ["Galvanized steel or aluminium structural frames", "Evaporative cooling, fogging and forced ventilation options", "UV-stabilized poly-film or polycarbonate covering", "Automated climate controllers (temperature, humidity, CO2)", "Structural design rated for local wind loads"],
-        "deliverables": ["Structural and climate-control design package", "Full construction and commissioning", "Integrated irrigation and sensor tie-in", "Operator training and maintenance manual"],
+        "benefits": [
+          "Grow high-value crops year-round regardless of outside temperature",
+          "Cut water and pesticide use through a controlled microclimate",
+          "Extend growing seasons and increase cycles per year",
+          "Integrated with irrigation, sensors and remote monitoring"
+        ],
+        "specs": [
+          "Galvanized steel or aluminium structural frames",
+          "Evaporative cooling, fogging and forced ventilation options",
+          "UV-stabilized poly-film or polycarbonate covering",
+          "Automated climate controllers (temperature, humidity, CO2)",
+          "Structural design rated for local wind loads"
+        ],
+        "deliverables": [
+          "Structural and climate-control design package",
+          "Full construction and commissioning",
+          "Integrated irrigation and sensor tie-in",
+          "Operator training and maintenance manual"
+        ],
         "pricing": "Custom quote based on greenhouse type, footprint and climate-control specification.",
         "faq": [
-          { "q": "What crops work best in an AlUla greenhouse?", "a": "Leafy greens, tomatoes, peppers, cucumbers and strawberries perform particularly well under controlled cooling and shading." },
-          { "q": "How hot does it get inside during summer?", "a": "With properly sized evaporative cooling and ventilation, internal temperatures are typically kept 8-15°C below ambient peak temperatures." },
-          { "q": "Can an existing structure be retrofitted?", "a": "In many cases yes — we assess existing structures for retrofitting with cooling, sensors and irrigation before recommending a full rebuild." },
-          { "q": "What's the typical build timeline?", "a": "A mid-size commercial greenhouse (1,000-5,000 m²) typically takes 8-14 weeks from approved design to handover." }
+          {
+            "q": "What crops work best in an AlUla greenhouse?",
+            "a": "Leafy greens, tomatoes, peppers, cucumbers and strawberries perform particularly well under controlled cooling and shading."
+          },
+          {
+            "q": "How hot does it get inside during summer?",
+            "a": "With properly sized evaporative cooling and ventilation, internal temperatures are typically kept 8-15°C below ambient peak temperatures."
+          },
+          {
+            "q": "Can an existing structure be retrofitted?",
+            "a": "In many cases yes — we assess existing structures for retrofitting with cooling, sensors and irrigation before recommending a full rebuild."
+          },
+          {
+            "q": "What's the typical build timeline?",
+            "a": "A mid-size commercial greenhouse (1,000-5,000 m²) typically takes 8-14 weeks from approved design to handover."
+          }
         ]
       },
       "consulting": {
@@ -109,15 +220,42 @@
         "desc": "Expert agronomy, feasibility and optimization studies grounded in data.",
         "heroDesc": "Independent agronomic and technical advice to plan, troubleshoot or optimize your farming operation.",
         "fullDescription": "Our consultancy team pairs decades of arid-climate agronomy experience with the same satellite, soil and sensor data used across our other services, giving you independent, data-backed recommendations — whether you're planning a new farm, troubleshooting yield issues, or optimizing an existing operation.",
-        "benefits": ["Independent, data-backed recommendations, not just opinion", "Access to agronomists with regional arid-climate experience", "Findings grounded in your farm's actual satellite and soil data", "Actionable reports, not just verbal advice"],
-        "specs": ["On-site and remote consultation options", "Soil, water and crop diagnostic assessment", "Benchmarking against comparable regional farms", "Written advisory report with prioritized recommendations"],
-        "deliverables": ["Site visit and/or remote data review", "Written advisory report", "Prioritized action plan", "Follow-up consultation included"],
+        "benefits": [
+          "Independent, data-backed recommendations, not just opinion",
+          "Access to agronomists with regional arid-climate experience",
+          "Findings grounded in your farm's actual satellite and soil data",
+          "Actionable reports, not just verbal advice"
+        ],
+        "specs": [
+          "On-site and remote consultation options",
+          "Soil, water and crop diagnostic assessment",
+          "Benchmarking against comparable regional farms",
+          "Written advisory report with prioritized recommendations"
+        ],
+        "deliverables": [
+          "Site visit and/or remote data review",
+          "Written advisory report",
+          "Prioritized action plan",
+          "Follow-up consultation included"
+        ],
         "pricing": "Custom quote based on scope — single-issue consultations, full farm audits and ongoing retainers are all available.",
         "faq": [
-          { "q": "What kind of problems can consultancy help with?", "a": "Common cases include unexplained yield decline, irrigation inefficiency, soil salinity concerns, and evaluating new crop or technology investments." },
-          { "q": "Do you consult on farms that aren't PURE LINE clients?", "a": "Yes, consultancy is available independently of our other services, though existing clients benefit from richer historical data." },
-          { "q": "Is a site visit required?", "a": "Many assessments can start remotely using satellite and sensor data, with an on-site visit recommended for physical soil or infrastructure issues." },
-          { "q": "How long until I receive the report?", "a": "Standard advisory reports are delivered within 10 business days of the site visit or data review." }
+          {
+            "q": "What kind of problems can consultancy help with?",
+            "a": "Common cases include unexplained yield decline, irrigation inefficiency, soil salinity concerns, and evaluating new crop or technology investments."
+          },
+          {
+            "q": "Do you consult on farms that aren't PURE LINE clients?",
+            "a": "Yes, consultancy is available independently of our other services, though existing clients benefit from richer historical data."
+          },
+          {
+            "q": "Is a site visit required?",
+            "a": "Many assessments can start remotely using satellite and sensor data, with an on-site visit recommended for physical soil or infrastructure issues."
+          },
+          {
+            "q": "How long until I receive the report?",
+            "a": "Standard advisory reports are delivered within 10 business days of the site visit or data review."
+          }
         ]
       },
       "digital": {
@@ -125,15 +263,42 @@
         "desc": "Bring legacy farms online with dashboards, analytics and connected operations.",
         "heroDesc": "One connected dashboard bringing irrigation, satellite, sensor and yield data into a single farm operations view.",
         "fullDescription": "The PURE LINE Farm Management Platform unifies every data stream — irrigation controllers, soil sensors, satellite NDVI, weather and yield records — into a single web dashboard. Farm managers get real-time visibility and historical reporting without juggling multiple disconnected systems.",
-        "benefits": ["Single login for irrigation, sensors, satellite and weather data", "Real-time alerts across every connected system", "Role-based access for owners, managers and field staff", "Exportable reports for stakeholders and lenders"],
-        "specs": ["Web dashboard, responsive on mobile and desktop", "API integrations with common sensor/controller brands", "Role-based user accounts and permissions", "Configurable alert rules and notification channels"],
-        "deliverables": ["Configured platform account for your farm(s)", "Integration of existing sensors/controllers where possible", "Custom dashboard views per role", "Onboarding and training session"],
+        "benefits": [
+          "Single login for irrigation, sensors, satellite and weather data",
+          "Real-time alerts across every connected system",
+          "Role-based access for owners, managers and field staff",
+          "Exportable reports for stakeholders and lenders"
+        ],
+        "specs": [
+          "Web dashboard, responsive on mobile and desktop",
+          "API integrations with common sensor/controller brands",
+          "Role-based user accounts and permissions",
+          "Configurable alert rules and notification channels"
+        ],
+        "deliverables": [
+          "Configured platform account for your farm(s)",
+          "Integration of existing sensors/controllers where possible",
+          "Custom dashboard views per role",
+          "Onboarding and training session"
+        ],
         "pricing": "Subscription tier based on number of farms, users and connected devices — request a quote to size your plan.",
         "faq": [
-          { "q": "Can I connect equipment I already own?", "a": "We support integration with many common irrigation controllers and sensor brands; our team will confirm compatibility during onboarding." },
-          { "q": "Is the platform available in Arabic?", "a": "Yes, the platform fully supports both English and Arabic, including right-to-left layout." },
-          { "q": "How many users can access one farm account?", "a": "Plans include multiple role-based users by default, with additional seats available as needed." },
-          { "q": "Is my farm data private?", "a": "Yes — all farm data is scoped to your account and is never shared with other customers." }
+          {
+            "q": "Can I connect equipment I already own?",
+            "a": "We support integration with many common irrigation controllers and sensor brands; our team will confirm compatibility during onboarding."
+          },
+          {
+            "q": "Is the platform available in Arabic?",
+            "a": "Yes, the platform fully supports both English and Arabic, including right-to-left layout."
+          },
+          {
+            "q": "How many users can access one farm account?",
+            "a": "Plans include multiple role-based users by default, with additional seats available as needed."
+          },
+          {
+            "q": "Is my farm data private?",
+            "a": "Yes — all farm data is scoped to your account and is never shared with other customers."
+          }
         ]
       },
       "satelliteMonitoring": {
@@ -141,15 +306,42 @@
         "desc": "Continuous multispectral tracking of crop health across every field from orbit.",
         "heroDesc": "Full-farm satellite analysis combining imagery, field boundaries and health metrics into one intelligence report.",
         "fullDescription": "Satellite Farm Analysis goes beyond a single index — we combine high-resolution imagery, precise field-boundary mapping and multi-band analysis to deliver a complete picture of farm health, change detection and asset inventory, refreshed on a regular capture cycle.",
-        "benefits": ["Whole-farm visibility without physical inspection of every field", "Change detection flags new stress or damage automatically", "Accurate field boundaries for compliance and planning", "Historical imagery archive for every monitored farm"],
-        "specs": ["High-resolution optical and multispectral imagery", "Field boundary extraction and polygon mapping", "Change-detection comparison between capture dates", "Exportable GeoTIFF/PDF outputs"],
-        "deliverables": ["Farm-wide satellite health assessment", "Field boundary map (GeoJSON/PDF)", "Change-detection alert log", "Quarterly summary report"],
+        "benefits": [
+          "Whole-farm visibility without physical inspection of every field",
+          "Change detection flags new stress or damage automatically",
+          "Accurate field boundaries for compliance and planning",
+          "Historical imagery archive for every monitored farm"
+        ],
+        "specs": [
+          "High-resolution optical and multispectral imagery",
+          "Field boundary extraction and polygon mapping",
+          "Change-detection comparison between capture dates",
+          "Exportable GeoTIFF/PDF outputs"
+        ],
+        "deliverables": [
+          "Farm-wide satellite health assessment",
+          "Field boundary map (GeoJSON/PDF)",
+          "Change-detection alert log",
+          "Quarterly summary report"
+        ],
         "pricing": "Custom quote based on farm acreage, imagery resolution and capture frequency.",
         "faq": [
-          { "q": "What resolution imagery do you use?", "a": "We use a mix of commercial high-resolution optical imagery and regional multispectral sources, selected per project requirements and budget." },
-          { "q": "Can you map fields that were never surveyed on the ground?", "a": "Yes — field boundaries can be extracted directly from imagery and refined with light ground verification." },
-          { "q": "How is change detection different from NDVI trend?", "a": "Change detection compares two dates directly to flag new damage, land-use change or clearing, while NDVI trend tracks gradual vigor changes over time." },
-          { "q": "Is historical imagery available for my farm?", "a": "For farms in our monitored regions we retain a multi-year archive; for new sites, the archive begins building from your first capture." }
+          {
+            "q": "What resolution imagery do you use?",
+            "a": "We use a mix of commercial high-resolution optical imagery and regional multispectral sources, selected per project requirements and budget."
+          },
+          {
+            "q": "Can you map fields that were never surveyed on the ground?",
+            "a": "Yes — field boundaries can be extracted directly from imagery and refined with light ground verification."
+          },
+          {
+            "q": "How is change detection different from NDVI trend?",
+            "a": "Change detection compares two dates directly to flag new damage, land-use change or clearing, while NDVI trend tracks gradual vigor changes over time."
+          },
+          {
+            "q": "Is historical imagery available for my farm?",
+            "a": "For farms in our monitored regions we retain a multi-year archive; for new sites, the archive begins building from your first capture."
+          }
         ]
       },
       "ndviServices": {
@@ -157,15 +349,42 @@
         "desc": "Vegetation-index mapping that reveals stress and vigor long before the eye can.",
         "heroDesc": "Satellite-derived NDVI tracking that reveals crop stress and vigor long before it's visible to the eye.",
         "fullDescription": "Our NDVI Monitoring service processes multispectral satellite imagery into vegetation-index maps for every field, updated on a regular revisit cycle. Trend lines, anomaly detection and status alerts give your team an early warning system for water stress, disease and nutrient deficiency.",
-        "benefits": ["Detect crop stress 1-3 weeks before it's visible on the ground", "Track vegetation trends over 12- and 36-month windows", "Prioritize field visits to the areas that need attention most", "Benchmark performance across seasons and fields"],
-        "specs": ["NDVI derived from multispectral satellite bands", "Configurable revisit cycle (weekly to monthly)", "Historical trend charts with 12/36-month comparisons", "Field-level and farm-level status classification"],
-        "deliverables": ["NDVI heatmap for every registered field", "Trend history and downloadable PDF reports", "Automated stress/anomaly alerts", "Access via the PURE LINE dashboard"],
+        "benefits": [
+          "Detect crop stress 1-3 weeks before it's visible on the ground",
+          "Track vegetation trends over 12- and 36-month windows",
+          "Prioritize field visits to the areas that need attention most",
+          "Benchmark performance across seasons and fields"
+        ],
+        "specs": [
+          "NDVI derived from multispectral satellite bands",
+          "Configurable revisit cycle (weekly to monthly)",
+          "Historical trend charts with 12/36-month comparisons",
+          "Field-level and farm-level status classification"
+        ],
+        "deliverables": [
+          "NDVI heatmap for every registered field",
+          "Trend history and downloadable PDF reports",
+          "Automated stress/anomaly alerts",
+          "Access via the PURE LINE dashboard"
+        ],
         "pricing": "Subscription priced per hectare monitored, with volume discounts for multi-farm operations — request a quote for your acreage.",
         "faq": [
-          { "q": "How accurate is satellite NDVI compared to ground sensors?", "a": "NDVI is a strong proxy for canopy vigor and correlates well with ground truth, though we recommend pairing it with soil sensors for root-zone conditions." },
-          { "q": "How often is imagery refreshed?", "a": "Standard plans refresh weekly to bi-weekly depending on satellite revisit and cloud cover; higher-frequency tasking is available on request." },
-          { "q": "Can I monitor multiple farms from one account?", "a": "Yes, the dashboard supports unlimited registered fields and lets you compare farms side by side." },
-          { "q": "What do I do when an alert fires?", "a": "Alerts flag the affected zone and severity so your field team can prioritize a ground inspection; our agronomists can also advise on likely causes." }
+          {
+            "q": "How accurate is satellite NDVI compared to ground sensors?",
+            "a": "NDVI is a strong proxy for canopy vigor and correlates well with ground truth, though we recommend pairing it with soil sensors for root-zone conditions."
+          },
+          {
+            "q": "How often is imagery refreshed?",
+            "a": "Standard plans refresh weekly to bi-weekly depending on satellite revisit and cloud cover; higher-frequency tasking is available on request."
+          },
+          {
+            "q": "Can I monitor multiple farms from one account?",
+            "a": "Yes, the dashboard supports unlimited registered fields and lets you compare farms side by side."
+          },
+          {
+            "q": "What do I do when an alert fires?",
+            "a": "Alerts flag the affected zone and severity so your field team can prioritize a ground inspection; our agronomists can also advise on likely causes."
+          }
         ]
       },
       "precisionAg": {
@@ -173,15 +392,42 @@
         "desc": "Variable-rate inputs and zone management driven by real field data.",
         "heroDesc": "Zone-by-zone precision farming that applies the right input, in the right place, at the right time.",
         "fullDescription": "Precision Agriculture combines field mapping, soil sampling and satellite data to divide your land into management zones, then drives variable-rate application of water, fertilizer and seed to match each zone's actual needs — reducing waste and improving consistency across the field.",
-        "benefits": ["Cut fertilizer and input costs by targeting only what each zone needs", "Improve yield uniformity across variable soil conditions", "Data-backed decisions replace blanket, farm-wide guesswork", "Full audit trail of every input application"],
-        "specs": ["Zone mapping from soil sampling + NDVI overlays", "Variable-rate application maps (VRA) for compatible equipment", "GPS-guided implement compatibility", "Season-over-season yield and input tracking"],
-        "deliverables": ["Management zone map for your farm", "Variable-rate prescription files", "Input and yield tracking dashboard", "End-of-season performance report"],
+        "benefits": [
+          "Cut fertilizer and input costs by targeting only what each zone needs",
+          "Improve yield uniformity across variable soil conditions",
+          "Data-backed decisions replace blanket, farm-wide guesswork",
+          "Full audit trail of every input application"
+        ],
+        "specs": [
+          "Zone mapping from soil sampling + NDVI overlays",
+          "Variable-rate application maps (VRA) for compatible equipment",
+          "GPS-guided implement compatibility",
+          "Season-over-season yield and input tracking"
+        ],
+        "deliverables": [
+          "Management zone map for your farm",
+          "Variable-rate prescription files",
+          "Input and yield tracking dashboard",
+          "End-of-season performance report"
+        ],
         "pricing": "Custom quote based on farm size, zone complexity and existing equipment compatibility.",
         "faq": [
-          { "q": "Do I need new equipment for variable-rate application?", "a": "Most modern GPS-guided spreaders, planters and sprayers can read our prescription files directly; we can advise on retrofitting older equipment." },
-          { "q": "How are management zones determined?", "a": "We combine soil sampling, elevation data and multi-season NDVI history to identify zones with genuinely different input needs." },
-          { "q": "Does this work for smaller farms?", "a": "Yes — even 5-10 hectare farms benefit from zone management, though the cost-per-hectare is more favorable above 20 hectares." },
-          { "q": "How often are zone maps updated?", "a": "We recommend refreshing zone maps every 1-2 seasons, or sooner if crop rotation or soil amendments significantly change field conditions." }
+          {
+            "q": "Do I need new equipment for variable-rate application?",
+            "a": "Most modern GPS-guided spreaders, planters and sprayers can read our prescription files directly; we can advise on retrofitting older equipment."
+          },
+          {
+            "q": "How are management zones determined?",
+            "a": "We combine soil sampling, elevation data and multi-season NDVI history to identify zones with genuinely different input needs."
+          },
+          {
+            "q": "Does this work for smaller farms?",
+            "a": "Yes — even 5-10 hectare farms benefit from zone management, though the cost-per-hectare is more favorable above 20 hectares."
+          },
+          {
+            "q": "How often are zone maps updated?",
+            "a": "We recommend refreshing zone maps every 1-2 seasons, or sooner if crop rotation or soil amendments significantly change field conditions."
+          }
         ]
       },
       "farmMapping": {
@@ -189,15 +435,42 @@
         "desc": "Full-cycle water management from source assessment to distribution efficiency.",
         "heroDesc": "Full-cycle water management — from source assessment to distribution efficiency and consumption tracking.",
         "fullDescription": "Water Management covers the complete water cycle on your farm: assessing source capacity (well, canal or municipal), auditing distribution efficiency, and implementing metering and controls that reduce waste while keeping crops properly supplied — critical in AlUla's arid, water-scarce environment.",
-        "benefits": ["Understand true water availability and seasonal risk", "Identify and fix losses in distribution networks", "Metered, auditable water consumption per field", "Compliance-ready reporting for water-use regulations"],
-        "specs": ["Well/source yield and quality assessment", "Distribution network pressure and loss audit", "Flow metering at farm and zone level", "Water-budget modeling against crop demand"],
-        "deliverables": ["Water source and capacity assessment report", "Distribution audit with identified loss points", "Metering and monitoring installation", "Seasonal water-budget plan"],
+        "benefits": [
+          "Understand true water availability and seasonal risk",
+          "Identify and fix losses in distribution networks",
+          "Metered, auditable water consumption per field",
+          "Compliance-ready reporting for water-use regulations"
+        ],
+        "specs": [
+          "Well/source yield and quality assessment",
+          "Distribution network pressure and loss audit",
+          "Flow metering at farm and zone level",
+          "Water-budget modeling against crop demand"
+        ],
+        "deliverables": [
+          "Water source and capacity assessment report",
+          "Distribution audit with identified loss points",
+          "Metering and monitoring installation",
+          "Seasonal water-budget plan"
+        ],
         "pricing": "Custom quote based on water source complexity and farm size.",
         "faq": [
-          { "q": "Can you assess a well I already have?", "a": "Yes, we test yield, drawdown and water quality for existing wells as part of the assessment." },
-          { "q": "What counts as a loss point in distribution?", "a": "Common losses include leaking joints, pressure imbalance across zones, and unmetered or unmonitored offtakes — all of which we identify and quantify." },
-          { "q": "Does this include groundwater regulation compliance?", "a": "We help structure metering and reporting to align with regional water-use regulations, though final compliance sign-off remains with the relevant authority." },
-          { "q": "How does this relate to Smart Irrigation?", "a": "Water Management addresses the source-to-field water budget; Smart Irrigation optimizes how that water is applied at the plant level — the two are often deployed together." }
+          {
+            "q": "Can you assess a well I already have?",
+            "a": "Yes, we test yield, drawdown and water quality for existing wells as part of the assessment."
+          },
+          {
+            "q": "What counts as a loss point in distribution?",
+            "a": "Common losses include leaking joints, pressure imbalance across zones, and unmetered or unmonitored offtakes — all of which we identify and quantify."
+          },
+          {
+            "q": "Does this include groundwater regulation compliance?",
+            "a": "We help structure metering and reporting to align with regional water-use regulations, though final compliance sign-off remains with the relevant authority."
+          },
+          {
+            "q": "How does this relate to Smart Irrigation?",
+            "a": "Water Management addresses the source-to-field water budget; Smart Irrigation optimizes how that water is applied at the plant level — the two are often deployed together."
+          }
         ]
       },
       "gis": {
@@ -205,15 +478,42 @@
         "desc": "On-farm weather stations and climate analytics tied to irrigation and crop decisions.",
         "heroDesc": "On-farm weather stations and climate analytics that connect local conditions to irrigation and crop decisions.",
         "fullDescription": "Climate Monitoring installs on-site weather stations and combines their readings with regional forecast data to give your team accurate, farm-specific climate intelligence — driving smarter irrigation timing, frost/heat alerts and season planning.",
-        "benefits": ["Farm-specific readings, not regional airport estimates", "Early alerts for frost, heat stress and high wind events", "Better-timed irrigation and spray operations", "Historical climate log for season planning"],
-        "specs": ["Temperature, humidity, wind speed/direction sensors", "Rainfall and solar radiation measurement", "Integration with regional forecast feeds", "Automated threshold-based alerts"],
-        "deliverables": ["Installed on-site weather station(s)", "Live climate dashboard", "Configured alert thresholds", "Historical climate data export"],
+        "benefits": [
+          "Farm-specific readings, not regional airport estimates",
+          "Early alerts for frost, heat stress and high wind events",
+          "Better-timed irrigation and spray operations",
+          "Historical climate log for season planning"
+        ],
+        "specs": [
+          "Temperature, humidity, wind speed/direction sensors",
+          "Rainfall and solar radiation measurement",
+          "Integration with regional forecast feeds",
+          "Automated threshold-based alerts"
+        ],
+        "deliverables": [
+          "Installed on-site weather station(s)",
+          "Live climate dashboard",
+          "Configured alert thresholds",
+          "Historical climate data export"
+        ],
         "pricing": "Priced per weather station and coverage area — request a quote for multi-station farm coverage.",
         "faq": [
-          { "q": "How many stations does my farm need?", "a": "Most single-site farms need one station; larger or topographically varied farms may need multiple stations for accurate zone-level data." },
-          { "q": "Can climate data trigger automated actions?", "a": "Yes, when paired with Smart Irrigation or the Farm Management Platform, climate thresholds can trigger irrigation holds or alerts automatically." },
-          { "q": "How accurate are frost alerts?", "a": "On-site sensors typically detect frost risk more reliably than regional forecasts, since they measure actual microclimate conditions at crop height." },
-          { "q": "Is historical data retained if I cancel the service?", "a": "You can export your full historical data log at any time, including prior to cancellation." }
+          {
+            "q": "How many stations does my farm need?",
+            "a": "Most single-site farms need one station; larger or topographically varied farms may need multiple stations for accurate zone-level data."
+          },
+          {
+            "q": "Can climate data trigger automated actions?",
+            "a": "Yes, when paired with Smart Irrigation or the Farm Management Platform, climate thresholds can trigger irrigation holds or alerts automatically."
+          },
+          {
+            "q": "How accurate are frost alerts?",
+            "a": "On-site sensors typically detect frost risk more reliably than regional forecasts, since they measure actual microclimate conditions at crop height."
+          },
+          {
+            "q": "Is historical data retained if I cancel the service?",
+            "a": "You can export your full historical data log at any time, including prior to cancellation."
+          }
         ]
       },
       "remoteSensing": {
@@ -221,15 +521,42 @@
         "desc": "Bespoke agricultural technology projects engineered for unique requirements.",
         "heroDesc": "Bespoke agricultural technology projects for requirements that don't fit a standard package.",
         "fullDescription": "Some projects need a combination of services, custom engineering, or entirely new capability. Custom Agricultural Projects is our design-build track for large estates, research programs, and unique operational challenges — scoped, engineered and delivered by the same team behind our standard service lines.",
-        "benefits": ["A single accountable team for multi-discipline projects", "Solutions engineered for your exact requirements", "Access to the full PURE LINE technology stack as building blocks", "Dedicated project management from scope to handover"],
-        "specs": ["Custom scope combining any PURE LINE service lines", "Bespoke hardware/software integration where required", "Dedicated project manager and technical lead", "Phased delivery with milestone sign-off"],
-        "deliverables": ["Custom project scope and proposal", "Phased delivery plan with milestones", "Full documentation and handover package", "Post-handover support agreement"],
+        "benefits": [
+          "A single accountable team for multi-discipline projects",
+          "Solutions engineered for your exact requirements",
+          "Access to the full PURE LINE technology stack as building blocks",
+          "Dedicated project management from scope to handover"
+        ],
+        "specs": [
+          "Custom scope combining any PURE LINE service lines",
+          "Bespoke hardware/software integration where required",
+          "Dedicated project manager and technical lead",
+          "Phased delivery with milestone sign-off"
+        ],
+        "deliverables": [
+          "Custom project scope and proposal",
+          "Phased delivery plan with milestones",
+          "Full documentation and handover package",
+          "Post-handover support agreement"
+        ],
         "pricing": "Fully custom quote based on project scope — contact us to schedule a scoping consultation.",
         "faq": [
-          { "q": "What kind of projects fall under this service?", "a": "Examples include multi-farm rollouts, research-station instrumentation, and integrations combining greenhouse, irrigation, satellite and platform work into one program." },
-          { "q": "How is pricing determined without a fixed package?", "a": "We scope the project in detail first — equipment, labor, software and timeline — then issue a fixed-price or milestone-based quotation." },
-          { "q": "Can you work alongside our existing contractors or engineers?", "a": "Yes, we regularly coordinate with client-side teams and other contractors on larger programs." },
-          { "q": "What's the first step to start a custom project?", "a": "Submit a request through our Service Request Portal describing your goals, and our team will schedule a scoping consultation." }
+          {
+            "q": "What kind of projects fall under this service?",
+            "a": "Examples include multi-farm rollouts, research-station instrumentation, and integrations combining greenhouse, irrigation, satellite and platform work into one program."
+          },
+          {
+            "q": "How is pricing determined without a fixed package?",
+            "a": "We scope the project in detail first — equipment, labor, software and timeline — then issue a fixed-price or milestone-based quotation."
+          },
+          {
+            "q": "Can you work alongside our existing contractors or engineers?",
+            "a": "Yes, we regularly coordinate with client-side teams and other contractors on larger programs."
+          },
+          {
+            "q": "What's the first step to start a custom project?",
+            "a": "Submit a request through our Service Request Portal describing your goals, and our team will schedule a scoping consultation."
+          }
         ]
       }
     }
@@ -248,12 +575,30 @@
     "eyebrow": "Why Choose Us",
     "title": "Built on expertise, driven by innovation",
     "items": {
-      "expertise": { "title": "Industry Expertise", "desc": "Deep agronomy and engineering knowledge across arid-climate farming." },
-      "innovative": { "title": "Innovative Solutions", "desc": "We pair proven agriculture with cutting-edge technology." },
-      "support": { "title": "Reliable Support", "desc": "Dedicated teams and monitoring that keep your farm running." },
-      "sustainable": { "title": "Sustainable Practices", "desc": "Less water, less waste, and long-term soil and resource health." },
-      "technology": { "title": "Modern Technology", "desc": "IoT, satellite imaging and AI analytics built into every project." },
-      "results": { "title": "Proven Results", "desc": "Measurable gains in yield, efficiency and profitability." }
+      "expertise": {
+        "title": "Industry Expertise",
+        "desc": "Deep agronomy and engineering knowledge across arid-climate farming."
+      },
+      "innovative": {
+        "title": "Innovative Solutions",
+        "desc": "We pair proven agriculture with cutting-edge technology."
+      },
+      "support": {
+        "title": "Reliable Support",
+        "desc": "Dedicated teams and monitoring that keep your farm running."
+      },
+      "sustainable": {
+        "title": "Sustainable Practices",
+        "desc": "Less water, less waste, and long-term soil and resource health."
+      },
+      "technology": {
+        "title": "Modern Technology",
+        "desc": "IoT, satellite imaging and AI analytics built into every project."
+      },
+      "results": {
+        "title": "Proven Results",
+        "desc": "Measurable gains in yield, efficiency and profitability."
+      }
     }
   },
   "projects": {
@@ -290,11 +635,26 @@
     "title": "The connected intelligence behind every farm",
     "subtitle": "A unified technology stack that senses, decides and acts across your entire operation.",
     "items": {
-      "iot": { "title": "IoT Sensors", "desc": "Soil, moisture, climate and crop sensors streaming live field data." },
-      "irrigation": { "title": "Smart Irrigation", "desc": "Automated, weather-aware watering delivered exactly where it's needed." },
-      "satellite": { "title": "Satellite Monitoring", "desc": "Multispectral imagery tracking crop health across every hectare." },
-      "ai": { "title": "AI Analytics", "desc": "Predictive models that forecast yield, disease and resource needs." },
-      "precision": { "title": "Precision Agriculture", "desc": "Variable-rate inputs applied plant-by-plant for maximum efficiency." }
+      "iot": {
+        "title": "IoT Sensors",
+        "desc": "Soil, moisture, climate and crop sensors streaming live field data."
+      },
+      "irrigation": {
+        "title": "Smart Irrigation",
+        "desc": "Automated, weather-aware watering delivered exactly where it's needed."
+      },
+      "satellite": {
+        "title": "Satellite Monitoring",
+        "desc": "Multispectral imagery tracking crop health across every hectare."
+      },
+      "ai": {
+        "title": "AI Analytics",
+        "desc": "Predictive models that forecast yield, disease and resource needs."
+      },
+      "precision": {
+        "title": "Precision Agriculture",
+        "desc": "Variable-rate inputs applied plant-by-plant for maximum efficiency."
+      }
     }
   },
   "platform": {
@@ -311,15 +671,57 @@
       "sensors": "Sensors",
       "reports": "Reports"
     },
-    "topbar": { "greeting": "Farm Control Center", "season": "Season 2026 · Active" },
-    "kpi": { "yield": "Yield Forecast", "water": "Water Saved", "uptime": "System Uptime", "alerts": "Active Alerts" },
-    "monitoring": { "title": "Farm Monitoring", "field": "Field", "healthy": "Healthy", "attention": "Attention", "critical": "Critical" },
-    "irrigationPanel": { "title": "Irrigation Control", "zone": "Zone", "on": "ON", "off": "OFF", "auto": "AUTO" },
-    "weather": { "title": "Weather", "temp": "Temperature", "humidity": "Humidity", "wind": "Wind", "condition": "Clear Sky" },
-    "satellitePanel": { "title": "Satellite View", "ndvi": "NDVI Index", "updated": "Updated 2h ago" },
-    "cropChart": { "title": "Crop Analytics", "subtitle": "Yield per hectare (tons)" },
-    "sensorTable": { "title": "Sensor Data", "sensor": "Sensor", "location": "Location", "value": "Value", "status": "Status" },
-    "reports": { "title": "Reports", "view": "View" }
+    "topbar": {
+      "greeting": "Farm Control Center",
+      "season": "Season 2026 · Active"
+    },
+    "kpi": {
+      "yield": "Yield Forecast",
+      "water": "Water Saved",
+      "uptime": "System Uptime",
+      "alerts": "Active Alerts"
+    },
+    "monitoring": {
+      "title": "Farm Monitoring",
+      "field": "Field",
+      "healthy": "Healthy",
+      "attention": "Attention",
+      "critical": "Critical"
+    },
+    "irrigationPanel": {
+      "title": "Irrigation Control",
+      "zone": "Zone",
+      "on": "ON",
+      "off": "OFF",
+      "auto": "AUTO"
+    },
+    "weather": {
+      "title": "Weather",
+      "temp": "Temperature",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "condition": "Clear Sky"
+    },
+    "satellitePanel": {
+      "title": "Satellite View",
+      "ndvi": "NDVI Index",
+      "updated": "Updated 2h ago"
+    },
+    "cropChart": {
+      "title": "Crop Analytics",
+      "subtitle": "Yield per hectare (tons)"
+    },
+    "sensorTable": {
+      "title": "Sensor Data",
+      "sensor": "Sensor",
+      "location": "Location",
+      "value": "Value",
+      "status": "Status"
+    },
+    "reports": {
+      "title": "Reports",
+      "view": "View"
+    }
   },
   "satIntel": {
     "eyebrow": "Satellite Agricultural Intelligence",
@@ -332,21 +734,54 @@
       "source": "NASA GIBS · Real Imagery"
     },
     "features": {
-      "ndvi": { "title": "NDVI Monitoring", "desc": "Track the vegetation index across every field to measure crop vigor week over week." },
-      "stress": { "title": "Crop Stress Detection", "desc": "Spot water, nutrient and disease stress days before it becomes visible on the ground." },
-      "irrigation": { "title": "Irrigation Analysis", "desc": "Map soil moisture and pivot coverage to eliminate over- and under-watering." },
-      "vegetation": { "title": "Vegetation Health", "desc": "Quantify canopy density and biomass to benchmark performance zone by zone." },
-      "yield": { "title": "Yield Forecasting", "desc": "Predictive models estimate harvest volumes early and refine them all season." },
-      "mapping": { "title": "Farm Mapping", "desc": "Precise field boundaries and asset maps that anchor every layer of analysis." }
+      "ndvi": {
+        "title": "NDVI Monitoring",
+        "desc": "Track the vegetation index across every field to measure crop vigor week over week."
+      },
+      "stress": {
+        "title": "Crop Stress Detection",
+        "desc": "Spot water, nutrient and disease stress days before it becomes visible on the ground."
+      },
+      "irrigation": {
+        "title": "Irrigation Analysis",
+        "desc": "Map soil moisture and pivot coverage to eliminate over- and under-watering."
+      },
+      "vegetation": {
+        "title": "Vegetation Health",
+        "desc": "Quantify canopy density and biomass to benchmark performance zone by zone."
+      },
+      "yield": {
+        "title": "Yield Forecasting",
+        "desc": "Predictive models estimate harvest volumes early and refine them all season."
+      },
+      "mapping": {
+        "title": "Farm Mapping",
+        "desc": "Precise field boundaries and asset maps that anchor every layer of analysis."
+      }
     },
     "workflow": {
       "title": "Farm Monitoring Workflow",
       "steps": {
-        "capture": { "title": "Capture", "desc": "Satellites image your fields on a regular revisit cycle." },
-        "process": { "title": "Process", "desc": "Raw bands are calibrated into vegetation indices." },
-        "analyze": { "title": "Analyze", "desc": "AI models detect stress, trends and anomalies." },
-        "alert": { "title": "Alert", "desc": "Priority issues are pushed to your team instantly." },
-        "act": { "title": "Act", "desc": "Field teams intervene exactly where it matters." }
+        "capture": {
+          "title": "Capture",
+          "desc": "Satellites image your fields on a regular revisit cycle."
+        },
+        "process": {
+          "title": "Process",
+          "desc": "Raw bands are calibrated into vegetation indices."
+        },
+        "analyze": {
+          "title": "Analyze",
+          "desc": "AI models detect stress, trends and anomalies."
+        },
+        "alert": {
+          "title": "Alert",
+          "desc": "Priority issues are pushed to your team instantly."
+        },
+        "act": {
+          "title": "Act",
+          "desc": "Field teams intervene exactly where it matters."
+        }
       }
     }
   },
@@ -354,9 +789,14 @@
     "eyebrow": "NDVI Analytics",
     "title": "Vegetation health, mapped in color",
     "subtitle": "An interactive NDVI heatmap that grades every parcel from thriving green to stressed red.",
-    "map": { "aria": "NDVI heatmap of irregular field cells graded green to red" },
+    "map": {
+      "aria": "NDVI heatmap of irregular field cells graded green to red"
+    },
     "overlayCaption": "NDVI overlay rendered above real regional satellite context",
-    "baseImagery": { "alt": "Real satellite base imagery of the AlUla valley beneath the NDVI overlay", "label": "Base Imagery · AlUla Valley" },
+    "baseImagery": {
+      "alt": "Real satellite base imagery of the AlUla valley beneath the NDVI overlay",
+      "label": "Base Imagery · AlUla Valley"
+    },
     "legend": {
       "title": "NDVI Legend",
       "healthy": "Healthy vegetation",
@@ -376,9 +816,18 @@
       "poor": "Needs Attention"
     },
     "useCases": {
-      "weekly": { "title": "Weekly Crop Monitoring", "desc": "Fresh imagery every week keeps a live pulse on field-by-field health." },
-      "seasonal": { "title": "Seasonal Crop Analysis", "desc": "Full-season index curves reveal how each crop develops from sowing to harvest." },
-      "trend": { "title": "Vegetation Trend Tracking", "desc": "Long-term trend lines expose gradual decline or improvement across years." }
+      "weekly": {
+        "title": "Weekly Crop Monitoring",
+        "desc": "Fresh imagery every week keeps a live pulse on field-by-field health."
+      },
+      "seasonal": {
+        "title": "Seasonal Crop Analysis",
+        "desc": "Full-season index curves reveal how each crop develops from sowing to harvest."
+      },
+      "trend": {
+        "title": "Vegetation Trend Tracking",
+        "desc": "Long-term trend lines expose gradual decline or improvement across years."
+      }
     }
   },
   "liveNdvi": {
@@ -424,13 +873,39 @@
       "layers": "Layers",
       "reports": "Reports"
     },
-    "topbar": { "title": "Satellite Intelligence Center", "subtitle": "Last pass · 2h ago", "search": "Search fields…" },
-    "kpi": { "area": "Hectares", "health": "Avg Health", "coverage": "Coverage", "captures": "Captures" },
-    "imagery": { "title": "Satellite Imagery", "updated": "Updated 2h ago" },
-    "ndvi": { "title": "NDVI Index", "avg": "Field average" },
-    "weather": { "title": "Weather", "condition": "Clear Sky", "humidity": "Humidity", "wind": "Wind" },
-    "soil": { "title": "Soil Moisture", "zone": "Zone" },
-    "cropHealth": { "title": "Crop Health Score", "status": "Healthy" },
+    "topbar": {
+      "title": "Satellite Intelligence Center",
+      "subtitle": "Last pass · 2h ago",
+      "search": "Search fields…"
+    },
+    "kpi": {
+      "area": "Hectares",
+      "health": "Avg Health",
+      "coverage": "Coverage",
+      "captures": "Captures"
+    },
+    "imagery": {
+      "title": "Satellite Imagery",
+      "updated": "Updated 2h ago"
+    },
+    "ndvi": {
+      "title": "NDVI Index",
+      "avg": "Field average"
+    },
+    "weather": {
+      "title": "Weather",
+      "condition": "Clear Sky",
+      "humidity": "Humidity",
+      "wind": "Wind"
+    },
+    "soil": {
+      "title": "Soil Moisture",
+      "zone": "Zone"
+    },
+    "cropHealth": {
+      "title": "Crop Health Score",
+      "status": "Healthy"
+    },
     "recs": {
       "title": "Irrigation Recommendations",
       "a": "Field {{field}}: irrigate in 2 days",
@@ -449,12 +924,30 @@
     "title": "The technology behind the insight",
     "subtitle": "A layered stack of satellite, sensing and AI technologies working as one intelligence engine.",
     "stack": {
-      "satellite": { "title": "Satellite Imagery", "desc": "Multispectral orbital imagery captured across your fields on a regular cycle." },
-      "ndvi": { "title": "NDVI Technology", "desc": "Vegetation indices that translate light into a precise measure of crop health." },
-      "gis": { "title": "GIS Mapping", "desc": "Geospatial layers that give every data point an exact location on your farm." },
-      "remote": { "title": "Remote Sensing", "desc": "Non-contact sensing of soil, water and canopy from satellite and aerial platforms." },
-      "ai": { "title": "AI Crop Analysis", "desc": "Machine-learning models that detect stress, forecast yield and flag anomalies." },
-      "precision": { "title": "Precision Agriculture", "desc": "Data-driven, zone-level action that applies the right input in the right place." }
+      "satellite": {
+        "title": "Satellite Imagery",
+        "desc": "Multispectral orbital imagery captured across your fields on a regular cycle."
+      },
+      "ndvi": {
+        "title": "NDVI Technology",
+        "desc": "Vegetation indices that translate light into a precise measure of crop health."
+      },
+      "gis": {
+        "title": "GIS Mapping",
+        "desc": "Geospatial layers that give every data point an exact location on your farm."
+      },
+      "remote": {
+        "title": "Remote Sensing",
+        "desc": "Non-contact sensing of soil, water and canopy from satellite and aerial platforms."
+      },
+      "ai": {
+        "title": "AI Crop Analysis",
+        "desc": "Machine-learning models that detect stress, forecast yield and flag anomalies."
+      },
+      "precision": {
+        "title": "Precision Agriculture",
+        "desc": "Data-driven, zone-level action that applies the right input in the right place."
+      }
     },
     "flow": {
       "title": "How Data Flows",
@@ -556,7 +1049,8 @@
     "assetManagement": "Assets",
     "workforce": "Workforce",
     "reports": "Reports",
-    "logout": "Logout"
+    "logout": "Logout",
+    "users": "User Management"
   },
   "serviceDetail": {
     "requestCta": "Request This Service",
@@ -569,11 +1063,26 @@
     "backToServices": "All Services",
     "notFound": "Service not found.",
     "process": {
-      "step1": { "title": "Consultation & Site Assessment", "desc": "We review your farm's goals, location and constraints, either remotely or with an on-site visit." },
-      "step2": { "title": "Design & Proposal", "desc": "Our engineers and agronomists design a tailored solution and issue a detailed scope and quotation." },
-      "step3": { "title": "Implementation", "desc": "Certified technicians deploy the system, following the approved design and project timeline." },
-      "step4": { "title": "Testing & Calibration", "desc": "Every system is tested, calibrated and validated against performance targets before handover." },
-      "step5": { "title": "Ongoing Support", "desc": "We monitor performance and provide maintenance, upgrades and agronomic support long after go-live." }
+      "step1": {
+        "title": "Consultation & Site Assessment",
+        "desc": "We review your farm's goals, location and constraints, either remotely or with an on-site visit."
+      },
+      "step2": {
+        "title": "Design & Proposal",
+        "desc": "Our engineers and agronomists design a tailored solution and issue a detailed scope and quotation."
+      },
+      "step3": {
+        "title": "Implementation",
+        "desc": "Certified technicians deploy the system, following the approved design and project timeline."
+      },
+      "step4": {
+        "title": "Testing & Calibration",
+        "desc": "Every system is tested, calibrated and validated against performance targets before handover."
+      },
+      "step5": {
+        "title": "Ongoing Support",
+        "desc": "We monitor performance and provide maintenance, upgrades and agronomic support long after go-live."
+      }
     }
   },
   "servicesMarketplace": {
@@ -606,7 +1115,12 @@
       "priority": "Priority",
       "attachment": "Attach a file (optional)"
     },
-    "priority": { "low": "Low", "normal": "Normal", "high": "High", "urgent": "Urgent" },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
     "selectService": "Select a service",
     "submit": "Submit Request",
     "submitting": "Submitting...",
@@ -628,7 +1142,11 @@
     "looking": "Looking up...",
     "empty": "No requests found for this email.",
     "emptyHint": "Submit a service request first, or double-check the email address you used.",
-    "kpi": { "total": "Total Requests", "open": "Open", "completed": "Completed" },
+    "kpi": {
+      "total": "Total Requests",
+      "open": "Open",
+      "completed": "Completed"
+    },
     "status": {
       "submitted": "Submitted",
       "under_review": "Under Review",
@@ -637,7 +1155,12 @@
       "in_progress": "In Progress",
       "completed": "Completed"
     },
-    "priority": { "low": "Low", "normal": "Normal", "high": "High", "urgent": "Urgent" },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
     "requestId": "Request",
     "submittedOn": "Submitted",
     "quotationsTitle": "Quotations",
@@ -668,7 +1191,12 @@
     "eyebrow": "NDVI Analytics Center",
     "title": "Deep vegetation-index analytics",
     "subtitle": "Every monitored farm, its full 36-month NDVI history, and side-by-side comparison in one place.",
-    "summary": { "avg": "Average NDVI", "min": "Lowest NDVI", "max": "Highest NDVI", "farms": "Farms Monitored" },
+    "summary": {
+      "avg": "Average NDVI",
+      "min": "Lowest NDVI",
+      "max": "Highest NDVI",
+      "farms": "Farms Monitored"
+    },
     "filterAll": "All Statuses",
     "selectFarm": "Select a farm",
     "trendTitle": "36-Month Trend",
@@ -714,8 +1242,14 @@
     "eyebrow": "Agricultural Consultancy Portal",
     "title": "Request expert agricultural advice",
     "subtitle": "Book a consultation, assessment or feasibility study with our agronomy team.",
-    "kind": { "consultation": "General Consultation", "assessment": "Farm Assessment", "feasibility_study": "Feasibility Study" },
-    "fields": { "notes": "Notes / Questions for our team" },
+    "kind": {
+      "consultation": "General Consultation",
+      "assessment": "Farm Assessment",
+      "feasibility_study": "Feasibility Study"
+    },
+    "fields": {
+      "notes": "Notes / Questions for our team"
+    },
     "submit": "Submit Request",
     "submitting": "Submitting...",
     "successTitle": "Consultation request submitted",
@@ -735,8 +1269,15 @@
     "loginError": "Incorrect password. Please try again.",
     "logout": "Sign Out",
     "tabs": {
-      "kpis": "Dashboard", "requests": "Requests", "customers": "Customers", "activity": "Activity", "farms": "Farms / NDVI",
-      "operations": "Operations", "pests": "Pests", "assets": "Assets", "workforce": "Workforce"
+      "kpis": "Dashboard",
+      "requests": "Requests",
+      "customers": "Customers",
+      "activity": "Activity",
+      "farms": "Farms / NDVI",
+      "operations": "Operations",
+      "pests": "Pests",
+      "assets": "Assets",
+      "workforce": "Workforce"
     },
     "kpi": {
       "totalRequests": "Total Requests",
@@ -770,27 +1311,58 @@
       "submitting": "Creating...",
       "success": "Quotation created and sent to the customer."
     },
-    "customers": { "empty": "No customers found." },
-    "activity": { "empty": "No recent activity." },
-    "farms": { "note": "Read-only view sourced from the site's real NDVI farm dataset." },
+    "customers": {
+      "empty": "No customers found."
+    },
+    "activity": {
+      "empty": "No recent activity."
+    },
+    "farms": {
+      "note": "Read-only view sourced from the site's real NDVI farm dataset."
+    },
     "operationsTab": {
       "empty": "No operations found.",
       "updateStatus": "Update",
       "table": {
-        "id": "ID", "farm": "Farm", "type": "Type", "status": "Status", "scheduled": "Scheduled", "assigned": "Assigned", "action": "Force Status"
+        "id": "ID",
+        "farm": "Farm",
+        "type": "Type",
+        "status": "Status",
+        "scheduled": "Scheduled",
+        "assigned": "Assigned",
+        "action": "Force Status"
       }
     },
     "pestsTab": {
       "empty": "No pest detections found.",
-      "table": { "id": "ID", "farm": "Farm", "pestType": "Pest Type", "risk": "Risk", "status": "Status", "detected": "Detected" }
+      "table": {
+        "id": "ID",
+        "farm": "Farm",
+        "pestType": "Pest Type",
+        "risk": "Risk",
+        "status": "Status",
+        "detected": "Detected"
+      }
     },
     "assetsTab": {
       "empty": "No assets found.",
-      "table": { "code": "Code", "name": "Name", "category": "Category", "status": "Status", "farm": "Farm" }
+      "table": {
+        "code": "Code",
+        "name": "Name",
+        "category": "Category",
+        "status": "Status",
+        "farm": "Farm"
+      }
     },
     "workforceTab": {
       "empty": "No staff found.",
-      "table": { "name": "Name", "title": "Title", "total": "Total", "completed": "Completed", "rate": "Completion Rate" }
+      "table": {
+        "name": "Name",
+        "title": "Title",
+        "total": "Total",
+        "completed": "Completed",
+        "rate": "Completion Rate"
+      }
     }
   },
   "_syncProbe": "probe-ok",
@@ -805,7 +1377,11 @@
     "invalidCredentials": "Incorrect username or password. Please try again.",
     "demoTitle": "Demo accounts",
     "demoHint": "For evaluation purposes — tap an account to auto-fill the form. Not real production credentials.",
-    "roles": { "admin": "Admin", "staff": "Staff", "customer": "Customer" }
+    "roles": {
+      "admin": "Admin",
+      "staff": "Staff",
+      "customer": "Customer"
+    }
   },
   "platformDashboard": {
     "eyebrow": "Operations Management Center",
@@ -1124,5 +1700,77 @@
     "pestsByRisk": "Pest Detections by Risk",
     "irrigationUsage": "Irrigation Water Usage",
     "totalRecordedVolume": "Total recorded volume"
+  },
+  "gisMap": {
+    "satelliteLayer": "Satellite imagery",
+    "streetLayer": "Street map",
+    "monthsShort": "mo",
+    "openFarm": "Farm profile",
+    "satellite": "Satellite",
+    "legend": "NDVI scale",
+    "farmMapTitle": "Interactive field map",
+    "noGeometry": "No field-boundary geometry is recorded for this farm yet.",
+    "overviewTitle": "Live farm GIS overview",
+    "ndviMapTitle": "NDVI field map",
+    "ndviMapHint": "Real field boundaries colored by each farm’s latest NDVI reading. Click a field for details.",
+    "irrigationMapTitle": "Irrigated farms map",
+    "gridView": "Grid",
+    "mapView": "Map"
+  },
+  "weather": {
+    "title": "Live weather",
+    "sectionTitle": "Agro-weather",
+    "unavailable": "Weather data unavailable",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "rainChance": "Rain chance",
+    "et0": "ET₀ today"
+  },
+  "userManagement": {
+    "eyebrow": "Administration",
+    "title": "User Management",
+    "subtitle": "Create, activate and manage platform accounts and roles across admins, field staff and customers.",
+    "newUser": "New user",
+    "create": "Create user",
+    "searchPlaceholder": "Search by name, username or email…",
+    "allRoles": "All roles",
+    "empty": "No users match your filters.",
+    "you": "you",
+    "active": "Active",
+    "deactivated": "Deactivated",
+    "activate": "Reactivate account",
+    "deactivate": "Deactivate account",
+    "resetPassword": "Reset password",
+    "newPassword": "New password",
+    "passwordChanged": "Password updated",
+    "roles": {
+      "admin": "Administrator",
+      "staff": "Field Staff",
+      "customer": "Customer"
+    },
+    "stats": {
+      "total": "Total users",
+      "admins": "Admins",
+      "staff": "Field staff",
+      "customers": "Customers",
+      "inactive": "Deactivated"
+    },
+    "fields": {
+      "username": "Username",
+      "password": "Password (min 8 chars)",
+      "fullName": "Full name",
+      "email": "Email",
+      "staffTitle": "Staff title",
+      "phone": "Phone"
+    },
+    "columns": {
+      "user": "User",
+      "role": "Role",
+      "contact": "Contact",
+      "created": "Created",
+      "status": "Status",
+      "actions": "Actions"
+    }
   }
 }

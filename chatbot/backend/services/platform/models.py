@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import (
-    Column, DateTime, Enum, Float, ForeignKey, Integer, String, Text, JSON
+    Boolean, Column, DateTime, Enum, Float, ForeignKey, Integer, String, Text, JSON
 )
 from sqlalchemy.orm import relationship
 
@@ -190,6 +190,7 @@ class PlatformUser(Base):
     role = Column(Enum(PlatformRole), default=PlatformRole.customer, index=True)
     staff_title = Column(String(150), nullable=True)  # e.g. "Field Agronomist"
     phone = Column(String(50), nullable=True)
+    is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 

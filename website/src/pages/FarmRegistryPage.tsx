@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { Search, Loader2, AlertTriangle, MapPin, Tractor, User, Ruler, ArrowUpRight } from 'lucide-react'
+import { Search, Loader2, AlertTriangle, MapPin, Tractor, User, Ruler, ArrowUpRight, Map, LayoutGrid } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
+import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
+import { getGisFarms } from '../lib/gisData'
 import { listRegistryFarms } from '../lib/platformApi'
 import type { RegistryFarm } from '../types/platform'
 
@@ -15,6 +17,7 @@ export default function FarmRegistryPage() {
   const [search, setSearch] = useState('')
   const [region, setRegion] = useState('all')
   const [cropType, setCropType] = useState('all')
+  const [view, setView] = useState<'grid' | 'map'>('grid')
 
   const load = () => {
     setLoading(true)
@@ -69,10 +72,34 @@ export default function FarmRegistryPage() {
               <option value="all">{t('platformFarms.allCrops')}</option>
               {cropTypes.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
+            <div className="flex overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
+              <button
+                type="button"
+                onClick={() => setView('grid')}
+                className={`flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold transition ${view === 'grid' ? 'bg-primary text-white' : 'bg-white text-neutral-dark/60 dark:bg-white/5 dark:text-neutral-light/60'}`}
+              >
+                <LayoutGrid className="h-3.5 w-3.5" /> {t('gisMap.gridView')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setView('map')}
+                className={`flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold transition ${view === 'map' ? 'bg-primary text-white' : 'bg-white text-neutral-dark/60 dark:bg-white/5 dark:text-neutral-light/60'}`}
+              >
+                <Map className="h-3.5 w-3.5" /> {t('gisMap.mapView')}
+              </button>
+            </div>
           </div>
         </Reveal>
 
-        <div className="mt-12">
+        {view === 'map' && (
+          <Reveal delay={0.1}>
+            <div className="mx-auto mt-10 max-w-6xl">
+              <LazyFarmGisMap farms={getGisFarms()} height="520px" />
+            </div>
+          </Reveal>
+        )}
+
+        <div className={view === 'map' ? 'hidden' : 'mt-12'}>
           {loading ? (
             <div className="flex justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
           ) : error ? (

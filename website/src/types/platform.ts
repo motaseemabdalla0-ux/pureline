@@ -464,3 +464,37 @@ export interface StaffPerformance {
   completed_assignments: number
   completion_rate_percent: number
 }
+
+/* ---------- User management (admin-only) ---------- */
+
+export interface PlatformManagedUser {
+  id: number
+  username: string
+  email: string | null
+  full_name: string
+  role: PlatformRole
+  staff_title: string | null
+  phone: string | null
+  is_active: boolean
+  created_at: string
+}
+
+export interface CreatePlatformUserPayload {
+  username: string
+  password: string
+  full_name: string
+  role: PlatformRole
+  email?: string
+  staff_title?: string
+  phone?: string
+}
+
+export interface UpdatePlatformUserPayload {
+  full_name?: string
+  email?: string
+  role?: PlatformRole
+  staff_title?: string
+  phone?: string
+  is_active?: boolean
+  new_password?: string
+}

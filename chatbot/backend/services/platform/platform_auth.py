@@ -82,6 +82,8 @@ def get_current_platform_user(
     user = db.query(models.PlatformUser).filter(models.PlatformUser.id == claims["user_id"]).first()
     if not user:
         raise HTTPException(401, "User no longer exists")
+    if user.is_active is False:
+        raise HTTPException(401, "Account is deactivated")
     return user
 
 
@@ -115,6 +117,8 @@ def login(payload: schemas.PlatformLoginIn, db: Session = Depends(get_db)):
     user = db.query(models.PlatformUser).filter(models.PlatformUser.username == payload.username).first()
     if not user or not verify_password(payload.password, user.password_hash, user.password_salt):
         raise HTTPException(401, "Incorrect username or password")
+    if user.is_active is False:
+        raise HTTPException(401, "Account is deactivated")
     role_value = user.role.value if hasattr(user.role, "value") else user.role
     token = issue_platform_token(user.id, role_value)
     return {"token": token, "user": _user_out(user)}

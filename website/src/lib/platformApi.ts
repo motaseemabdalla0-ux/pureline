@@ -38,6 +38,9 @@ import type {
   StaffPerformance,
   UpdateIrrigationEventPayload,
   WorkforceAssignment,
+  PlatformManagedUser,
+  CreatePlatformUserPayload,
+  UpdatePlatformUserPayload,
 } from '../types/platform'
 
 const BASE = '/api/platform'
@@ -451,3 +454,21 @@ export function getWorkforcePerformance(explicitToken?: string) {
   return platformRequest<StaffPerformance[]>('/workforce/performance', undefined, explicitToken)
 }
 
+
+/* ---------- User management (admin-only) ---------- */
+
+export function listPlatformUsers(params?: { role?: string; search?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.role) qs.set('role', params.role)
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString()
+  return platformRequest<PlatformManagedUser[]>(`/users${query ? `?${query}` : ''}`)
+}
+
+export function createPlatformUser(payload: CreatePlatformUserPayload) {
+  return platformRequest<PlatformManagedUser>('/users', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updatePlatformUser(userId: number, payload: UpdatePlatformUserPayload) {
+  return platformRequest<PlatformManagedUser>(`/users/${userId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}

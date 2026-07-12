@@ -10,6 +10,9 @@ import Reveal from '../components/ui/Reveal'
 import { usePlatformAuth } from '../contexts/PlatformAuthContext'
 import { getOpsDashboard, listOperations, listRegistryFarms, PlatformApiError } from '../lib/platformApi'
 import { OPERATION_STATUSES, operationStatusChartColor, operationStatusDot } from '../lib/operations'
+import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
+import WeatherWidget from '../components/gis/WeatherWidget'
+import { getGisFarms } from '../lib/gisData'
 import dataset from '../data/ndvi-farms.json'
 import type { NdviDataset } from '../types/ndvi'
 import type { Operation, OpsDashboard, RegistryFarm } from '../types/platform'
@@ -205,6 +208,22 @@ export default function OperationsDashboardPage() {
                   ))}
                 </ol>
               )}
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Live GIS overview + agro-weather */}
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          <Reveal className="lg:col-span-2">
+            <h2 className="mb-4 text-lg font-bold">{t('gisMap.overviewTitle')}</h2>
+            <LazyFarmGisMap farms={getGisFarms()} height="400px" />
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="mb-4 text-lg font-bold">{t('weather.sectionTitle')}</h2>
+            <div className="space-y-4">
+              {getGisFarms().slice(0, 3).map((f) => (
+                <WeatherWidget key={f.id} lat={f.center[0]} lng={f.center[1]} label={lang === 'ar' && f.nameAr ? f.nameAr : f.name} />
+              ))}
             </div>
           </Reveal>
         </div>

@@ -148,6 +148,43 @@ class PlatformLoginOut(BaseModel):
     user: PlatformUserOut
 
 
+# ---- User management (admin-only) ----
+class PlatformUserAdminOut(BaseModel):
+    id: int
+    username: str
+    email: str | None
+    full_name: str
+    role: str
+    staff_title: str | None
+    phone: str | None
+    is_active: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class PlatformUserCreateIn(BaseModel):
+    username: str
+    password: str
+    full_name: str
+    role: str = "customer"
+    email: str | None = None
+    staff_title: str | None = None
+    phone: str | None = None
+
+
+class PlatformUserUpdateIn(BaseModel):
+    full_name: str | None = None
+    email: str | None = None
+    role: str | None = None
+    staff_title: str | None = None
+    phone: str | None = None
+    is_active: bool | None = None
+    new_password: str | None = None
+
+
+
 # ---- Farm registry ----
 class FarmOut(BaseModel):
     farm_code: str | None

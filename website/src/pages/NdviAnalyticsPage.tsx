@@ -6,6 +6,8 @@ import Reveal from '../components/ui/Reveal'
 import NdviStatusCard from '../components/satellite/NdviStatusCard'
 import VegetationTrendChart from '../components/satellite/VegetationTrendChart'
 import FarmComparisonPanel from '../components/satellite/FarmComparisonPanel'
+import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
+import { getGisFarms } from '../lib/gisData'
 import { ndviColor } from '../lib/ndvi'
 import dataset from '../data/ndvi-farms.json'
 import type { NdviDataset, NdviFarm, NdviStatus } from '../types/ndvi'
@@ -80,6 +82,15 @@ export default function NdviAnalyticsPage() {
               </div>
             </Reveal>
           ))}
+        </div>
+
+        {/* Interactive NDVI GIS map */}
+        <div className="mt-16">
+          <h2 className="text-lg font-bold">{t('gisMap.ndviMapTitle')}</h2>
+          <p className="mt-1.5 text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('gisMap.ndviMapHint')}</p>
+          <Reveal delay={0.05} className="mt-6">
+            <LazyFarmGisMap farms={getGisFarms()} focusFarmId={selectedId} height="460px" />
+          </Reveal>
         </div>
 
         {/* Farm grid */}

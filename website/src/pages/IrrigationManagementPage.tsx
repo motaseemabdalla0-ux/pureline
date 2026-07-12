@@ -5,6 +5,9 @@ import {
 } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
+import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
+import WeatherWidget from '../components/gis/WeatherWidget'
+import { getGisFarms } from '../lib/gisData'
 import { usePlatformAuth } from '../contexts/PlatformAuthContext'
 import {
   createIrrigationEvent, createIrrigationZone, getIrrigationDashboard, listIrrigationEvents, listIrrigationZones,
@@ -374,6 +377,22 @@ export default function IrrigationManagementPage() {
                   </span>
                 ))}
               </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Irrigated farms GIS map + ET0 weather */}
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          <Reveal className="lg:col-span-2">
+            <h2 className="mb-4 text-lg font-bold">{t('gisMap.irrigationMapTitle')}</h2>
+            <LazyFarmGisMap farms={getGisFarms()} height="380px" />
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="mb-4 text-lg font-bold">{t('weather.sectionTitle')}</h2>
+            <div className="space-y-4">
+              {getGisFarms().slice(0, 2).map((f) => (
+                <WeatherWidget key={f.id} lat={f.center[0]} lng={f.center[1]} label={lang === 'ar' && f.nameAr ? f.nameAr : f.name} />
+              ))}
             </div>
           </Reveal>
         </div>

@@ -810,3 +810,89 @@ def ops_dashboard(db: Session = Depends(get_db)):
         "note": "NDVI/weather KPIs are intentionally omitted — compute from "
                 "ndvi-farms.json on the frontend.",
     }
+
+
+# ======================================================================
+# 13. User Management (admin-only)
+# ======================================================================
+users_router = APIRouter(prefix="/users", tags=["users"])
+
+ADMIN_ONLY = ["admin"]
+VALID_ROLES = {r.value for r in models.PlatformRole}
+
+
+@users_router.get("", response_model=list[schemas.PlatformUserAdminOut])
+def list_users(role: str | None = None, search: str | None = None,
+               db: Session = Depends(get_db),
+               _admin: models.PlatformUser = Depends(require_platform_user(ADMIN_ONLY))):
+    q = db.query(models.PlatformUser)
+    if role and role in VALID_ROLES:
+        q = q.filter(models.PlatformUser.role == models.PlatformRole(role))
+    if search:
+        like = f"%{search}%"
+        q = q.filter(
+            (models.PlatformUser.username.ilike(like))
+            | (models.PlatformUser.full_name.ilike(like))
+            | (models.PlatformUser.email.ilike(like))
+        )
+    return q.order_by(models.PlatformUser.created_at.desc()).all()
+
+
+@users_router.post("", response_model=schemas.PlatformUserAdminOut)
+def create_user(payload: schemas.PlatformUserCreateIn,
+                db: Session = Depends(get_db),
+                _admin: models.PlatformUser = Depends(require_platform_user(ADMIN_ONLY))):
+    from .platform_auth import create_platform_user  # local import avoids cycle at module load
+
+    if payload.role not in VALID_ROLES:
+        raise HTTPException(422, f"role must be one of: {', '.join(sorted(VALID_ROLES))}")
+    if len(payload.password) < 8:
+        raise HTTPException(422, "Password must be at least 8 characters")
+    existing = db.query(models.PlatformUser).filter(
+        models.PlatformUser.username == payload.username).first()
+    if existing:
+        raise HTTPException(409, "Username already exists")
+    user = create_platform_user(
+        db, username=payload.username, email=payload.email or "", password=payload.password,
+        full_name=payload.full_name, role=models.PlatformRole(payload.role),
+        staff_title=payload.staff_title, phone=payload.phone,
+    )
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@users_router.patch("/{user_id}", response_model=schemas.PlatformUserAdminOut)
+def update_user(user_id: int, payload: schemas.PlatformUserUpdateIn,
+                db: Session = Depends(get_db),
+                admin: models.PlatformUser = Depends(require_platform_user(ADMIN_ONLY))):
+    from .platform_auth import _hash_password
+
+    user = db.query(models.PlatformUser).filter(models.PlatformUser.id == user_id).first()
+    if not user:
+        raise HTTPException(404, "User not found")
+    if payload.role is not None:
+        if payload.role not in VALID_ROLES:
+            raise HTTPException(422, f"role must be one of: {', '.join(sorted(VALID_ROLES))}")
+        if user.id == admin.id and payload.role != "admin":
+            raise HTTPException(422, "You cannot remove your own admin role")
+        user.role = models.PlatformRole(payload.role)
+    if payload.is_active is not None:
+        if user.id == admin.id and payload.is_active is False:
+            raise HTTPException(422, "You cannot deactivate your own account")
+        user.is_active = payload.is_active
+    if payload.full_name is not None:
+        user.full_name = payload.full_name
+    if payload.email is not None:
+        user.email = payload.email
+    if payload.staff_title is not None:
+        user.staff_title = payload.staff_title
+    if payload.phone is not None:
+        user.phone = payload.phone
+    if payload.new_password:
+        if len(payload.new_password) < 8:
+            raise HTTPException(422, "Password must be at least 8 characters")
+        user.password_hash, user.password_salt = _hash_password(payload.new_password)
+    db.commit()
+    db.refresh(user)
+    return user

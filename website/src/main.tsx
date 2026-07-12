@@ -31,6 +31,7 @@ import AssetManagementPage from './pages/AssetManagementPage'
 import AssetDetailPage from './pages/AssetDetailPage'
 import WorkforcePage from './pages/WorkforcePage'
 import ReportingCenterPage from './pages/ReportingCenterPage'
+import UserManagementPage from './pages/UserManagementPage'
 import ProtectedRoute from './components/platform/ProtectedRoute'
 import { PlatformAuthProvider } from './contexts/PlatformAuthContext'
 import { initTheme } from './lib/theme'
@@ -70,6 +71,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/platform/assets/:assetCode" element={<ProtectedRoute><AssetDetailPage /></ProtectedRoute>} />
             <Route path="/platform/workforce" element={<ProtectedRoute><WorkforcePage /></ProtectedRoute>} />
             <Route path="/platform/reports" element={<ProtectedRoute><ReportingCenterPage /></ProtectedRoute>} />
+            <Route path="/platform/users" element={<ProtectedRoute><UserManagementPage /></ProtectedRoute>} />
           </Routes>
         </PlatformAuthProvider>
       </BrowserRouter>
