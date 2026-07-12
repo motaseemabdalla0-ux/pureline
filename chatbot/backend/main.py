@@ -14,8 +14,11 @@ from pydantic import BaseModel
 
 from services import chat as chat_service
 from services import indexing
+from services.platform.database import init_db
+from services.platform.routers import router as platform_router
 
 app = FastAPI(title="PURE LINE AI", version="2.0.0")
+app.include_router(platform_router)
 
 # Allow the website + chat frontend to call this API in dev and behind nginx.
 app.add_middleware(
@@ -51,6 +54,11 @@ def _startup() -> None:
         indexing.start_watcher()
     except Exception as exc:  # noqa: BLE001
         print(f"[startup] watcher failed to start: {exc}", flush=True)
+    try:
+        init_db()
+        print("[startup] platform DB tables ready", flush=True)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[startup] platform DB init failed: {exc}", flush=True)
 
 
 @app.get("/health")

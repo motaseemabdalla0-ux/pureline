@@ -36,6 +36,11 @@ services:
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       # Leave blank to auto-select the best pulled model (qwen3:8b > qwen2.5:7b > ...).
       - OLLAMA_MODEL=${OLLAMA_MODEL:-}
+      # Services Platform (requests/quotations/admin) - override in a .env
+      # file for production, never commit real secrets.
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-pureline-admin-2026}
+      - ADMIN_TOKEN_SECRET=${ADMIN_TOKEN_SECRET:-pureline-dev-secret-change-me}
+      - UPLOAD_DIR=/app/data/uploads
     # Required so the container can resolve host.docker.internal on Linux engines.
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -44,6 +49,7 @@ services:
       # user can drop documents in and the index survives restarts.
       - ../chatbot/backend/data/knowledge-base:/app/data/knowledge-base
       - ../chatbot/backend/data/chroma_db:/app/data/chroma_db
+      - ../chatbot/backend/data/uploads:/app/data/uploads
     depends_on: [db]
     networks: [pureline]
 
