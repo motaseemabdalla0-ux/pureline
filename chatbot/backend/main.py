@@ -77,13 +77,3 @@ def health():
     return {"status": "ok", "service": "pure-line-ai"}
 
 
-@app.get("/api/kb/status")
-def kb_status():
-    """Basic knowledge-base / index stats for debugging & verification."""
-    return indexing.get_status()
-
-
-@app.post("/api/chat", response_model=ChatResponse)
-def chat(req: ChatRequest):
-    result = chat_service.answer(req.message, req.lang)
-    return ChatResponse(reply=result.reply, sources=result.sources)
