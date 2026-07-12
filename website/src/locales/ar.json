@@ -733,7 +733,10 @@
     "loggingIn": "جارٍ تسجيل الدخول...",
     "loginError": "كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
     "logout": "تسجيل الخروج",
-    "tabs": { "kpis": "لوحة القيادة", "requests": "الطلبات", "customers": "العملاء", "activity": "النشاط", "farms": "المزارع / NDVI" },
+    "tabs": {
+      "kpis": "لوحة القيادة", "requests": "الطلبات", "customers": "العملاء", "activity": "النشاط", "farms": "المزارع / NDVI",
+      "operations": "العمليات", "pests": "الآفات", "assets": "الأصول", "workforce": "القوى العاملة"
+    },
     "kpi": {
       "totalRequests": "إجمالي الطلبات",
       "openRequests": "الطلبات المفتوحة",
@@ -768,7 +771,26 @@
     },
     "customers": { "empty": "لم يتم العثور على عملاء." },
     "activity": { "empty": "لا يوجد نشاط حديث." },
-    "farms": { "note": "عرض للقراءة فقط مستمد من بيانات NDVI الحقيقية للموقع." }
+    "farms": { "note": "عرض للقراءة فقط مستمد من بيانات NDVI الحقيقية للموقع." },
+    "operationsTab": {
+      "empty": "لم يتم العثور على عمليات.",
+      "updateStatus": "تحديث",
+      "table": {
+        "id": "المعرف", "farm": "المزرعة", "type": "النوع", "status": "الحالة", "scheduled": "موعد التنفيذ", "assigned": "المُكلَّف", "action": "فرض تغيير الحالة"
+      }
+    },
+    "pestsTab": {
+      "empty": "لم يتم العثور على حالات كشف آفات.",
+      "table": { "id": "المعرف", "farm": "المزرعة", "pestType": "نوع الآفة", "risk": "درجة الخطورة", "status": "الحالة", "detected": "تاريخ الاكتشاف" }
+    },
+    "assetsTab": {
+      "empty": "لم يتم العثور على أصول.",
+      "table": { "code": "الرمز", "name": "الاسم", "category": "الفئة", "status": "الحالة", "farm": "المزرعة" }
+    },
+    "workforceTab": {
+      "empty": "لم يتم العثور على موظفين.",
+      "table": { "name": "الاسم", "title": "المسمى الوظيفي", "total": "الإجمالي", "completed": "المكتمل", "rate": "نسبة الإنجاز" }
+    }
   },
   "platformLoginPage": {
     "title": "تسجيل الدخول للمنصة",

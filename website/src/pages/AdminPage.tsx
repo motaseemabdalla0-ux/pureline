@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ShieldCheck, LogOut, Loader2, AlertTriangle, Search, Plus, Trash2, Users, Activity as ActivityIcon,
-  LayoutDashboard, ClipboardList, Satellite,
+  LayoutDashboard, ClipboardList, Satellite, ListChecks, Bug, Package, HardHat,
 } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
@@ -10,21 +10,73 @@ import NdviStatusCard from '../components/satellite/NdviStatusCard'
 import {
   adminLogin, adminListRequests, adminUpdateRequestStatus, adminListCustomers, adminGetKpis,
   adminGetActivity, adminCreateQuotation, setAdminToken, ADMIN_TOKEN_KEY,
+  platformLogin, listOperations, listPestDetections, listAssets, listStaff, getWorkforcePerformance,
+  updateOperationStatus, PlatformApiError,
 } from '../lib/platformApi'
+import { OPERATION_STATUSES, operationStatusStyles } from '../lib/operations'
+import { pestRiskStyles, pestRiskDot, pestDetectionStatusStyles } from '../lib/pests'
+import { assetStatusStyles, assetStatusDot } from '../lib/assets'
 import dataset from '../data/ndvi-farms.json'
 import type { NdviDataset } from '../types/ndvi'
 import type {
-  AdminActivityEntry, AdminCustomer, AdminKpis, LineItem, QuotationTemplate, RequestStatus, ServiceRequest,
+  AdminActivityEntry, AdminCustomer, AdminKpis, Asset, LineItem, Operation, OperationStatus, PestDetection,
+  QuotationTemplate, RequestStatus, ServiceRequest, StaffMember, StaffPerformance,
 } from '../types/platform'
 
 const ndviData = dataset as NdviDataset
 const STATUSES: RequestStatus[] = ['submitted', 'under_review', 'quotation_sent', 'approved', 'in_progress', 'completed']
 const TEMPLATES: QuotationTemplate[] = ['greenhouse', 'irrigation', 'ndvi', 'consultancy']
-const TABS = ['kpis', 'requests', 'customers', 'activity', 'farms'] as const
+const TABS = ['kpis', 'requests', 'customers', 'activity', 'farms', 'operations', 'pests', 'assets', 'workforce'] as const
 type Tab = (typeof TABS)[number]
 
 function getStoredToken(): string | null {
   try { return localStorage.getItem(ADMIN_TOKEN_KEY) } catch { return null }
+}
+
+/* ---------- Admin platform-auth bridge ----------
+ * The old admin portal (this page) uses a single-password token system that
+ * is entirely separate from the new multi-role `/platform/*` auth. The
+ * operations/pests/assets/workforce endpoints below require the NEW
+ * platform-auth Bearer token though, so once the admin is signed into this
+ * old portal we silently log them into the new system too (using the seeded
+ * admin account) and cache that second token under its own localStorage key.
+ * This never merges the two auth systems — it just lets this page borrow a
+ * platform-auth token to call platform-auth-gated endpoints. */
+const ADMIN_PLATFORM_TOKEN_KEY = 'pl_admin_platform_token'
+
+function getStoredAdminPlatformToken(): string | null {
+  try { return localStorage.getItem(ADMIN_PLATFORM_TOKEN_KEY) } catch { return null }
+}
+
+function setStoredAdminPlatformToken(token: string | null) {
+  try {
+    if (token) localStorage.setItem(ADMIN_PLATFORM_TOKEN_KEY, token)
+    else localStorage.removeItem(ADMIN_PLATFORM_TOKEN_KEY)
+  } catch { /* ignore */ }
+}
+
+async function getAdminPlatformToken(): Promise<string> {
+  const cached = getStoredAdminPlatformToken()
+  if (cached) return cached
+  const res = await platformLogin({ username: 'admin', password: 'Pureline@2026' })
+  setStoredAdminPlatformToken(res.token)
+  return res.token
+}
+
+/** Calls `fn` with a cached admin platform-auth token, transparently
+ * refreshing it once and retrying if it turns out to be missing/expired. */
+async function withAdminPlatformToken<T>(fn: (token: string) => Promise<T>): Promise<T> {
+  const token = await getAdminPlatformToken()
+  try {
+    return await fn(token)
+  } catch (err) {
+    if (err instanceof PlatformApiError && err.status === 401) {
+      setStoredAdminPlatformToken(null)
+      const fresh = await getAdminPlatformToken()
+      return fn(fresh)
+    }
+    throw err
+  }
 }
 
 /* ---------- Login gate ---------- */
@@ -417,6 +469,274 @@ function FarmsTab() {
   )
 }
 
+/* ---------- Operations tab ---------- */
+function OperationRow({ op, onChanged }: { op: Operation; onChanged: () => void }) {
+  const { t } = useTranslation()
+  const [status, setStatus] = useState<OperationStatus>(op.status)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(false)
+
+  const save = async () => {
+    if (saving || status === op.status) return
+    setSaving(true)
+    setError(false)
+    try {
+      await withAdminPlatformToken((token) => updateOperationStatus(op.operation_id, status, undefined, token))
+      onChanged()
+    } catch {
+      setError(true)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <tr>
+      <td className="px-4 py-3 font-mono text-xs text-neutral-dark/60 dark:text-neutral-light/60">{op.operation_id}</td>
+      <td className="px-4 py-3 font-mono text-xs text-neutral-dark/60 dark:text-neutral-light/60">{op.farm_code}</td>
+      <td className="px-4 py-3">{t(`platformOperations.type.${op.operation_type}`)}</td>
+      <td className="px-4 py-3">
+        <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${operationStatusStyles[op.status]}`}>
+          {t(`platformOperations.status.${op.status}`)}
+        </span>
+      </td>
+      <td className="px-4 py-3 text-xs">{new Date(op.scheduled_date).toLocaleDateString()}</td>
+      <td className="px-4 py-3 text-xs">{op.assigned_to ?? '—'}</td>
+      <td className="px-4 py-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <select value={status} onChange={(e) => setStatus(e.target.value as OperationStatus)} className="rounded-lg border border-black/10 bg-white px-2 py-1.5 text-xs dark:border-white/10 dark:bg-white/5">
+            {OPERATION_STATUSES.map((s) => <option key={s} value={s}>{t(`platformOperations.status.${s}`)}</option>)}
+          </select>
+          <button onClick={save} disabled={saving || status === op.status} className="btn-ghost !py-1.5 !px-3 text-xs">
+            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t('adminPage.operationsTab.updateStatus')}
+          </button>
+        </div>
+        {error && <div className="mt-1 text-[11px] text-red-500">{t('common.error')}</div>}
+      </td>
+    </tr>
+  )
+}
+
+function OperationsTab() {
+  const { t } = useTranslation()
+  const [operations, setOperations] = useState<Operation[] | null>(null)
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  const load = () => {
+    setLoading(true)
+    setError(false)
+    withAdminPlatformToken((token) => listOperations(undefined, token))
+      .then(setOperations)
+      .catch(() => setError(true))
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(load, [])
+
+  if (loading) return <CenterLoader />
+  if (error) return <CenterError />
+  if (!operations || operations.length === 0) {
+    return <p className="text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('adminPage.operationsTab.empty')}</p>
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-black/5 dark:border-white/10">
+      <table className="w-full min-w-[860px] text-sm">
+        <thead>
+          <tr className="bg-black/5 text-start text-[11px] font-bold uppercase tracking-wider text-neutral-dark/50 dark:bg-white/10 dark:text-neutral-light/50">
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.id')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.farm')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.type')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.status')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.scheduled')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.assigned')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.operationsTab.table.action')}</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-black/5 dark:divide-white/10">
+          {operations.map((op) => <OperationRow key={op.operation_id} op={op} onChanged={load} />)}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+/* ---------- Pests tab ---------- */
+function PestsTab() {
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language.startsWith('ar') ? 'ar' : 'en'
+  const [detections, setDetections] = useState<PestDetection[] | null>(null)
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    setError(false)
+    withAdminPlatformToken((token) => listPestDetections(undefined, token))
+      .then(setDetections)
+      .catch(() => setError(true))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <CenterLoader />
+  if (error) return <CenterError />
+  if (!detections || detections.length === 0) {
+    return <p className="text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('adminPage.pestsTab.empty')}</p>
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-black/5 dark:border-white/10">
+      <table className="w-full min-w-[720px] text-sm">
+        <thead>
+          <tr className="bg-black/5 text-start text-[11px] font-bold uppercase tracking-wider text-neutral-dark/50 dark:bg-white/10 dark:text-neutral-light/50">
+            <th className="px-4 py-3 text-start">{t('adminPage.pestsTab.table.id')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.pestsTab.table.farm')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.pestsTab.table.pestType')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.pestsTab.table.risk')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.pestsTab.table.status')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.pestsTab.table.detected')}</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-black/5 dark:divide-white/10">
+          {detections.map((d) => (
+            <tr key={d.detection_id}>
+              <td className="px-4 py-3 font-mono text-xs text-neutral-dark/60 dark:text-neutral-light/60">{d.detection_id}</td>
+              <td className="px-4 py-3 font-mono text-xs text-neutral-dark/60 dark:text-neutral-light/60">{d.farm_code}</td>
+              <td className="px-4 py-3 text-xs">#{d.pest_type_id}</td>
+              <td className="px-4 py-3">
+                <span className={`flex w-fit items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${pestRiskStyles[d.risk_level]}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${pestRiskDot[d.risk_level]}`} />
+                  {t(`platformPests.risk.${d.risk_level}`)}
+                </span>
+              </td>
+              <td className="px-4 py-3">
+                <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${pestDetectionStatusStyles[d.status]}`}>
+                  {t(`platformPests.status.${d.status}`)}
+                </span>
+              </td>
+              <td className="px-4 py-3 text-xs">
+                {new Intl.DateTimeFormat(lang, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(d.detected_date))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+/* ---------- Assets tab ---------- */
+function AssetsTab() {
+  const { t } = useTranslation()
+  const [assets, setAssets] = useState<Asset[] | null>(null)
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    setError(false)
+    withAdminPlatformToken((token) => listAssets(undefined, token))
+      .then(setAssets)
+      .catch(() => setError(true))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <CenterLoader />
+  if (error) return <CenterError />
+  if (!assets || assets.length === 0) {
+    return <p className="text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('adminPage.assetsTab.empty')}</p>
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-black/5 dark:border-white/10">
+      <table className="w-full min-w-[640px] text-sm">
+        <thead>
+          <tr className="bg-black/5 text-start text-[11px] font-bold uppercase tracking-wider text-neutral-dark/50 dark:bg-white/10 dark:text-neutral-light/50">
+            <th className="px-4 py-3 text-start">{t('adminPage.assetsTab.table.code')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.assetsTab.table.name')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.assetsTab.table.category')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.assetsTab.table.status')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.assetsTab.table.farm')}</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-black/5 dark:divide-white/10">
+          {assets.map((a) => (
+            <tr key={a.asset_code}>
+              <td className="px-4 py-3 font-mono text-xs text-neutral-dark/60 dark:text-neutral-light/60">{a.asset_code}</td>
+              <td className="px-4 py-3 font-semibold">{a.name}</td>
+              <td className="px-4 py-3">{t(`platformAssets.category.${a.category}`)}</td>
+              <td className="px-4 py-3">
+                <span className={`flex w-fit items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${assetStatusStyles[a.status]}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${assetStatusDot[a.status]}`} />
+                  {t(`platformAssets.status.${a.status}`)}
+                </span>
+              </td>
+              <td className="px-4 py-3 font-mono text-xs text-neutral-dark/60 dark:text-neutral-light/60">{a.farm_code || '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+/* ---------- Workforce tab ---------- */
+function WorkforceTab() {
+  const { t } = useTranslation()
+  const [staff, setStaff] = useState<StaffMember[] | null>(null)
+  const [performance, setPerformance] = useState<StaffPerformance[] | null>(null)
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    setError(false)
+    withAdminPlatformToken((token) => Promise.all([listStaff(token), getWorkforcePerformance(token)]))
+      .then(([s, p]) => { setStaff(s); setPerformance(p) })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <CenterLoader />
+  if (error) return <CenterError />
+  if (!staff || staff.length === 0) {
+    return <p className="text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('adminPage.workforceTab.empty')}</p>
+  }
+
+  const perfFor = (id: number) => performance?.find((p) => p.staff_id === id)
+
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-black/5 dark:border-white/10">
+      <table className="w-full min-w-[600px] text-sm">
+        <thead>
+          <tr className="bg-black/5 text-start text-[11px] font-bold uppercase tracking-wider text-neutral-dark/50 dark:bg-white/10 dark:text-neutral-light/50">
+            <th className="px-4 py-3 text-start">{t('adminPage.workforceTab.table.name')}</th>
+            <th className="px-4 py-3 text-start">{t('adminPage.workforceTab.table.title')}</th>
+            <th className="px-4 py-3 text-end">{t('adminPage.workforceTab.table.total')}</th>
+            <th className="px-4 py-3 text-end">{t('adminPage.workforceTab.table.completed')}</th>
+            <th className="px-4 py-3 text-end">{t('adminPage.workforceTab.table.rate')}</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-black/5 dark:divide-white/10">
+          {staff.map((s) => {
+            const p = perfFor(s.id)
+            return (
+              <tr key={s.id}>
+                <td className="px-4 py-3 font-semibold">{s.full_name}</td>
+                <td className="px-4 py-3">{s.staff_title ?? '—'}</td>
+                <td className="px-4 py-3 text-end">{p?.total_assignments ?? 0}</td>
+                <td className="px-4 py-3 text-end">{p?.completed_assignments ?? 0}</td>
+                <td className="px-4 py-3 text-end font-bold text-primary dark:text-secondary">{(p?.completion_rate_percent ?? 0).toFixed(1)}%</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 /* ---------- Shared helpers ---------- */
 function CenterLoader() {
   return <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
@@ -437,6 +757,10 @@ const TAB_ICONS: Record<Tab, typeof LayoutDashboard> = {
   customers: Users,
   activity: ActivityIcon,
   farms: Satellite,
+  operations: ListChecks,
+  pests: Bug,
+  assets: Package,
+  workforce: HardHat,
 }
 
 /* ---------- Main page ---------- */
@@ -504,6 +828,10 @@ export default function AdminPage() {
           {tab === 'customers' && <CustomersTab />}
           {tab === 'activity' && <ActivityTab />}
           {tab === 'farms' && <FarmsTab />}
+          {tab === 'operations' && <OperationsTab />}
+          {tab === 'pests' && <PestsTab />}
+          {tab === 'assets' && <AssetsTab />}
+          {tab === 'workforce' && <WorkforceTab />}
         </Reveal>
       </div>
     </PlatformPageShell>

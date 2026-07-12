@@ -270,14 +270,14 @@ export function listOperations(params?: {
   status?: string
   operation_type?: string
   assigned_to?: string
-}) {
+}, explicitToken?: string) {
   const qs = new URLSearchParams()
   if (params?.farm_code) qs.set('farm_code', params.farm_code)
   if (params?.status) qs.set('status', params.status)
   if (params?.operation_type) qs.set('operation_type', params.operation_type)
   if (params?.assigned_to) qs.set('assigned_to', params.assigned_to)
   const query = qs.toString()
-  return platformRequest<Operation[]>(`/operations${query ? `?${query}` : ''}`)
+  return platformRequest<Operation[]>(`/operations${query ? `?${query}` : ''}`, undefined, explicitToken)
 }
 
 export function getOperation(operationId: string) {
@@ -288,11 +288,11 @@ export function createOperation(payload: CreateOperationPayload) {
   return platformRequest<Operation>('/operations', { method: 'POST', body: JSON.stringify(payload) })
 }
 
-export function updateOperationStatus(operationId: string, status: string, note?: string) {
+export function updateOperationStatus(operationId: string, status: string, note?: string, explicitToken?: string) {
   return platformRequest<Operation>(`/operations/${encodeURIComponent(operationId)}/status`, {
     method: 'PATCH',
     body: JSON.stringify({ status, note }),
-  })
+  }, explicitToken)
 }
 
 export async function uploadOperationAttachment(operationId: string, file: File) {
@@ -316,13 +316,13 @@ export function listPestTypes() {
   return platformRequest<PestType[]>('/pests/types')
 }
 
-export function listPestDetections(params?: { farm_code?: string; risk_level?: string; status?: string }) {
+export function listPestDetections(params?: { farm_code?: string; risk_level?: string; status?: string }, explicitToken?: string) {
   const qs = new URLSearchParams()
   if (params?.farm_code) qs.set('farm_code', params.farm_code)
   if (params?.risk_level) qs.set('risk_level', params.risk_level)
   if (params?.status) qs.set('status', params.status)
   const query = qs.toString()
-  return platformRequest<PestDetection[]>(`/pests/detections${query ? `?${query}` : ''}`)
+  return platformRequest<PestDetection[]>(`/pests/detections${query ? `?${query}` : ''}`, undefined, explicitToken)
 }
 
 export function createPestDetection(payload: CreatePestDetectionPayload) {
@@ -402,13 +402,13 @@ export function getIrrigationDashboard() {
 
 /* ---------- Asset management ---------- */
 
-export function listAssets(params?: { category?: string; status?: string; farm_code?: string }) {
+export function listAssets(params?: { category?: string; status?: string; farm_code?: string }, explicitToken?: string) {
   const qs = new URLSearchParams()
   if (params?.category) qs.set('category', params.category)
   if (params?.status) qs.set('status', params.status)
   if (params?.farm_code) qs.set('farm_code', params.farm_code)
   const query = qs.toString()
-  return platformRequest<Asset[]>(`/assets${query ? `?${query}` : ''}`)
+  return platformRequest<Asset[]>(`/assets${query ? `?${query}` : ''}`, undefined, explicitToken)
 }
 
 export function getAsset(assetCode: string) {
@@ -439,15 +439,15 @@ export function createAssetMaintenance(assetCode: string, payload: CreateAssetMa
 
 /* ---------- Workforce management (staff/admin only) ---------- */
 
-export function listStaff() {
-  return platformRequest<StaffMember[]>('/workforce/staff')
+export function listStaff(explicitToken?: string) {
+  return platformRequest<StaffMember[]>('/workforce/staff', undefined, explicitToken)
 }
 
 export function getStaffAssignments(staffId: number) {
   return platformRequest<WorkforceAssignment[]>(`/workforce/staff/${staffId}/assignments`)
 }
 
-export function getWorkforcePerformance() {
-  return platformRequest<StaffPerformance[]>('/workforce/performance')
+export function getWorkforcePerformance(explicitToken?: string) {
+  return platformRequest<StaffPerformance[]>('/workforce/performance', undefined, explicitToken)
 }
 

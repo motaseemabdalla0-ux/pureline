@@ -734,7 +734,10 @@
     "loggingIn": "Signing in...",
     "loginError": "Incorrect password. Please try again.",
     "logout": "Sign Out",
-    "tabs": { "kpis": "Dashboard", "requests": "Requests", "customers": "Customers", "activity": "Activity", "farms": "Farms / NDVI" },
+    "tabs": {
+      "kpis": "Dashboard", "requests": "Requests", "customers": "Customers", "activity": "Activity", "farms": "Farms / NDVI",
+      "operations": "Operations", "pests": "Pests", "assets": "Assets", "workforce": "Workforce"
+    },
     "kpi": {
       "totalRequests": "Total Requests",
       "openRequests": "Open Requests",
@@ -769,7 +772,26 @@
     },
     "customers": { "empty": "No customers found." },
     "activity": { "empty": "No recent activity." },
-    "farms": { "note": "Read-only view sourced from the site's real NDVI farm dataset." }
+    "farms": { "note": "Read-only view sourced from the site's real NDVI farm dataset." },
+    "operationsTab": {
+      "empty": "No operations found.",
+      "updateStatus": "Update",
+      "table": {
+        "id": "ID", "farm": "Farm", "type": "Type", "status": "Status", "scheduled": "Scheduled", "assigned": "Assigned", "action": "Force Status"
+      }
+    },
+    "pestsTab": {
+      "empty": "No pest detections found.",
+      "table": { "id": "ID", "farm": "Farm", "pestType": "Pest Type", "risk": "Risk", "status": "Status", "detected": "Detected" }
+    },
+    "assetsTab": {
+      "empty": "No assets found.",
+      "table": { "code": "Code", "name": "Name", "category": "Category", "status": "Status", "farm": "Farm" }
+    },
+    "workforceTab": {
+      "empty": "No staff found.",
+      "table": { "name": "Name", "title": "Title", "total": "Total", "completed": "Completed", "rate": "Completion Rate" }
+    }
   },
   "_syncProbe": "probe-ok",
   "platformLoginPage": {
