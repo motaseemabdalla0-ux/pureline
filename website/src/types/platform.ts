@@ -153,3 +153,311 @@ export interface MyRequestPointer {
   request_id: string
   email: string
 }
+
+/* ---------- Platform auth (multi-role) ---------- */
+
+export type PlatformRole = 'admin' | 'staff' | 'customer'
+
+export interface PlatformUser {
+  id: string
+  username: string
+  full_name: string
+  role: PlatformRole
+}
+
+export interface PlatformLoginPayload {
+  username: string
+  password: string
+}
+
+export interface PlatformLoginResponse {
+  token: string
+  user: PlatformUser
+}
+
+export interface PlatformSession {
+  token: string
+  user: PlatformUser
+}
+
+/* ---------- Farms registry ---------- */
+
+export interface RegistryFarm {
+  farm_code: string
+  name: string
+  region: string
+  coordinates_lat: number | null
+  coordinates_lng: number | null
+  area_hectares: number | null
+  crop_type: string | null
+  owner_name: string | null
+  created_at: string
+}
+
+/* ---------- Operations ---------- */
+
+export type OperationType =
+  | 'irrigation'
+  | 'fertilization'
+  | 'pest_control'
+  | 'harvest'
+  | 'pruning'
+  | 'pollination'
+  | 'soil_sampling'
+  | 'drone_survey'
+  | 'maintenance'
+
+export type OperationStatus = 'planned' | 'assigned' | 'in_progress' | 'completed' | 'delayed' | 'cancelled'
+
+export interface OperationLogEntry {
+  status: OperationStatus
+  note?: string
+  created_at: string
+}
+
+export interface OperationAttachment {
+  id: string
+  file_name: string
+  url?: string
+  uploaded_at: string
+}
+
+export interface Operation {
+  operation_id: string
+  farm_code: string
+  operation_type: OperationType
+  status: OperationStatus
+  scheduled_date: string
+  assigned_to?: string
+  notes?: string
+  attachments: OperationAttachment[]
+  created_at: string
+  updated_at: string
+  log_entries: OperationLogEntry[]
+}
+
+export interface CreateOperationPayload {
+  farm_code: string
+  operation_type: OperationType
+  scheduled_date: string
+  assigned_to?: string
+  notes?: string
+}
+
+export interface OpsActivityEntry {
+  type: string
+  description: string
+  status: string
+  timestamp: string
+}
+
+export interface OpsDashboard {
+  total_farms: number
+  active_operations: number
+  completed_operations_this_month: number
+  open_tasks: number
+  irrigation_events_today: number
+  active_pest_alerts: number
+  recent_activity: OpsActivityEntry[]
+}
+
+/* ---------- Pest Management (IPM) ---------- */
+
+export type PestCategory = 'red_palm_weevil' | 'date_palm_pest' | 'greenhouse_pest' | 'custom'
+
+export interface PestType {
+  id: string
+  name: string
+  category: PestCategory
+  description?: string
+}
+
+export type PestRiskLevel = 'low' | 'medium' | 'high' | 'critical'
+export type PestDetectionStatus = 'active' | 'monitoring' | 'treated' | 'resolved'
+
+export interface PestDetection {
+  detection_id: string
+  farm_code: string
+  pest_type_id: string
+  risk_level: PestRiskLevel
+  detected_by: string
+  detected_date: string
+  location_notes?: string
+  status: PestDetectionStatus
+}
+
+export interface CreatePestDetectionPayload {
+  farm_code: string
+  pest_type_id: string
+  risk_level: PestRiskLevel
+  detected_by: string
+  location_notes?: string
+}
+
+export interface PestTrap {
+  id: string
+  farm_code: string
+  trap_code: string
+  pest_type_id: string
+  count: number
+  checked_date: string
+  checked_by: string
+}
+
+export interface CreatePestTrapPayload {
+  farm_code: string
+  trap_code: string
+  pest_type_id: string
+  count: number
+  checked_by: string
+}
+
+export interface PestTreatment {
+  id: string
+  detection_id: string
+  treatment_date: string
+  method: string
+  performed_by: string
+  notes?: string
+  effectiveness_rating?: number
+}
+
+export interface CreatePestTreatmentPayload {
+  detection_id: string
+  treatment_date: string
+  method: string
+  performed_by: string
+  notes?: string
+  effectiveness_rating?: number
+}
+
+export interface PestDashboard {
+  active_infestations: number
+  high_risk_farms: number
+  treatment_in_progress: number
+  monthly_trend: { month: string; count: number }[]
+}
+
+/* ---------- Irrigation ---------- */
+
+export type IrrigationEquipment = 'drip' | 'sprinkler' | 'flood'
+export type IrrigationZoneStatus = 'active' | 'maintenance' | 'offline'
+
+export interface IrrigationZone {
+  id: string
+  farm_code: string
+  zone_name: string
+  area_hectares: number
+  equipment_type: IrrigationEquipment
+  status: IrrigationZoneStatus
+}
+
+export interface CreateIrrigationZonePayload {
+  farm_code: string
+  zone_name: string
+  area_hectares: number
+  equipment_type: IrrigationEquipment
+  status?: IrrigationZoneStatus
+}
+
+export type IrrigationEventStatus = 'scheduled' | 'in_progress' | 'completed' | 'skipped'
+
+export interface IrrigationEvent {
+  id: string
+  zone_id: string
+  scheduled_start: string
+  scheduled_end: string
+  actual_start?: string
+  actual_end?: string
+  water_volume_m3?: number
+  status: IrrigationEventStatus
+  created_by: string
+}
+
+export interface CreateIrrigationEventPayload {
+  zone_id: string
+  scheduled_start: string
+  scheduled_end: string
+  created_by: string
+}
+
+export interface UpdateIrrigationEventPayload {
+  status?: IrrigationEventStatus
+  actual_start?: string
+  actual_end?: string
+  water_volume_m3?: number
+}
+
+export interface IrrigationDashboard {
+  today_scheduled_count: number
+  week_total_water_volume_m3: number
+  zones_by_status: Record<string, number>
+}
+
+/* ---------- Assets ---------- */
+
+export type AssetCategory = 'pump' | 'sensor' | 'irrigation_equipment' | 'vehicle' | 'drone' | 'monitoring_device'
+export type AssetStatus = 'operational' | 'maintenance' | 'offline' | 'retired'
+
+export interface Asset {
+  asset_code: string
+  name: string
+  category: AssetCategory
+  farm_code: string
+  status: AssetStatus
+  purchase_date?: string
+  last_service_date?: string
+}
+
+export interface CreateAssetPayload {
+  name: string
+  category: AssetCategory
+  farm_code: string
+  purchase_date?: string
+}
+
+export interface AssetMaintenance {
+  id: string
+  asset_id: string
+  service_date: string
+  performed_by: string
+  description: string
+  cost?: number
+  next_due_date?: string
+}
+
+export interface CreateAssetMaintenancePayload {
+  service_date: string
+  performed_by: string
+  description: string
+  cost?: number
+  next_due_date?: string
+}
+
+/* ---------- Workforce ---------- */
+
+export interface StaffMember {
+  id: string
+  username: string
+  full_name: string
+  staff_title?: string
+  phone?: string
+  email?: string
+}
+
+export interface StaffAssignment {
+  id: string
+  type: string
+  title: string
+  status: string
+  date: string
+  farm_code?: string
+}
+
+export interface StaffPerformance {
+  staff_id: string
+  full_name: string
+  total_assignments: number
+  completed_count: number
+  completion_rate: number
+}

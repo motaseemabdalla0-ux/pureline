@@ -546,7 +546,11 @@
     "farmMonitoring": "مراقبة المزارع",
     "farmReports": "تقارير المزارع",
     "consultancy": "الاستشارات",
-    "admin": "الإدارة"
+    "admin": "الإدارة",
+    "loginCta": "تسجيل الدخول للمنصة",
+    "platformDashboard": "لوحة العمليات",
+    "myFarms": "مزارعي",
+    "logout": "تسجيل الخروج"
   },
   "serviceDetail": {
     "requestCta": "اطلب هذه الخدمة",
@@ -760,5 +764,121 @@
     "customers": { "empty": "لم يتم العثور على عملاء." },
     "activity": { "empty": "لا يوجد نشاط حديث." },
     "farms": { "note": "عرض للقراءة فقط مستمد من بيانات NDVI الحقيقية للموقع." }
+  },
+  "platformLoginPage": {
+    "title": "تسجيل الدخول للمنصة",
+    "subtitle": "سجّل الدخول إلى منصة عمليات بيور لاين لإدارة المزارع والعمليات الميدانية والتحليلات.",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
+    "demoTitle": "حسابات تجريبية",
+    "demoHint": "لأغراض التقييم فقط — اضغط على أي حساب لتعبئة النموذج تلقائياً. ليست بيانات دخول إنتاجية حقيقية.",
+    "roles": { "admin": "مدير", "staff": "موظف", "customer": "عميل" }
+  },
+  "platformDashboard": {
+    "eyebrow": "مركز إدارة العمليات",
+    "title": "لوحة العمليات",
+    "greeting": "مرحباً بعودتك، {{name}}",
+    "subtitle": "نظرة شاملة في الوقت الفعلي على المزارع والعمليات الميدانية والتنبيهات ونشاط الفريق عبر محفظة بيور لاين.",
+    "viewOperations": "عرض العمليات",
+    "kpi": {
+      "totalFarms": "إجمالي المزارع",
+      "activeOperations": "العمليات النشطة",
+      "completedThisMonth": "المكتملة هذا الشهر",
+      "openTasks": "المهام المفتوحة",
+      "irrigationToday": "أحداث الري اليوم",
+      "pestAlerts": "تنبيهات الآفات",
+      "ndviAlerts": "تنبيهات NDVI",
+      "teamActivities": "أنشطة الفريق"
+    },
+    "statusBreakdown": "العمليات حسب الحالة",
+    "activityTimeline": "النشاط الأخير",
+    "noActivity": "لا يوجد نشاط حديث لعرضه.",
+    "alertsCenter": "مركز التنبيهات",
+    "alerts": {
+      "pest": "{{count}} تنبيه(ات) آفات نشطة",
+      "pestHint": "تم الإبلاغ عنها عبر المزارع المراقَبة — راجع وأرسل عملية مكافحة آفات.",
+      "ndviHint": "تراجعت صحة الغطاء النباتي — راجع الاستخبارات الفضائية لهذه المزرعة.",
+      "delayedHint": "تأخرت هذه العملية عن الجدول الزمني — راجعها وأعد التكليف.",
+      "none": "لا توجد تنبيهات نشطة. كل شيء يسير كما هو مخطط."
+    },
+    "farmOverview": "نظرة عامة على المزارع",
+    "viewAllFarms": "عرض جميع المزارع",
+    "noFarms": "لم يتم العثور على مزارع في السجل.",
+    "unspecifiedRegion": "منطقة غير محددة"
+  },
+  "platformFarms": {
+    "eyebrow": "سجل المزارع",
+    "title": "سجل المزارع",
+    "subtitle": "ابحث واستعرض كل مزرعة مسجلة في منصة بيور لاين.",
+    "searchPlaceholder": "ابحث بالاسم أو الرمز أو المالك...",
+    "allRegions": "كل المناطق",
+    "allCrops": "كل أنواع المحاصيل",
+    "empty": "لا توجد مزارع مطابقة لعوامل التصفية.",
+    "notRecorded": "غير مسجل",
+    "hectares": "{{count}} هكتار",
+    "backToRegistry": "العودة إلى سجل المزارع",
+    "detailTitle": "تفاصيل المزرعة",
+    "notFound": "تعذر العثور على هذه المزرعة في السجل.",
+    "ndviSection": "الاستخبارات الفضائية وNDVI",
+    "noNdviMatch": "لا تتوفر تحليلات NDVI لهذه المزرعة بعد.",
+    "fields": {
+      "region": "المنطقة",
+      "cropType": "نوع المحصول",
+      "area": "المساحة",
+      "owner": "المالك",
+      "coordinates": "الإحداثيات",
+      "registered": "تاريخ التسجيل"
+    }
+  },
+  "platformOperations": {
+    "eyebrow": "إدارة العمليات الميدانية",
+    "title": "العمليات الميدانية",
+    "subtitle": "خطّط وكلّف وتتبع كل عملية عبر محفظة المزارع.",
+    "newOperation": "عملية جديدة",
+    "allFarms": "كل المزارع",
+    "allStatuses": "كل الحالات",
+    "allTypes": "كل الأنواع",
+    "empty": "لا توجد عمليات مطابقة لعوامل التصفية.",
+    "status": {
+      "planned": "مخطط لها",
+      "assigned": "مكلَّفة",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتملة",
+      "delayed": "متأخرة",
+      "cancelled": "ملغاة"
+    },
+    "type": {
+      "irrigation": "الري",
+      "fertilization": "التسميد",
+      "pest_control": "مكافحة الآفات",
+      "harvest": "الحصاد",
+      "pruning": "التقليم",
+      "pollination": "التلقيح",
+      "soil_sampling": "أخذ عينات التربة",
+      "drone_survey": "مسح بالدرون",
+      "maintenance": "الصيانة"
+    },
+    "newForm": {
+      "title": "إنشاء عملية ميدانية",
+      "assignedTo": "المكلَّف (اختياري)",
+      "notes": "ملاحظات (اختياري)",
+      "submit": "إنشاء العملية"
+    }
+  },
+  "platformOperationDetail": {
+    "title": "تفاصيل العملية",
+    "backToList": "العودة إلى العمليات الميدانية",
+    "notFound": "تعذر العثور على هذه العملية.",
+    "statusHistory": "سجل الحالة",
+    "changeStatus": "تغيير الحالة",
+    "notePlaceholder": "أضف ملاحظة (اختياري)",
+    "updateStatus": "تحديث",
+    "attachments": "المرفقات",
+    "noAttachments": "لا توجد ملفات مرفقة بعد.",
+    "uploadFile": "رفع ملف"
   }
 }

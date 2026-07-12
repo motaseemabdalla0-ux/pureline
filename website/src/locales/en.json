@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+
     "about": "About",
     "services": "Services",
     "projects": "Projects",
@@ -546,7 +547,11 @@
     "farmMonitoring": "Farm Monitoring",
     "farmReports": "Farm Reports",
     "consultancy": "Consultancy",
-    "admin": "Admin"
+    "admin": "Admin",
+    "loginCta": "Platform Login",
+    "platformDashboard": "Ops Dashboard",
+    "myFarms": "My Farms",
+    "logout": "Logout"
   },
   "serviceDetail": {
     "requestCta": "Request This Service",
@@ -760,5 +765,122 @@
     "customers": { "empty": "No customers found." },
     "activity": { "empty": "No recent activity." },
     "farms": { "note": "Read-only view sourced from the site's real NDVI farm dataset." }
+  },
+  "_syncProbe": "probe-ok",
+  "platformLoginPage": {
+    "title": "Platform Login",
+    "subtitle": "Sign in to the PURE LINE operations platform to manage farms, field operations and analytics.",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign In",
+    "invalidCredentials": "Incorrect username or password. Please try again.",
+    "demoTitle": "Demo accounts",
+    "demoHint": "For evaluation purposes — tap an account to auto-fill the form. Not real production credentials.",
+    "roles": { "admin": "Admin", "staff": "Staff", "customer": "Customer" }
+  },
+  "platformDashboard": {
+    "eyebrow": "Operations Management Center",
+    "title": "Operations Dashboard",
+    "greeting": "Welcome back, {{name}}",
+    "subtitle": "A real-time overview of farms, field operations, alerts and team activity across the PURE LINE portfolio.",
+    "viewOperations": "View Operations",
+    "kpi": {
+      "totalFarms": "Total Farms",
+      "activeOperations": "Active Operations",
+      "completedThisMonth": "Completed This Month",
+      "openTasks": "Open Tasks",
+      "irrigationToday": "Irrigation Events Today",
+      "pestAlerts": "Pest Alerts",
+      "ndviAlerts": "NDVI Alerts",
+      "teamActivities": "Team Activities"
+    },
+    "statusBreakdown": "Operations by Status",
+    "activityTimeline": "Recent Activity",
+    "noActivity": "No recent activity to show.",
+    "alertsCenter": "Alerts Center",
+    "alerts": {
+      "pest": "{{count}} active pest alert(s)",
+      "pestHint": "Reported across monitored farms — review and dispatch a pest-control operation.",
+      "ndviHint": "Vegetation health has declined — review satellite intelligence for this farm.",
+      "delayedHint": "This operation has fallen behind schedule — review and reassign.",
+      "none": "No active alerts. Everything is on track."
+    },
+    "farmOverview": "Farm Overview",
+    "viewAllFarms": "View All Farms",
+    "noFarms": "No farms found in the registry.",
+    "unspecifiedRegion": "Unspecified Region"
+  },
+  "platformFarms": {
+    "eyebrow": "Farm Registry",
+    "title": "Farm Registry",
+    "subtitle": "Search and browse every farm registered on the PURE LINE platform.",
+    "searchPlaceholder": "Search by name, code or owner...",
+    "allRegions": "All Regions",
+    "allCrops": "All Crop Types",
+    "empty": "No farms match your filters.",
+    "notRecorded": "Not recorded",
+    "hectares": "{{count}} ha",
+    "backToRegistry": "Back to Farm Registry",
+    "detailTitle": "Farm Details",
+    "notFound": "This farm could not be found in the registry.",
+    "ndviSection": "Satellite & NDVI Intelligence",
+    "noNdviMatch": "No NDVI analytics are available for this farm yet.",
+    "fields": {
+      "region": "Region",
+      "cropType": "Crop Type",
+      "area": "Area",
+      "owner": "Owner",
+      "coordinates": "Coordinates",
+      "registered": "Registered"
+    }
+  },
+  "platformOperations": {
+    "eyebrow": "Field Operations Management",
+    "title": "Field Operations",
+    "subtitle": "Plan, assign and track every operation across the farm portfolio.",
+    "newOperation": "New Operation",
+    "allFarms": "All Farms",
+    "allStatuses": "All Statuses",
+    "allTypes": "All Types",
+    "empty": "No operations match your filters.",
+    "status": {
+      "planned": "Planned",
+      "assigned": "Assigned",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "delayed": "Delayed",
+      "cancelled": "Cancelled"
+    },
+    "type": {
+      "irrigation": "Irrigation",
+      "fertilization": "Fertilization",
+      "pest_control": "Pest Control",
+      "harvest": "Harvest",
+      "pruning": "Pruning",
+      "pollination": "Pollination",
+      "soil_sampling": "Soil Sampling",
+      "drone_survey": "Drone Survey",
+      "maintenance": "Maintenance"
+    },
+    "newForm": {
+      "title": "Create Field Operation",
+      "assignedTo": "Assigned to (optional)",
+      "notes": "Notes (optional)",
+      "submit": "Create Operation"
+    }
+  },
+  "platformOperationDetail": {
+    "title": "Operation Details",
+    "backToList": "Back to Field Operations",
+    "notFound": "This operation could not be found.",
+    "statusHistory": "Status History",
+    "changeStatus": "Change Status",
+    "notePlaceholder": "Add a note (optional)",
+    "updateStatus": "Update",
+    "attachments": "Attachments",
+    "noAttachments": "No files attached yet.",
+    "uploadFile": "Upload File"
   }
 }

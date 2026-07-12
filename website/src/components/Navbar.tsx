@@ -4,11 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, Moon, Sun, Languages, Bot, ChevronDown, LayoutGrid, Send, Gauge,
-  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck,
+  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor,
 } from 'lucide-react'
 import Logo from './ui/Logo'
 import { applyLangSideEffects } from '../i18n'
 import { toggleTheme, isDarkMode } from '../lib/theme'
+import { usePlatformAuth } from '../contexts/PlatformAuthContext'
 
 const links = ['about', 'services', 'projects', 'technology', 'platform', 'contact'] as const
 
@@ -27,6 +28,7 @@ const platformLinks = [
 export default function Navbar() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const { isAuthenticated, logout } = usePlatformAuth()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [dark, setDark] = useState(false)
@@ -60,6 +62,11 @@ export default function Navbar() {
     if (window.location.pathname !== '/') {
       navigate(`/#${l}`)
     }
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
   }
 
   return (
@@ -126,6 +133,23 @@ export default function Navbar() {
           <Link to="/chat" className="hidden items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition hover:bg-primary-600 md:inline-flex">
             <Bot className="h-4 w-4" /> {t('nav.assistant')}
           </Link>
+          {isAuthenticated ? (
+            <div className="hidden items-center gap-1.5 lg:flex">
+              <Link to="/platform/dashboard" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <LayoutDashboard className="h-4 w-4" /> {t('navPlatform.platformDashboard')}
+              </Link>
+              <Link to="/platform/farms" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <Tractor className="h-4 w-4" /> {t('navPlatform.myFarms')}
+              </Link>
+              <button onClick={handleLogout} className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-500/10">
+                <LogOut className="h-4 w-4" /> {t('navPlatform.logout')}
+              </button>
+            </div>
+          ) : (
+            <Link to="/platform/login" className="btn-gradient hidden !px-4 !py-2.5 text-sm lg:inline-flex">
+              <LogIn className="h-4 w-4" /> {t('navPlatform.loginCta')}
+            </Link>
+          )}
           <button onClick={() => setOpen(!open)} aria-label="Menu" className="rounded-full p-2.5 lg:hidden">
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -179,6 +203,23 @@ export default function Navbar() {
               <Link to="/chat" onClick={() => setOpen(false)} className="mt-2 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-semibold text-white">
                 <Bot className="h-4 w-4" /> {t('nav.assistant')}
               </Link>
+              {isAuthenticated ? (
+                <div className="mt-2 flex flex-col gap-1 border-t border-black/5 pt-3 dark:border-white/10">
+                  <Link to="/platform/dashboard" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <LayoutDashboard className="h-4 w-4 shrink-0" /> {t('navPlatform.platformDashboard')}
+                  </Link>
+                  <Link to="/platform/farms" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Tractor className="h-4 w-4 shrink-0" /> {t('navPlatform.myFarms')}
+                  </Link>
+                  <button onClick={() => { setOpen(false); handleLogout() }} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-red-500 hover:bg-red-500/10">
+                    <LogOut className="h-4 w-4 shrink-0" /> {t('navPlatform.logout')}
+                  </button>
+                </div>
+              ) : (
+                <Link to="/platform/login" onClick={() => setOpen(false)} className="btn-gradient mt-2 justify-center">
+                  <LogIn className="h-4 w-4" /> {t('navPlatform.loginCta')}
+                </Link>
+              )}
             </div>
           </motion.div>
         )}

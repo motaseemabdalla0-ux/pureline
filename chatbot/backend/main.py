@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 from services import chat as chat_service
 from services import indexing
-from services.platform.database import init_db
+from services.platform.database import SessionLocal, init_db
 from services.platform.routers import router as platform_router
 
 app = FastAPI(title="PURE LINE AI", version="2.0.0")
@@ -59,6 +59,16 @@ def _startup() -> None:
         print("[startup] platform DB tables ready", flush=True)
     except Exception as exc:  # noqa: BLE001
         print(f"[startup] platform DB init failed: {exc}", flush=True)
+    try:
+        from services.platform.seed import seed_all
+        db = SessionLocal()
+        try:
+            seed_all(db)
+        finally:
+            db.close()
+        print("[startup] platform seed data ready", flush=True)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[startup] platform seed failed: {exc}", flush=True)
 
 
 @app.get("/health")

@@ -1,10 +1,13 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, ChevronDown, LogIn, LayoutDashboard, Tractor } from 'lucide-react'
 import SatelliteImage from '../ui/SatelliteImage'
+import { usePlatformAuth } from '../../contexts/PlatformAuthContext'
 
 export default function Hero() {
   const { t } = useTranslation()
+  const { isAuthenticated } = usePlatformAuth()
   return (
     <section id="top" className="relative flex min-h-screen items-center overflow-hidden pt-24">
       {/* Real satellite-imagery background (NASA GIBS, dark-graded for text legibility) */}
@@ -33,6 +36,20 @@ export default function Hero() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-10 flex flex-wrap gap-4">
           <a href="#about" className="btn-primary">{t('hero.learnMore')} <ArrowRight className="h-4 w-4 rtl:rotate-180" /></a>
           <a href="#contact" className="btn-ghost border-white/30 text-white hover:bg-white/10 dark:border-primary/30 dark:text-secondary dark:hover:bg-primary/5">{t('hero.contactUs')}</a>
+          {isAuthenticated ? (
+            <>
+              <Link to="/platform/dashboard" className="btn-gradient">
+                <LayoutDashboard className="h-4 w-4" /> {t('navPlatform.platformDashboard')}
+              </Link>
+              <Link to="/platform/farms" className="btn-ghost border-white/30 text-white hover:bg-white/10 dark:border-primary/30 dark:text-secondary dark:hover:bg-primary/5">
+                <Tractor className="h-4 w-4" /> {t('navPlatform.myFarms')}
+              </Link>
+            </>
+          ) : (
+            <Link to="/platform/login" className="btn-gradient">
+              <LogIn className="h-4 w-4" /> {t('navPlatform.loginCta')}
+            </Link>
+          )}
         </motion.div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
           className="gis-readout mt-8 inline-flex items-center gap-2 rounded-md border border-white/10 bg-black/30 px-3 py-1.5 text-white/60 backdrop-blur-sm">

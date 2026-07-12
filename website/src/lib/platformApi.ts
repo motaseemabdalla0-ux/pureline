@@ -5,9 +5,16 @@ import type {
   AdminLoginResponse,
   Consultation,
   CreateConsultationPayload,
+  CreateOperationPayload,
   CreateQuotationPayload,
   CreateServiceRequestPayload,
+  Operation,
+  OpsDashboard,
+  PlatformLoginPayload,
+  PlatformLoginResponse,
+  PlatformUser,
   Quotation,
+  RegistryFarm,
   RequestStatus,
   ServiceRequest,
 } from '../types/platform'
@@ -15,6 +22,7 @@ import type {
 const BASE = '/api/platform'
 export const ADMIN_TOKEN_KEY = 'pl_admin_token'
 export const MY_REQUESTS_KEY = 'pl_my_requests'
+export const PLATFORM_SESSION_KEY = 'pl_platform_session'
 
 export class PlatformApiError extends Error {
   status: number
@@ -168,4 +176,115 @@ export function adminGetActivity() {
 
 export function adminCreateQuotation(payload: CreateQuotationPayload) {
   return request<Quotation>('/quotations', { method: 'POST', body: JSON.stringify(payload) }, true)
+}
+
+/* ---------- Platform auth (multi-role: admin/staff/customer) ---------- */
+
+function getPlatformToken(): string | null {
+  try {
+    const raw = localStorage.getItem(PLATFORM_SESSION_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as { token?: string }
+    return parsed?.token ?? null
+  } catch {
+    return null
+  }
+}
+
+/** Like `request`, but attaches the platform-auth Bearer token (new
+ * multi-role login), not the old single-password admin token. */
+async function platformRequest<T>(path: string, init?: RequestInit, explicitToken?: string): Promise<T> {
+  const headers: Record<string, string> = { ...(init?.headers as Record<string, string> | undefined) }
+  if (init?.body && !(init.body instanceof FormData) && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json'
+  }
+  const token = explicitToken ?? getPlatformToken()
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  let res: Response
+  try {
+    res = await fetch(`${BASE}${path}`, { ...init, headers })
+  } catch {
+    throw new PlatformApiError('network_error', 0)
+  }
+  if (!res.ok) {
+    let message = `request_failed_${res.status}`
+    try {
+      const data = await res.json()
+      if (data?.detail) message = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)
+      else if (data?.message) message = data.message
+    } catch { /* ignore */ }
+    throw new PlatformApiError(message, res.status)
+  }
+  if (res.status === 204) return undefined as unknown as T
+  return res.json() as Promise<T>
+}
+
+export function platformLogin(payload: PlatformLoginPayload) {
+  return platformRequest<PlatformLoginResponse>('/auth/login', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function platformFetchMe(token: string) {
+  return platformRequest<PlatformUser>('/auth/me', undefined, token)
+}
+
+/* ---------- Farm registry ---------- */
+
+export function listRegistryFarms(params?: { region?: string; crop_type?: string; search?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.region) qs.set('region', params.region)
+  if (params?.crop_type) qs.set('crop_type', params.crop_type)
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString()
+  return platformRequest<RegistryFarm[]>(`/farms${query ? `?${query}` : ''}`)
+}
+
+export function getRegistryFarm(farmCode: string) {
+  return platformRequest<RegistryFarm>(`/farms/${encodeURIComponent(farmCode)}`)
+}
+
+/* ---------- Field operations ---------- */
+
+export function listOperations(params?: {
+  farm_code?: string
+  status?: string
+  operation_type?: string
+  assigned_to?: string
+}) {
+  const qs = new URLSearchParams()
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  if (params?.status) qs.set('status', params.status)
+  if (params?.operation_type) qs.set('operation_type', params.operation_type)
+  if (params?.assigned_to) qs.set('assigned_to', params.assigned_to)
+  const query = qs.toString()
+  return platformRequest<Operation[]>(`/operations${query ? `?${query}` : ''}`)
+}
+
+export function getOperation(operationId: string) {
+  return platformRequest<Operation>(`/operations/${encodeURIComponent(operationId)}`)
+}
+
+export function createOperation(payload: CreateOperationPayload) {
+  return platformRequest<Operation>('/operations', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateOperationStatus(operationId: string, status: string, note?: string) {
+  return platformRequest<Operation>(`/operations/${encodeURIComponent(operationId)}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status, note }),
+  })
+}
+
+export async function uploadOperationAttachment(operationId: string, file: File) {
+  const form = new FormData()
+  form.append('file', file)
+  return platformRequest<Operation>(`/operations/${encodeURIComponent(operationId)}/attachments`, {
+    method: 'POST',
+    body: form,
+  })
+}
+
+/* ---------- Operations dashboard ---------- */
+
+export function getOpsDashboard() {
+  return platformRequest<OpsDashboard>('/ops/dashboard')
 }

@@ -16,8 +16,24 @@ from sqlalchemy.orm import Session
 from . import models, schemas, pdf
 from .auth import ADMIN_PASSWORD, issue_token, require_admin
 from .database import get_db
+from .platform_auth import router as platform_auth_router
+from .farm_ops_routers import (
+    assets_router, farms_router, irrigation_router, operations_router,
+    ops_dashboard_router, pests_router, workforce_router,
+)
 
 router = APIRouter(prefix="/api/platform")
+
+# Farm Operations Management Platform — mounted alongside the existing
+# services-platform endpoints, all still under /api/platform.
+router.include_router(platform_auth_router)
+router.include_router(farms_router)
+router.include_router(operations_router)
+router.include_router(pests_router)
+router.include_router(irrigation_router)
+router.include_router(assets_router)
+router.include_router(workforce_router)
+router.include_router(ops_dashboard_router)
 
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "/app/data/uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
