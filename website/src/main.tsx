@@ -24,6 +24,8 @@ import FarmRegistryPage from './pages/FarmRegistryPage'
 import FarmRegistryDetailPage from './pages/FarmRegistryDetailPage'
 import FieldOperationsPage from './pages/FieldOperationsPage'
 import OperationDetailPage from './pages/OperationDetailPage'
+import PestManagementPage from './pages/PestManagementPage'
+import PestDetectionDetailPage from './pages/PestDetectionDetailPage'
 import ProtectedRoute from './components/platform/ProtectedRoute'
 import { PlatformAuthProvider } from './contexts/PlatformAuthContext'
 import { initTheme } from './lib/theme'
@@ -56,6 +58,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/platform/farms/:farmCode" element={<ProtectedRoute><FarmRegistryDetailPage /></ProtectedRoute>} />
             <Route path="/platform/operations" element={<ProtectedRoute><FieldOperationsPage /></ProtectedRoute>} />
             <Route path="/platform/operations/:operationId" element={<ProtectedRoute><OperationDetailPage /></ProtectedRoute>} />
+            <Route path="/platform/pests" element={<ProtectedRoute><PestManagementPage /></ProtectedRoute>} />
+            <Route path="/platform/pests/:detectionId" element={<ProtectedRoute><PestDetectionDetailPage /></ProtectedRoute>} />
           </Routes>
         </PlatformAuthProvider>
       </BrowserRouter>

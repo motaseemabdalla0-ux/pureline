@@ -551,6 +551,7 @@
     "loginCta": "Platform Login",
     "platformDashboard": "Ops Dashboard",
     "myFarms": "My Farms",
+    "pestManagement": "Pest Management",
     "logout": "Logout"
   },
   "serviceDetail": {
@@ -882,5 +883,73 @@
     "attachments": "Attachments",
     "noAttachments": "No files attached yet.",
     "uploadFile": "Upload File"
+  },
+  "platformPests": {
+    "eyebrow": "Integrated Pest Management",
+    "title": "Pest Management",
+    "subtitle": "Monitor infestations, trap counts and treatments across the farm portfolio.",
+    "kpi": {
+      "activeInfestations": "Active Infestations",
+      "highRiskFarms": "High-Risk Farms",
+      "treatmentInProgress": "Treatment In Progress"
+    },
+    "trendTitle": "6-Month Detection Trend",
+    "noTrend": "No detection history yet.",
+    "detectionsSection": "Pest Detections",
+    "newDetection": "New Detection",
+    "allFarms": "All Farms",
+    "allRiskLevels": "All Risk Levels",
+    "allStatuses": "All Statuses",
+    "empty": "No detections match your filters.",
+    "risk": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "status": {
+      "active": "Active",
+      "monitoring": "Monitoring",
+      "treated": "Treated",
+      "resolved": "Resolved"
+    },
+    "newForm": {
+      "title": "Log Pest Detection",
+      "pestType": "Pest Type",
+      "riskLevel": "Risk Level",
+      "locationNotes": "Location notes (optional)",
+      "submit": "Log Detection"
+    },
+    "trapsSection": "Trap Monitoring",
+    "newTrapRecord": "Add Trap Record",
+    "noTraps": "No trap records logged yet.",
+    "trapForm": {
+      "title": "Add Trap Record",
+      "trapCode": "Trap code",
+      "pestType": "Pest Type",
+      "count": "Count",
+      "submit": "Save Trap Record"
+    },
+    "trapCount": "{{count}} caught"
+  },
+  "platformPestDetail": {
+    "title": "Detection Details",
+    "backToList": "Back to Pest Management",
+    "notFound": "This detection could not be found.",
+    "detectedOn": "Detected",
+    "locationNotes": "Location Notes",
+    "changeStatus": "Change Status",
+    "updateStatus": "Update",
+    "treatmentsSection": "Treatment History",
+    "noTreatments": "No treatments logged yet for this detection.",
+    "effectiveness": "Effectiveness: {{rating}}/5",
+    "logTreatment": {
+      "title": "Log Treatment",
+      "method": "Treatment method",
+      "notes": "Notes (optional)",
+      "effectiveness": "Effectiveness rating (optional)",
+      "selectRating": "No rating",
+      "submit": "Log Treatment"
+    }
   }
 }

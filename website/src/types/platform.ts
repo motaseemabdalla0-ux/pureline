@@ -266,7 +266,7 @@ export interface OpsDashboard {
 export type PestCategory = 'red_palm_weevil' | 'date_palm_pest' | 'greenhouse_pest' | 'custom'
 
 export interface PestType {
-  id: string
+  id: number
   name: string
   category: PestCategory
   description?: string
@@ -278,55 +278,52 @@ export type PestDetectionStatus = 'active' | 'monitoring' | 'treated' | 'resolve
 export interface PestDetection {
   detection_id: string
   farm_code: string
-  pest_type_id: string
+  pest_type_id: number
   risk_level: PestRiskLevel
-  detected_by: string
+  detected_by: number | null
   detected_date: string
   location_notes?: string
   status: PestDetectionStatus
+  created_at: string
 }
 
 export interface CreatePestDetectionPayload {
   farm_code: string
-  pest_type_id: string
+  pest_type_id: number
   risk_level: PestRiskLevel
-  detected_by: string
   location_notes?: string
 }
 
 export interface PestTrap {
-  id: string
+  id: number
   farm_code: string
   trap_code: string
-  pest_type_id: string
+  pest_type_id: number
   count: number
   checked_date: string
-  checked_by: string
+  checked_by: number | null
 }
 
 export interface CreatePestTrapPayload {
   farm_code: string
   trap_code: string
-  pest_type_id: string
+  pest_type_id: number
   count: number
-  checked_by: string
 }
 
 export interface PestTreatment {
-  id: string
+  id: number
   detection_id: string
   treatment_date: string
   method: string
-  performed_by: string
+  performed_by: number | null
   notes?: string
   effectiveness_rating?: number
 }
 
 export interface CreatePestTreatmentPayload {
   detection_id: string
-  treatment_date: string
   method: string
-  performed_by: string
   notes?: string
   effectiveness_rating?: number
 }

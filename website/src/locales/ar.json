@@ -550,6 +550,7 @@
     "loginCta": "تسجيل الدخول للمنصة",
     "platformDashboard": "لوحة العمليات",
     "myFarms": "مزارعي",
+    "pestManagement": "إدارة الآفات",
     "logout": "تسجيل الخروج"
   },
   "serviceDetail": {
@@ -880,5 +881,73 @@
     "attachments": "المرفقات",
     "noAttachments": "لا توجد ملفات مرفقة بعد.",
     "uploadFile": "رفع ملف"
+  },
+  "platformPests": {
+    "eyebrow": "الإدارة المتكاملة للآفات",
+    "title": "إدارة الآفات",
+    "subtitle": "راقب الإصابات وأعداد المصائد وعمليات المعالجة عبر محفظة المزارع.",
+    "kpi": {
+      "activeInfestations": "الإصابات النشطة",
+      "highRiskFarms": "المزارع عالية الخطورة",
+      "treatmentInProgress": "المعالجة قيد التنفيذ"
+    },
+    "trendTitle": "اتجاه الاكتشافات خلال 6 أشهر",
+    "noTrend": "لا يوجد سجل اكتشافات بعد.",
+    "detectionsSection": "اكتشافات الآفات",
+    "newDetection": "اكتشاف جديد",
+    "allFarms": "كل المزارع",
+    "allRiskLevels": "كل مستويات الخطورة",
+    "allStatuses": "كل الحالات",
+    "empty": "لا توجد اكتشافات مطابقة لعوامل التصفية.",
+    "risk": {
+      "low": "منخفضة",
+      "medium": "متوسطة",
+      "high": "عالية",
+      "critical": "حرجة"
+    },
+    "status": {
+      "active": "نشطة",
+      "monitoring": "قيد المراقبة",
+      "treated": "تمت المعالجة",
+      "resolved": "تم الحل"
+    },
+    "newForm": {
+      "title": "تسجيل اكتشاف آفة",
+      "pestType": "نوع الآفة",
+      "riskLevel": "مستوى الخطورة",
+      "locationNotes": "ملاحظات الموقع (اختياري)",
+      "submit": "تسجيل الاكتشاف"
+    },
+    "trapsSection": "مراقبة المصائد",
+    "newTrapRecord": "إضافة سجل مصيدة",
+    "noTraps": "لا توجد سجلات مصائد بعد.",
+    "trapForm": {
+      "title": "إضافة سجل مصيدة",
+      "trapCode": "رمز المصيدة",
+      "pestType": "نوع الآفة",
+      "count": "العدد",
+      "submit": "حفظ سجل المصيدة"
+    },
+    "trapCount": "{{count}} تم اصطيادها"
+  },
+  "platformPestDetail": {
+    "title": "تفاصيل الاكتشاف",
+    "backToList": "العودة إلى إدارة الآفات",
+    "notFound": "تعذر العثور على هذا الاكتشاف.",
+    "detectedOn": "تاريخ الاكتشاف",
+    "locationNotes": "ملاحظات الموقع",
+    "changeStatus": "تغيير الحالة",
+    "updateStatus": "تحديث",
+    "treatmentsSection": "سجل المعالجات",
+    "noTreatments": "لا توجد معالجات مسجلة لهذا الاكتشاف بعد.",
+    "effectiveness": "الفعالية: {{rating}}/5",
+    "logTreatment": {
+      "title": "تسجيل معالجة",
+      "method": "طريقة المعالجة",
+      "notes": "ملاحظات (اختياري)",
+      "effectiveness": "تقييم الفعالية (اختياري)",
+      "selectRating": "بدون تقييم",
+      "submit": "تسجيل المعالجة"
+    }
   }
 }

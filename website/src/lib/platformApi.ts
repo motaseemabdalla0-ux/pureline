@@ -6,10 +6,18 @@ import type {
   Consultation,
   CreateConsultationPayload,
   CreateOperationPayload,
+  CreatePestDetectionPayload,
+  CreatePestTrapPayload,
+  CreatePestTreatmentPayload,
   CreateQuotationPayload,
   CreateServiceRequestPayload,
   Operation,
   OpsDashboard,
+  PestDashboard,
+  PestDetection,
+  PestTrap,
+  PestTreatment,
+  PestType,
   PlatformLoginPayload,
   PlatformLoginResponse,
   PlatformUser,
@@ -287,4 +295,57 @@ export async function uploadOperationAttachment(operationId: string, file: File)
 
 export function getOpsDashboard() {
   return platformRequest<OpsDashboard>('/ops/dashboard')
+}
+
+/* ---------- Pest management (IPM) ---------- */
+
+export function listPestTypes() {
+  return platformRequest<PestType[]>('/pests/types')
+}
+
+export function listPestDetections(params?: { farm_code?: string; risk_level?: string; status?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  if (params?.risk_level) qs.set('risk_level', params.risk_level)
+  if (params?.status) qs.set('status', params.status)
+  const query = qs.toString()
+  return platformRequest<PestDetection[]>(`/pests/detections${query ? `?${query}` : ''}`)
+}
+
+export function createPestDetection(payload: CreatePestDetectionPayload) {
+  return platformRequest<PestDetection>('/pests/detections', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updatePestDetectionStatus(detectionId: string, status: string) {
+  return platformRequest<PestDetection>(`/pests/detections/${encodeURIComponent(detectionId)}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  })
+}
+
+export function listPestTraps(params?: { farm_code?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  const query = qs.toString()
+  return platformRequest<PestTrap[]>(`/pests/traps${query ? `?${query}` : ''}`)
+}
+
+export function createPestTrap(payload: CreatePestTrapPayload) {
+  return platformRequest<PestTrap>('/pests/traps', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+/** The backend only exposes each pest treatment's public detection reference
+ * indirectly (its internal numeric FK is never returned by the detections
+ * endpoints), so treatments are always fetched unfiltered and matched to a
+ * detection client-side. */
+export function listPestTreatments() {
+  return platformRequest<PestTreatment[]>('/pests/treatments')
+}
+
+export function createPestTreatment(payload: CreatePestTreatmentPayload) {
+  return platformRequest<PestTreatment>('/pests/treatments', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function getPestDashboard() {
+  return platformRequest<PestDashboard>('/pests/dashboard')
 }
