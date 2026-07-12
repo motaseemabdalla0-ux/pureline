@@ -43,4 +43,13 @@ html[dir='rtl'] body { font-family: 'Tajawal', 'Cairo', sans-serif; }
 
 @keyframes gis-scan {
   0% { transform: translateY(-20%); }
-  
+  100% { transform: translateY(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gis-scanline { animation: none; opacity: 0.05; }
+}
+
+/* thin scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #0F6B3A55; border-radius: 8px; }
