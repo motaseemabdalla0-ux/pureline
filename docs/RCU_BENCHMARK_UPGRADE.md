@@ -114,3 +114,72 @@ Verification script kept at `scripts/verify_gis_users.ps1`.
 - Weather is fetched client-side; a backend cache would remove the per-visitor API calls.
 - Chrome-extension walkthrough of the logged-in RCU portal remains available as a future pass to
   spot any capability not visible from public sources.
+
+---
+
+# Phase 2 — Priority-Module Expansion (2026-07-13, commit `e188ba2`)
+
+## Benchmark & gap analysis
+
+The planned authenticated Chrome walkthrough of agriculture.rcu.gov.sa was still blocked (extension
+never connected in-session); per user approval, the explicit priority-module list was used as the
+benchmark. Audit result: Farm Operations, Pest Management, Reporting, Administration, Consultancy,
+Service Requests, Quotations, Farm Monitoring and Satellite Intelligence already had equivalents.
+Missing entirely — all built this phase:
+
+| Module | What was built |
+|---|---|
+| **Traps Management** | Full trap registry (code, farm, target pest, GPS, status lifecycle: active/needs service/damaged/removed) layered over the existing per-check `TrapRecord` logs; per-trap last-check + catch count; dashboard (total/active/checks/catch per week); GIS placement map; status workflow UI. `/platform/traps` |
+| **Recycling Stations** | Station registry (code, region, GPS, capacity t/mo, accepted materials, status) + intake ledger (material, kg, source farm); dashboards (monthly kg, by-material totals); stations map; inline intake logging. `/platform/recycling` |
+| **Regions Management** | Region entities (code, EN/AR names, description, activate/deactivate) with live farm counts; admin CRUD. `/platform/regions` |
+| **Farm Operators Management** | Operator registry (license, contacts, region, status: active/suspended/retired, operated-farm assignments linking to farm profiles); staff/admin CRUD. `/platform/operators` |
+| **Advanced GIS Tools** | FarmGisMap upgraded: fullscreen mode, click-to-measure distance tool (haversine, live km/m tooltip), point-marker overlay layer (traps amber / stations blue) with popups + legend entries. |
+| **NDVI Analytics Enhancements** | One-click CSV export of the full 36-month per-farm NDVI series; 12- vs 36-month change comparison panel per farm; health-status distribution chart. |
+
+## Backend additions
+
+- `models.py`: `Region`, `FarmOperator` (JSON farm_codes), `Trap`, `RecyclingStation`,
+  `RecyclingIntake` (new tables — created automatically by `create_all()`, no column migrations).
+- `farm_ops_routers.py`: sections 14–17 — `/api/platform/regions`, `/operators`, `/traps-registry`
+  (+`/dashboard`), `/recycling/stations` (+intakes, `/dashboard`). Reads open (site pattern),
+  writes staff/admin, region CRUD admin-only.
+- `seed.py`: 3 regions, 3 operators (real farm assignments), 8 traps, 2 recycling stations.
+- One-time data migration `scripts/backfill_farm_coords.sql`: backfilled the 6 real farms'
+  centroids (from the real boundary dataset) into `farms.coordinates_lat/lng`, and positioned the
+  seeded traps around them.
+
+## Frontend additions
+
+New pages: `TrapsManagementPage`, `RecyclingStationsPage`, `RegionsManagementPage`,
+`FarmOperatorsPage` (all EN/AR, role-gated writes, behind platform login). Routes:
+`/platform/{traps,recycling,regions,operators}`. Navbar (desktop+mobile) gained the four links;
+Operations Dashboard gained Active-traps and Recycled-this-month KPIs (loaded non-blocking).
+`platformApi.ts` + `types/platform.ts` extended with the four module clients/types.
+
+## Verification (all passed)
+
+- `npm run build`: clean, 2,060 modules, zero TS errors (one intermediate error — missing `Trap`
+  type import — caught by the build and fixed).
+- Docker images rebuilt, stack redeployed, backend reseeded (new tables + demo data confirmed).
+- Live API cycle: regions list (3, farm counts correct) → operators (3, farm links) → traps (8,
+  real GPS) → traps dashboard → station intake POST (250 kg) reflected in recycling dashboard →
+  region create + deactivate.
+- Routes: `/platform/{traps,recycling,regions,operators,users,dashboard}`, `/ndvi-analytics`, `/`
+  all 200 via nginx.
+- Mobile: all new pages use the existing responsive grid system (KPI grids collapse to 2-col,
+  tables scroll horizontally, nav links present in the mobile menu).
+- **Public URL (rotated by Cloudflare, auto-recovered by watchdog):**
+  `https://rick-analog-glenn-stationery.trycloudflare.com` — verified 200 + live API through the
+  tunnel.
+
+## Remaining recommendations (path to full enterprise grade)
+
+1. Authenticated RCU walkthrough once the Chrome extension connects, to catch capabilities not
+   visible from public sources.
+2. Leaflet-draw zone/boundary editing (irrigation zones and new-farm boundaries drawn on-map,
+   stored as GeoJSON).
+3. Notifications: in-app alert inbox + email/WhatsApp dispatch on pest/NDVI/irrigation thresholds.
+4. Audit log surfacing in the admin portal (ActivityLog exists but has no dedicated viewer).
+5. Report builder: scheduled PDF/Excel exports combining NDVI + operations + irrigation per farm.
+6. Named Cloudflare tunnel (permanent URL) — needs the user's Cloudflare account.
+7. Route-level code splitting for the main bundle (882 kB minified / 233 kB gzip).
