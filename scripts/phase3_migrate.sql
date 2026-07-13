@@ -1,0 +1,1 @@
+ALTER TABLE farms ADD COLUMN IF NOT EXISTS boundary_json JSON;

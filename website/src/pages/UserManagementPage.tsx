@@ -1,12 +1,13 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  Users, Search, Loader2, AlertTriangle, Plus, X, ShieldCheck, ShieldOff, KeyRound, Check,
+  Users, Search, Loader2, AlertTriangle, Plus, X, ShieldCheck, ShieldOff, KeyRound, Check, Download, Grid3x3,
 } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import { usePlatformAuth } from '../contexts/PlatformAuthContext'
 import { createPlatformUser, listPlatformUsers, updatePlatformUser, PlatformApiError } from '../lib/platformApi'
+import { exportRowsAsCsv } from '../lib/exportCsv'
 import type { CreatePlatformUserPayload, PlatformManagedUser, PlatformRole } from '../types/platform'
 
 const ROLES: PlatformRole[] = ['admin', 'staff', 'customer']
@@ -20,6 +21,25 @@ const roleStyles: Record<PlatformRole, string> = {
 const EMPTY_FORM: CreatePlatformUserPayload = {
   username: '', password: '', full_name: '', role: 'customer', email: '', staff_title: '', phone: '',
 }
+
+/** Role-based permissions matrix (RCU-style admin reference). Mirrors the
+ * actual backend enforcement: reads open to all logged-in roles, writes
+ * staff/admin, administration admin-only. */
+const PERMISSION_MATRIX: { capability: string; admin: boolean; staff: boolean; customer: boolean }[] = [
+  { capability: 'viewDashboards', admin: true, staff: true, customer: true },
+  { capability: 'viewFarmsNdvi', admin: true, staff: true, customer: true },
+  { capability: 'manageOperations', admin: true, staff: true, customer: false },
+  { capability: 'managePestsTraps', admin: true, staff: true, customer: false },
+  { capability: 'manageIrrigation', admin: true, staff: true, customer: false },
+  { capability: 'manageAssets', admin: true, staff: true, customer: false },
+  { capability: 'manageRecycling', admin: true, staff: true, customer: false },
+  { capability: 'manageOperators', admin: true, staff: true, customer: false },
+  { capability: 'editBoundaries', admin: true, staff: true, customer: false },
+  { capability: 'viewWorkforce', admin: true, staff: true, customer: false },
+  { capability: 'manageRegions', admin: true, staff: false, customer: false },
+  { capability: 'manageUsers', admin: true, staff: false, customer: false },
+  { capability: 'viewAuditLog', admin: true, staff: false, customer: false },
+]
 
 export default function UserManagementPage() {
   const { t, i18n } = useTranslation()
@@ -131,10 +151,19 @@ export default function UserManagementPage() {
             </h1>
             <p className="mt-2 text-sm text-neutral-dark/60 dark:text-neutral-light/60">{t('userManagement.subtitle')}</p>
           </div>
-          <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
-            {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-            {showForm ? t('common.cancel') : t('userManagement.newUser')}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => exportRowsAsCsv('pureline-users', ['username', 'full_name', 'role', 'email', 'phone', 'status', 'created'],
+                filtered.map((u) => [u.username, u.full_name, u.role, u.email, u.phone, u.is_active ? 'active' : 'deactivated', u.created_at]))}
+              className="btn-ghost"
+            >
+              <Download className="h-4 w-4" /> {t('common.export')}
+            </button>
+            <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
+              {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {showForm ? t('common.cancel') : t('userManagement.newUser')}
+            </button>
+          </div>
         </div>
 
         {/* KPI row */}
@@ -304,6 +333,40 @@ export default function UserManagementPage() {
               </table>
             </div>
           )}
+        </div>
+
+        {/* Role-based permissions matrix */}
+        <div className="mt-16">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Grid3x3 className="h-5 w-5 text-primary dark:text-secondary" /> {t('userManagement.matrix.title')}
+          </h2>
+          <p className="mt-1.5 text-sm text-neutral-dark/50 dark:text-neutral-light/50">{t('userManagement.matrix.subtitle')}</p>
+          <div className="mt-6 overflow-x-auto rounded-3xl border border-black/5 bg-white shadow-sm dark:border-white/10 dark:bg-white/5">
+            <table className="w-full min-w-[560px] text-sm">
+              <thead>
+                <tr className="border-b border-black/5 text-[11px] font-bold uppercase tracking-wider text-neutral-dark/40 dark:border-white/10 dark:text-neutral-light/40">
+                  <th className="px-5 py-4 text-start">{t('userManagement.matrix.capability')}</th>
+                  <th className="px-5 py-4 text-center">{t('userManagement.roles.admin')}</th>
+                  <th className="px-5 py-4 text-center">{t('userManagement.roles.staff')}</th>
+                  <th className="px-5 py-4 text-center">{t('userManagement.roles.customer')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PERMISSION_MATRIX.map((row) => (
+                  <tr key={row.capability} className="border-b border-black/5 last:border-0 dark:border-white/5">
+                    <td className="px-5 py-3 text-xs font-semibold">{t(`userManagement.matrix.cap.${row.capability}`)}</td>
+                    {([row.admin, row.staff, row.customer] as const).map((allowed, i) => (
+                      <td key={i} className="px-5 py-3 text-center">
+                        {allowed
+                          ? <Check className="mx-auto h-4 w-4 text-primary dark:text-secondary" />
+                          : <X className="mx-auto h-4 w-4 text-neutral-dark/20 dark:text-neutral-light/20" />}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </PlatformPageShell>

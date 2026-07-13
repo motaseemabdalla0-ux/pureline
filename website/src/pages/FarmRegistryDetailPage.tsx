@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ArrowUpRight, Loader2, AlertTriangle, MapPin, Tractor, User, Ruler, Calendar, ScanLine } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, Loader2, AlertTriangle, MapPin, Tractor, User, Ruler, Calendar, ScanLine, PenLine, Save, Trash2, X } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import GisFrame from '../components/ui/GisFrame'
@@ -9,7 +9,8 @@ import SatelliteImage from '../components/ui/SatelliteImage'
 import FieldBoundary from '../components/ui/FieldBoundary'
 import FarmHealthWidget from '../components/satellite/FarmHealthWidget'
 import VegetationTrendChart from '../components/satellite/VegetationTrendChart'
-import { getRegistryFarm, PlatformApiError } from '../lib/platformApi'
+import { clearFarmBoundary, getRegistryFarm, saveFarmBoundary, PlatformApiError } from '../lib/platformApi'
+import { usePlatformAuth } from '../contexts/PlatformAuthContext'
 import { regionalSourceForFarm } from '../lib/ndvi'
 import { getRealFarmImagery, REAL_FARM_IMAGE_BASE_PATH } from '../lib/realFarmImagery'
 import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
@@ -42,6 +43,11 @@ export default function FarmRegistryDetailPage() {
   const [error, setError] = useState(false)
   const [notFound, setNotFound] = useState(false)
   const [loading, setLoading] = useState(true)
+  const { user } = usePlatformAuth()
+  const canEdit = user?.role === 'admin' || user?.role === 'staff'
+  const [drawing, setDrawing] = useState(false)
+  const [drawPoints, setDrawPoints] = useState<[number, number][]>([])
+  const [savingBoundary, setSavingBoundary] = useState(false)
 
   useEffect(() => {
     if (!farmCode) return
@@ -150,12 +156,68 @@ export default function FarmRegistryDetailPage() {
             <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
               <MapPin className="h-5 w-5 text-primary dark:text-secondary" /> {t('gisMap.farmMapTitle')}
             </h2>
-            {getGisFarm(farm.farm_code) ? (
-              <LazyFarmGisMap farms={getGisFarms()} focusFarmId={farm.farm_code} height="380px" />
-            ) : (
-              <p className="rounded-2xl border border-black/5 bg-white p-6 text-sm text-neutral-dark/50 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-neutral-light/50">
-                {t('gisMap.noGeometry')}
-              </p>
+            <LazyFarmGisMap
+              farms={getGisFarms()}
+              focusFarmId={getGisFarm(farm.farm_code) ? farm.farm_code : undefined}
+              height="380px"
+              drawMode={drawing}
+              drawPoints={drawPoints}
+              onDrawPointsChange={setDrawPoints}
+              customRings={farm.boundary_json && !drawing
+                ? [{ id: 'custom', ring: farm.boundary_json, label: t('boundaryEditor.customLabel') }]
+                : []}
+            />
+            {canEdit && (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {!drawing ? (
+                  <>
+                    <button type="button" onClick={() => { setDrawing(true); setDrawPoints(farm.boundary_json ?? []) }} className="btn-ghost !px-3.5 !py-2 text-xs">
+                      <PenLine className="h-3.5 w-3.5" /> {farm.boundary_json ? t('boundaryEditor.edit') : t('boundaryEditor.draw')}
+                    </button>
+                    {farm.boundary_json && (
+                      <button
+                        type="button"
+                        disabled={savingBoundary}
+                        onClick={() => {
+                          setSavingBoundary(true)
+                          clearFarmBoundary(farm.farm_code).then(setFarm).catch(() => undefined).finally(() => setSavingBoundary(false))
+                        }}
+                        className="btn-ghost !px-3.5 !py-2 text-xs !text-red-500"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" /> {t('boundaryEditor.clear')}
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <span className="text-xs font-semibold text-neutral-dark/50 dark:text-neutral-light/50">
+                      {t('boundaryEditor.points', { count: drawPoints.length })}
+                    </span>
+                    <button
+                      type="button"
+                      disabled={drawPoints.length < 3 || savingBoundary}
+                      onClick={() => {
+                        setSavingBoundary(true)
+                        saveFarmBoundary(farm.farm_code, drawPoints)
+                          .then((f) => { setFarm(f); setDrawing(false); setDrawPoints([]) })
+                          .catch(() => undefined)
+                          .finally(() => setSavingBoundary(false))
+                      }}
+                      className="btn-primary !px-3.5 !py-2 text-xs"
+                    >
+                      {savingBoundary ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />} {t('boundaryEditor.save')}
+                    </button>
+                    {drawPoints.length > 0 && (
+                      <button type="button" onClick={() => setDrawPoints(drawPoints.slice(0, -1))} className="btn-ghost !px-3.5 !py-2 text-xs">
+                        {t('boundaryEditor.undo')}
+                      </button>
+                    )}
+                    <button type="button" onClick={() => { setDrawing(false); setDrawPoints([]) }} className="btn-ghost !px-3.5 !py-2 text-xs">
+                      <X className="h-3.5 w-3.5" /> {t('common.cancel')}
+                    </button>
+                  </>
+                )}
+              </div>
             )}
           </Reveal>
           <Reveal delay={0.05}>

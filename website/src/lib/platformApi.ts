@@ -57,6 +57,9 @@ import type {
   RecyclingIntake,
   CreateRecyclingIntakePayload,
   RecyclingDashboard,
+  PlatformNotification,
+  AuditEntry,
+  SearchResult,
 } from '../types/platform'
 
 const BASE = '/api/platform'
@@ -572,4 +575,52 @@ export function createRecyclingIntake(stationId: number, payload: CreateRecyclin
 
 export function getRecyclingDashboard() {
   return platformRequest<RecyclingDashboard>('/recycling/dashboard')
+}
+
+/* ---------- Notifications Center ---------- */
+
+export function listNotifications(unreadOnly = false) {
+  return platformRequest<PlatformNotification[]>(`/notifications${unreadOnly ? '?unread_only=true' : ''}`)
+}
+
+export function getUnreadCount() {
+  return platformRequest<{ unread: number }>('/notifications/unread-count')
+}
+
+export function markNotificationRead(id: number) {
+  return platformRequest<{ ok: boolean }>(`/notifications/${id}/read`, { method: 'POST' })
+}
+
+export function markAllNotificationsRead() {
+  return platformRequest<{ ok: boolean; marked: number }>('/notifications/read-all', { method: 'POST' })
+}
+
+/* ---------- Audit log ---------- */
+
+export function listAuditEntries(params?: { actor?: string; search?: string; limit?: number; offset?: number }) {
+  const qs = new URLSearchParams()
+  if (params?.actor) qs.set('actor', params.actor)
+  if (params?.search) qs.set('search', params.search)
+  if (params?.limit) qs.set('limit', String(params.limit))
+  if (params?.offset) qs.set('offset', String(params.offset))
+  const query = qs.toString()
+  return platformRequest<AuditEntry[]>(`/audit${query ? `?${query}` : ''}`)
+}
+
+/* ---------- Enterprise search ---------- */
+
+export function enterpriseSearch(q: string) {
+  return platformRequest<SearchResult>(`/search?q=${encodeURIComponent(q)}`)
+}
+
+/* ---------- Farm boundary editor ---------- */
+
+export function saveFarmBoundary(farmCode: string, ring: [number, number][]) {
+  return platformRequest<RegistryFarm>(`/farms/${encodeURIComponent(farmCode)}/boundary`, {
+    method: 'PATCH', body: JSON.stringify({ ring }),
+  })
+}
+
+export function clearFarmBoundary(farmCode: string) {
+  return platformRequest<RegistryFarm>(`/farms/${encodeURIComponent(farmCode)}/boundary`, { method: 'DELETE' })
 }

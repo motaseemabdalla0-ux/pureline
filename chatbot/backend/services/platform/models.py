@@ -164,6 +164,9 @@ class Farm(Base):
     coordinates_lng = Column(Float, nullable=True)
     area_hectares = Column(Float, nullable=True)
     owner_name = Column(String(200), nullable=True)
+    # Custom field-boundary ring drawn in the platform's boundary editor:
+    # list of [lat, lng] pairs (closed ring). Null when no custom boundary.
+    boundary_json = Column(JSON, nullable=True)
 
 
 # ======================================================================
@@ -593,3 +596,29 @@ class RecyclingIntake(Base):
     source_farm_code = Column(String(60), nullable=True, index=True)
     received_date = Column(DateTime, default=datetime.utcnow, index=True)
     notes = Column(String(500), nullable=True)
+
+
+# ======================================================================
+# Notifications Center
+# ======================================================================
+class Notification(Base):
+    """Platform notification. ``audience`` targets a role ('admin', 'staff',
+    'all') — per-user read state is tracked in ``NotificationRead``."""
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    kind = Column(String(40), default="info", index=True)  # info | pest | operation | irrigation | recycling | user | system
+    title = Column(String(300), nullable=False)
+    body = Column(String(600), nullable=True)
+    link = Column(String(300), nullable=True)  # in-app route, e.g. /platform/pests/PL-PEST-...
+    audience = Column(String(20), default="staff", index=True)  # admin | staff | all
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+
+class NotificationRead(Base):
+    __tablename__ = "notification_reads"
+
+    id = Column(Integer, primary_key=True, index=True)
+    notification_id = Column(Integer, ForeignKey("notifications.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("platform_users.id"), nullable=False, index=True)
+    read_at = Column(DateTime, default=datetime.utcnow)

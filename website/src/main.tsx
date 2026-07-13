@@ -36,6 +36,9 @@ import TrapsManagementPage from './pages/TrapsManagementPage'
 import RecyclingStationsPage from './pages/RecyclingStationsPage'
 import RegionsManagementPage from './pages/RegionsManagementPage'
 import FarmOperatorsPage from './pages/FarmOperatorsPage'
+import NotificationsCenterPage from './pages/NotificationsCenterPage'
+import AuditLogPage from './pages/AuditLogPage'
+import EnterpriseSearchPage from './pages/EnterpriseSearchPage'
 import ProtectedRoute from './components/platform/ProtectedRoute'
 import { PlatformAuthProvider } from './contexts/PlatformAuthContext'
 import { initTheme } from './lib/theme'
@@ -80,6 +83,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/platform/recycling" element={<ProtectedRoute><RecyclingStationsPage /></ProtectedRoute>} />
             <Route path="/platform/regions" element={<ProtectedRoute><RegionsManagementPage /></ProtectedRoute>} />
             <Route path="/platform/operators" element={<ProtectedRoute><FarmOperatorsPage /></ProtectedRoute>} />
+            <Route path="/platform/notifications" element={<ProtectedRoute><NotificationsCenterPage /></ProtectedRoute>} />
+            <Route path="/platform/audit" element={<ProtectedRoute><AuditLogPage /></ProtectedRoute>} />
+            <Route path="/platform/search" element={<ProtectedRoute><EnterpriseSearchPage /></ProtectedRoute>} />
           </Routes>
         </PlatformAuthProvider>
       </BrowserRouter>

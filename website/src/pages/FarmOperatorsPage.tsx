@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Contact, Loader2, AlertTriangle, Plus, X, Search, Phone, Mail } from 'lucide-react'
+import { Contact, Loader2, AlertTriangle, Plus, X, Search, Phone, Mail, Download } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import { Link } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { usePlatformAuth } from '../contexts/PlatformAuthContext'
 import {
   createFarmOperator, listFarmOperators, listRegistryFarms, updateFarmOperator, PlatformApiError,
 } from '../lib/platformApi'
+import { exportRowsAsCsv } from '../lib/exportCsv'
 import type { CreateFarmOperatorPayload, FarmOperator, OperatorStatus, RegistryFarm } from '../types/platform'
 
 const OPERATOR_STATUSES: OperatorStatus[] = ['active', 'suspended', 'retired']
@@ -127,12 +128,21 @@ export default function FarmOperatorsPage() {
             </h1>
             <p className="mt-2 text-sm text-neutral-dark/60 dark:text-neutral-light/60">{t('operatorsPage.subtitle')}</p>
           </div>
-          {canManage && (
-            <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
-              {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-              {showForm ? t('common.cancel') : t('operatorsPage.newOperator')}
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => exportRowsAsCsv('pureline-operators', ['code', 'name', 'company', 'region', 'license', 'status', 'farms'],
+                filtered.map((o) => [o.operator_code, o.full_name, o.company, o.region, o.license_no, o.status, o.farm_codes.join('; ')]))}
+              className="btn-ghost"
+            >
+              <Download className="h-4 w-4" /> {t('common.export')}
             </button>
-          )}
+            {canManage && (
+              <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
+                {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                {showForm ? t('common.cancel') : t('operatorsPage.newOperator')}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* KPIs */}

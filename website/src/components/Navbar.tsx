@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, Moon, Sun, Languages, Bot, ChevronDown, LayoutGrid, Send, Gauge,
-  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor, Bug, Droplets, Wrench, Users, UserCog, Crosshair, Recycle, Contact,
+  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor, Bug, Droplets, Wrench, Users, UserCog, Crosshair, Recycle, Contact, Search, ScrollText, Bell,
 } from 'lucide-react'
 import Logo from './ui/Logo'
 import { applyLangSideEffects } from '../i18n'
 import { toggleTheme, isDarkMode } from '../lib/theme'
 import { usePlatformAuth } from '../contexts/PlatformAuthContext'
+import NotificationsBell from './enterprise/NotificationsBell'
 
 const links = ['about', 'services', 'projects', 'technology', 'platform', 'contact'] as const
 
@@ -173,6 +174,15 @@ export default function Navbar() {
                   <UserCog className="h-4 w-4" /> {t('navPlatform.users')}
                 </Link>
               )}
+              {user?.role === 'admin' && (
+                <Link to="/platform/audit" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                  <ScrollText className="h-4 w-4" /> {t('navPlatform.audit')}
+                </Link>
+              )}
+              <Link to="/platform/search" aria-label={t('searchPage.title')} className="rounded-full p-2.5 text-neutral-dark/70 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/70 dark:hover:text-secondary">
+                <Search className="h-5 w-5" />
+              </Link>
+              <NotificationsBell />
               <button onClick={handleLogout} className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-500/10">
                 <LogOut className="h-4 w-4" /> {t('navPlatform.logout')}
               </button>
@@ -275,6 +285,17 @@ export default function Navbar() {
                       <UserCog className="h-4 w-4 shrink-0" /> {t('navPlatform.users')}
                     </Link>
                   )}
+                  {user?.role === 'admin' && (
+                    <Link to="/platform/audit" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                      <ScrollText className="h-4 w-4 shrink-0" /> {t('navPlatform.audit')}
+                    </Link>
+                  )}
+                  <Link to="/platform/search" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Search className="h-4 w-4 shrink-0" /> {t('navPlatform.search')}
+                  </Link>
+                  <Link to="/platform/notifications" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Bell className="h-4 w-4 shrink-0" /> {t('navPlatform.notifications')}
+                  </Link>
                   <button onClick={() => { setOpen(false); handleLogout() }} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold text-red-500 hover:bg-red-500/10">
                     <LogOut className="h-4 w-4 shrink-0" /> {t('navPlatform.logout')}
                   </button>

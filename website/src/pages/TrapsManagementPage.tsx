@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Crosshair, Loader2, AlertTriangle, Plus, X, Bug, Activity, ClipboardCheck } from 'lucide-react'
+import { Crosshair, Loader2, AlertTriangle, Plus, X, Bug, Activity, ClipboardCheck, Download } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
@@ -11,6 +11,7 @@ import {
   createTrap, getTrapsDashboard, listPestTypes, listRegistryFarms, listTraps, updateTrap,
   PlatformApiError,
 } from '../lib/platformApi'
+import { exportRowsAsCsv } from '../lib/exportCsv'
 import type {
   CreateTrapPayload, PestType, RegistryFarm, Trap, TrapStatus, TrapsDashboard,
 } from '../types/platform'
@@ -145,12 +146,21 @@ export default function TrapsManagementPage() {
             </h1>
             <p className="mt-2 text-sm text-neutral-dark/60 dark:text-neutral-light/60">{t('trapsPage.subtitle')}</p>
           </div>
-          {canManage && (
-            <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
-              {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-              {showForm ? t('common.cancel') : t('trapsPage.newTrap')}
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => exportRowsAsCsv('pureline-traps', ['trap_code', 'farm', 'pest', 'status', 'lat', 'lng', 'last_checked', 'last_count'],
+                filtered.map((tr) => [tr.trap_code, tr.farm_code, pestName(tr.pest_type_id), tr.status, tr.lat, tr.lng, tr.last_checked, tr.last_count]))}
+              className="btn-ghost"
+            >
+              <Download className="h-4 w-4" /> {t('common.export')}
             </button>
-          )}
+            {canManage && (
+              <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
+                {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                {showForm ? t('common.cancel') : t('trapsPage.newTrap')}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* KPIs */}

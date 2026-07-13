@@ -22,6 +22,13 @@ export interface GisMarker {
   color?: string
 }
 
+export interface GisRing {
+  id: string
+  ring: [number, number][]
+  color?: string
+  label?: string
+}
+
 export interface FarmGisMapProps {
   farms: GisFarm[]
   /** When set, the map zooms to this farm and dims the others. */
@@ -30,6 +37,12 @@ export interface FarmGisMapProps {
   /** Show "open farm page / NDVI / satellite" links inside popups. */
   showLinks?: boolean
   markers?: GisMarker[]
+  /** Extra custom boundary rings (e.g. drawn in the boundary editor). */
+  customRings?: GisRing[]
+  /** Boundary-editor mode: map clicks append to `drawPoints`. */
+  drawMode?: boolean
+  drawPoints?: [number, number][]
+  onDrawPointsChange?: (points: [number, number][]) => void
   /** Enable the advanced toolbar (fullscreen + measure). Default true. */
   tools?: boolean
   className?: string
@@ -104,6 +117,32 @@ function MeasureLayer({ active, points, setPoints }: {
   )
 }
 
+/** Boundary-editor click capture: appends clicked points to a parent-owned ring. */
+function DrawLayer({ active, points, onChange }: {
+  active: boolean
+  points: [number, number][]
+  onChange?: (p: [number, number][]) => void
+}) {
+  useMapEvents({
+    click(e) {
+      if (active && onChange) onChange([...points, [e.latlng.lat, e.latlng.lng]])
+    },
+  })
+  if (points.length === 0) return null
+  return (
+    <>
+      <Polygon
+        positions={points}
+        pathOptions={{ color: '#3b82f6', weight: 2, dashArray: '4 4', fillColor: '#3b82f6', fillOpacity: 0.12 }}
+      />
+      {points.map((p, i) => (
+        <CircleMarker key={i} center={p} radius={4}
+          pathOptions={{ color: '#ffffff', weight: 1.5, fillColor: '#3b82f6', fillOpacity: 1 }} />
+      ))}
+    </>
+  )
+}
+
 /**
  * Interactive GIS map (Leaflet): real Esri World Imagery / OSM base layers,
  * real field-boundary polygons colored by each farm's latest NDVI reading,
@@ -112,7 +151,8 @@ function MeasureLayer({ active, points, setPoints }: {
  * and click-to-measure distances.
  */
 export default function FarmGisMap({
-  farms, focusFarmId, height = '420px', showLinks = true, markers = [], tools = true, className = '',
+  farms, focusFarmId, height = '420px', showLinks = true, markers = [], customRings = [],
+  drawMode = false, drawPoints = [], onDrawPointsChange, tools = true, className = '',
 }: FarmGisMapProps) {
   const { t, i18n } = useTranslation()
   const lang = i18n.language.startsWith('ar') ? 'ar' : 'en'
@@ -161,7 +201,22 @@ export default function FarmGisMap({
 
         <FitBounds farms={farms} focusFarmId={focusFarmId} />
         <InvalidateOnResize dep={fullscreen} />
-        <MeasureLayer active={measuring} points={measurePoints} setPoints={setMeasurePoints} />
+        <MeasureLayer active={measuring && !drawMode} points={measurePoints} setPoints={setMeasurePoints} />
+        <DrawLayer active={drawMode} points={drawPoints} onChange={onDrawPointsChange} />
+
+        {customRings.map((r) => (
+          <Polygon
+            key={r.id}
+            positions={r.ring}
+            pathOptions={{ color: r.color ?? '#3b82f6', weight: 2, fillColor: r.color ?? '#3b82f6', fillOpacity: 0.15 }}
+          >
+            {r.label && (
+              <Tooltip permanent direction="center" className="!border-none !bg-transparent !shadow-none">
+                <span className="rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">{r.label}</span>
+              </Tooltip>
+            )}
+          </Polygon>
+        ))}
 
         {farms.map((f) => {
           const color = ndviColor(f.ndviValue)
@@ -259,9 +314,14 @@ export default function FarmGisMap({
           </button>
         </div>
       )}
-      {measuring && (
+      {measuring && !drawMode && (
         <div className="pointer-events-none absolute start-1/2 top-3 z-[500] -translate-x-1/2 rounded-full bg-accent px-3 py-1.5 text-[11px] font-bold text-neutral-dark">
           {t('gisMap.measureHint')}
+        </div>
+      )}
+      {drawMode && (
+        <div className="pointer-events-none absolute start-1/2 top-3 z-[500] -translate-x-1/2 rounded-full bg-blue-500 px-3 py-1.5 text-[11px] font-bold text-white">
+          {t('gisMap.drawHint')}
         </div>
       )}
 

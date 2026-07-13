@@ -162,6 +162,12 @@ def update_operation_status(operation_id: str, payload: schemas.OperationStatusI
     op.status = new_status
     db.add(models.OperationLogEntry(operation_id_fk=op.id, status=new_status, note=payload.note))
     _sync_assignment_status(db, models.AssignmentType.operation, op.id, _operation_to_assignment_status(new_status))
+    if new_status == models.OperationStatus.delayed:
+        notify(db, "operation", f"Operation delayed on {op.farm_code}",
+               f"{op.operation_id}" + (f" — {payload.note}" if payload.note else ""),
+               link=f"/platform/operations/{op.operation_id}")
+    log_activity(db, user.username, f"operation.status {op.operation_id} -> {payload.status}",
+                 {"farm": op.farm_code})
     db.commit()
     db.refresh(op)
     return op
@@ -251,6 +257,11 @@ def create_detection(payload: schemas.PestDetectionIn,
             staff_id=assignee_id, assignment_type=models.AssignmentType.pest_detection,
             reference_id=detection.id, status=models.AssignmentStatus.assigned,
         ))
+    notify(db, "pest", f"New pest detection on {payload.farm_code}",
+           f"{pest_type.name} · risk: {payload.risk_level}",
+           link=f"/platform/pests/{detection.detection_id}")
+    log_activity(db, user.username, f"pest.detection.created {detection.detection_id}",
+                 {"farm": payload.farm_code, "risk": payload.risk_level})
     db.commit()
     db.refresh(detection)
     return detection
@@ -857,6 +868,9 @@ def create_user(payload: schemas.PlatformUserCreateIn,
         full_name=payload.full_name, role=models.PlatformRole(payload.role),
         staff_title=payload.staff_title, phone=payload.phone,
     )
+    notify(db, "user", f"New {payload.role} account: {payload.full_name}",
+           f"@{payload.username}", link="/platform/users", audience="admin")
+    log_activity(db, _admin.username, f"user.created @{payload.username}", {"role": payload.role})
     db.commit()
     db.refresh(user)
     return user
@@ -893,6 +907,8 @@ def update_user(user_id: int, payload: schemas.PlatformUserUpdateIn,
         if len(payload.new_password) < 8:
             raise HTTPException(422, "Password must be at least 8 characters")
         user.password_hash, user.password_salt = _hash_password(payload.new_password)
+    log_activity(db, admin.username, f"user.updated @{user.username}",
+                 {k: v for k, v in payload.model_dump(exclude_unset=True).items() if k != "new_password"})
     db.commit()
     db.refresh(user)
     return user
@@ -929,6 +945,7 @@ def create_region(payload: schemas.RegionIn, db: Session = Depends(get_db),
         raise HTTPException(409, "Region code already exists")
     region = models.Region(**payload.model_dump())
     db.add(region)
+    log_activity(db, _admin.username, f"region.created {payload.code}", {"name": payload.name})
     db.commit()
     db.refresh(region)
     return region
@@ -978,6 +995,7 @@ def create_operator(payload: schemas.FarmOperatorIn, db: Session = Depends(get_d
                     _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
     op = models.FarmOperator(operator_code=_gen_operator_code(), **payload.model_dump())
     db.add(op)
+    log_activity(db, _user.username, f"operator.created {payload.full_name}", {})
     db.commit()
     db.refresh(op)
     return op
@@ -1043,6 +1061,7 @@ def create_trap(payload: schemas.TrapIn, db: Session = Depends(get_db),
         raise HTTPException(422, "Unknown pest_type_id")
     trap = models.Trap(**payload.model_dump())
     db.add(trap)
+    log_activity(db, _user.username, f"trap.created {payload.trap_code}", {"farm": payload.farm_code})
     db.commit()
     db.refresh(trap)
     return _trap_out(db, trap)
@@ -1059,6 +1078,10 @@ def update_trap(trap_code: str, payload: schemas.TrapUpdateIn, db: Session = Dep
         raise HTTPException(422, f"status must be one of: {', '.join(sorted(TRAP_STATUSES))}")
     for field, value in data.items():
         setattr(trap, field, value)
+    if data.get("status") in ("needs_service", "damaged"):
+        notify(db, "pest", f"Trap {trap.trap_code} marked {data['status'].replace('_', ' ')}",
+               f"Farm {trap.farm_code}", link="/platform/traps")
+    log_activity(db, _user.username, f"trap.updated {trap.trap_code}", data)
     db.commit()
     db.refresh(trap)
     return _trap_out(db, trap)
@@ -1175,6 +1198,8 @@ def create_intake(station_id: int, payload: schemas.RecyclingIntakeIn,
         raise HTTPException(422, "quantity_kg must be positive")
     intake = models.RecyclingIntake(station_id=station_id, **payload.model_dump())
     db.add(intake)
+    log_activity(db, _user.username, f"recycling.intake {station.station_code}",
+                 {"material": payload.material, "kg": payload.quantity_kg})
     db.commit()
     db.refresh(intake)
     return intake
@@ -1204,3 +1229,247 @@ def recycling_dashboard(db: Session = Depends(get_db)):
         "intake_month_kg": month_kg,
         "intake_by_material_kg": by_material,
     }
+
+
+# ======================================================================
+# 18. Enterprise services: Notifications, Audit Log, Search, Boundaries
+# ======================================================================
+
+def notify(db: Session, kind: str, title: str, body: str | None = None,
+           link: str | None = None, audience: str = "staff") -> None:
+    """Insert a platform notification (committed with the caller's commit)."""
+    db.add(models.Notification(kind=kind, title=title, body=body, link=link, audience=audience))
+
+
+def log_activity(db: Session, actor: str, action: str, meta: dict | None = None) -> None:
+    """Append an audit-log entry (committed with the caller's commit)."""
+    db.add(models.ActivityLog(actor=actor, action=action, meta=meta or {}))
+
+
+notifications_router = APIRouter(prefix="/notifications", tags=["notifications"])
+
+
+def _audiences_for(role: str) -> list[str]:
+    if role == "admin":
+        return ["all", "staff", "admin"]
+    if role == "staff":
+        return ["all", "staff"]
+    return ["all"]
+
+
+@notifications_router.get("", response_model=list[schemas.NotificationOut])
+def list_notifications(unread_only: bool = False, limit: int = 50,
+                       db: Session = Depends(get_db),
+                       user: models.PlatformUser = Depends(require_platform_user())):
+    role = user.role.value if hasattr(user.role, "value") else user.role
+    q = (
+        db.query(models.Notification)
+        .filter(models.Notification.audience.in_(_audiences_for(role)))
+        .order_by(models.Notification.created_at.desc())
+        .limit(min(limit, 200))
+    )
+    items = q.all()
+    read_ids = {
+        r.notification_id for r in
+        db.query(models.NotificationRead).filter(models.NotificationRead.user_id == user.id).all()
+    }
+    out = []
+    for n in items:
+        o = schemas.NotificationOut.model_validate(n)
+        o.read = n.id in read_ids
+        if not unread_only or not o.read:
+            out.append(o)
+    return out
+
+
+@notifications_router.get("/unread-count")
+def unread_count(db: Session = Depends(get_db),
+                 user: models.PlatformUser = Depends(require_platform_user())):
+    role = user.role.value if hasattr(user.role, "value") else user.role
+    total = (
+        db.query(func.count(models.Notification.id))
+        .filter(models.Notification.audience.in_(_audiences_for(role))).scalar() or 0
+    )
+    read = (
+        db.query(func.count(models.NotificationRead.id))
+        .join(models.Notification, models.Notification.id == models.NotificationRead.notification_id)
+        .filter(models.NotificationRead.user_id == user.id,
+                models.Notification.audience.in_(_audiences_for(role))).scalar() or 0
+    )
+    return {"unread": max(0, int(total) - int(read))}
+
+
+@notifications_router.post("/{notification_id}/read")
+def mark_read(notification_id: int, db: Session = Depends(get_db),
+              user: models.PlatformUser = Depends(require_platform_user())):
+    exists = (
+        db.query(models.NotificationRead)
+        .filter(models.NotificationRead.notification_id == notification_id,
+                models.NotificationRead.user_id == user.id).first()
+    )
+    if not exists:
+        db.add(models.NotificationRead(notification_id=notification_id, user_id=user.id))
+        db.commit()
+    return {"ok": True}
+
+
+@notifications_router.post("/read-all")
+def mark_all_read(db: Session = Depends(get_db),
+                  user: models.PlatformUser = Depends(require_platform_user())):
+    role = user.role.value if hasattr(user.role, "value") else user.role
+    read_ids = {
+        r.notification_id for r in
+        db.query(models.NotificationRead).filter(models.NotificationRead.user_id == user.id).all()
+    }
+    unread = (
+        db.query(models.Notification)
+        .filter(models.Notification.audience.in_(_audiences_for(role)),
+                ~models.Notification.id.in_(read_ids) if read_ids else True)
+        .all()
+    )
+    for n in unread:
+        db.add(models.NotificationRead(notification_id=n.id, user_id=user.id))
+    db.commit()
+    return {"ok": True, "marked": len(unread)}
+
+
+audit_router = APIRouter(prefix="/audit", tags=["audit"])
+
+
+@audit_router.get("", response_model=list[schemas.AuditEntryOut])
+def list_audit(actor: str | None = None, search: str | None = None,
+               limit: int = 100, offset: int = 0,
+               db: Session = Depends(get_db),
+               _admin: models.PlatformUser = Depends(require_platform_user(["admin"]))):
+    q = db.query(models.ActivityLog)
+    if actor:
+        q = q.filter(models.ActivityLog.actor == actor)
+    if search:
+        q = q.filter(models.ActivityLog.action.ilike(f"%{search}%"))
+    return (
+        q.order_by(models.ActivityLog.created_at.desc())
+        .offset(max(0, offset)).limit(min(limit, 500)).all()
+    )
+
+
+search_router = APIRouter(prefix="/search", tags=["search"])
+
+
+@search_router.get("", response_model=schemas.SearchOut)
+def enterprise_search(q: str, db: Session = Depends(get_db),
+                      user: models.PlatformUser = Depends(require_platform_user())):
+    """Federated search across every operational entity. Admin additionally
+    sees user accounts. Max 5 hits per entity type."""
+    term = q.strip()
+    hits: list[schemas.SearchHit] = []
+    if len(term) >= 2:
+        like = f"%{term}%"
+        role = user.role.value if hasattr(user.role, "value") else user.role
+
+        for f in (db.query(models.Farm)
+                  .filter((models.Farm.name.ilike(like)) | (models.Farm.farm_code.ilike(like))
+                          | (models.Farm.owner_name.ilike(like))).limit(5)):
+            hits.append(schemas.SearchHit(
+                kind="farm", ref=f.farm_code or str(f.id), title=f.name,
+                subtitle=f"{f.farm_code or ''} · {f.region or ''}".strip(" ·"),
+                link=f"/platform/farms/{f.farm_code}" if f.farm_code else "/platform/farms"))
+
+        for o in (db.query(models.Operation)
+                  .filter((models.Operation.operation_id.ilike(like))
+                          | (models.Operation.farm_code.ilike(like))
+                          | (models.Operation.notes.ilike(like))).limit(5)):
+            status = o.status.value if hasattr(o.status, "value") else o.status
+            op_type = o.operation_type.value if hasattr(o.operation_type, "value") else o.operation_type
+            hits.append(schemas.SearchHit(
+                kind="operation", ref=o.operation_id, title=f"{op_type} · {o.farm_code}",
+                subtitle=f"{o.operation_id} · {status}",
+                link=f"/platform/operations/{o.operation_id}"))
+
+        for d in (db.query(models.PestDetection)
+                  .filter((models.PestDetection.detection_id.ilike(like))
+                          | (models.PestDetection.farm_code.ilike(like))
+                          | (models.PestDetection.location_notes.ilike(like))).limit(5)):
+            status = d.status.value if hasattr(d.status, "value") else d.status
+            hits.append(schemas.SearchHit(
+                kind="pest_detection", ref=d.detection_id, title=f"Detection · {d.farm_code}",
+                subtitle=f"{d.detection_id} · {status}",
+                link=f"/platform/pests/{d.detection_id}"))
+
+        for t in (db.query(models.Trap)
+                  .filter((models.Trap.trap_code.ilike(like))
+                          | (models.Trap.farm_code.ilike(like))).limit(5)):
+            hits.append(schemas.SearchHit(
+                kind="trap", ref=t.trap_code, title=t.trap_code,
+                subtitle=f"{t.farm_code} · {t.status}", link="/platform/traps"))
+
+        for s in (db.query(models.RecyclingStation)
+                  .filter((models.RecyclingStation.name.ilike(like))
+                          | (models.RecyclingStation.station_code.ilike(like))).limit(5)):
+            hits.append(schemas.SearchHit(
+                kind="station", ref=s.station_code, title=s.name,
+                subtitle=f"{s.station_code} · {s.status}", link="/platform/recycling"))
+
+        for op_ in (db.query(models.FarmOperator)
+                    .filter((models.FarmOperator.full_name.ilike(like))
+                            | (models.FarmOperator.operator_code.ilike(like))
+                            | (models.FarmOperator.company.ilike(like))).limit(5)):
+            hits.append(schemas.SearchHit(
+                kind="operator", ref=op_.operator_code, title=op_.full_name,
+                subtitle=f"{op_.operator_code} · {op_.company or ''}".strip(" ·"),
+                link="/platform/operators"))
+
+        for r in (db.query(models.Region)
+                  .filter((models.Region.name.ilike(like)) | (models.Region.code.ilike(like))).limit(5)):
+            hits.append(schemas.SearchHit(
+                kind="region", ref=r.code, title=r.name, subtitle=r.code,
+                link="/platform/regions"))
+
+        if role == "admin":
+            for u in (db.query(models.PlatformUser)
+                      .filter((models.PlatformUser.username.ilike(like))
+                              | (models.PlatformUser.full_name.ilike(like))).limit(5)):
+                urole = u.role.value if hasattr(u.role, "value") else u.role
+                hits.append(schemas.SearchHit(
+                    kind="user", ref=u.username, title=u.full_name,
+                    subtitle=f"@{u.username} · {urole}", link="/platform/users"))
+
+    return schemas.SearchOut(query=term, total=len(hits), hits=hits)
+
+
+boundary_router = APIRouter(prefix="/farms", tags=["farm-boundary"])
+
+
+@boundary_router.patch("/{farm_code}/boundary", response_model=schemas.FarmOut)
+def set_farm_boundary(farm_code: str, payload: schemas.FarmBoundaryIn,
+                      db: Session = Depends(get_db),
+                      user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    farm = db.query(models.Farm).filter(models.Farm.farm_code == farm_code).first()
+    if not farm:
+        raise HTTPException(404, "Farm not found")
+    ring = payload.ring
+    if len(ring) < 3 or any(len(p) != 2 for p in ring):
+        raise HTTPException(422, "ring must contain at least 3 [lat, lng] pairs")
+    for lat, lng in ring:
+        if not (-90 <= lat <= 90 and -180 <= lng <= 180):
+            raise HTTPException(422, "ring contains out-of-range coordinates")
+    farm.boundary_json = ring
+    log_activity(db, user.username, f"boundary.updated {farm_code}", {"points": len(ring)})
+    notify(db, "system", f"Field boundary updated for {farm.name}",
+           f"{len(ring)}-point boundary drawn by {user.full_name}",
+           link=f"/platform/farms/{farm_code}")
+    db.commit()
+    db.refresh(farm)
+    return farm
+
+
+@boundary_router.delete("/{farm_code}/boundary", response_model=schemas.FarmOut)
+def clear_farm_boundary(farm_code: str, db: Session = Depends(get_db),
+                        user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    farm = db.query(models.Farm).filter(models.Farm.farm_code == farm_code).first()
+    if not farm:
+        raise HTTPException(404, "Farm not found")
+    farm.boundary_json = None
+    log_activity(db, user.username, f"boundary.cleared {farm_code}", {})
+    db.commit()
+    db.refresh(farm)
+    return farm

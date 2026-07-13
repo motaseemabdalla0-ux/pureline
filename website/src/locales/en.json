@@ -1028,7 +1028,8 @@
     "close": "Close",
     "download": "Download",
     "print": "Print",
-    "email": "Email"
+    "email": "Email",
+    "export": "Export"
   },
   "navPlatform": {
     "menu": "Platform",
@@ -1054,7 +1055,10 @@
     "traps": "Traps",
     "recycling": "Recycling",
     "regions": "Regions",
-    "operators": "Operators"
+    "operators": "Operators",
+    "audit": "Audit Log",
+    "search": "Search",
+    "notifications": "Notifications"
   },
   "serviceDetail": {
     "requestCta": "Request This Service",
@@ -1732,7 +1736,8 @@
     "markerKind": {
       "trap": "Trap",
       "station": "Station"
-    }
+    },
+    "drawHint": "Click the map to add boundary points (3+ to save)"
   },
   "weather": {
     "title": "Live weather",
@@ -1788,6 +1793,26 @@
       "created": "Created",
       "status": "Status",
       "actions": "Actions"
+    },
+    "matrix": {
+      "title": "Role-based permissions matrix",
+      "subtitle": "What each role can do across the platform — mirrors the access rules enforced by the API.",
+      "capability": "Capability",
+      "cap": {
+        "viewDashboards": "View dashboards & reports",
+        "viewFarmsNdvi": "View farms, NDVI & satellite intelligence",
+        "manageOperations": "Create & manage field operations",
+        "managePestsTraps": "Manage pest detections & traps",
+        "manageIrrigation": "Manage irrigation zones & events",
+        "manageAssets": "Manage assets & maintenance",
+        "manageRecycling": "Manage recycling stations & intake",
+        "manageOperators": "Manage farm operators",
+        "editBoundaries": "Edit farm boundaries (GIS)",
+        "viewWorkforce": "View workforce & assignments",
+        "manageRegions": "Manage regions",
+        "manageUsers": "Manage user accounts & roles",
+        "viewAuditLog": "View audit log"
+      }
     }
   },
   "trapsPage": {
@@ -1926,6 +1951,68 @@
       "contact": "Contact",
       "license": "License",
       "status": "Status"
+    }
+  },
+  "boundaryEditor": {
+    "draw": "Draw field boundary",
+    "edit": "Edit boundary",
+    "save": "Save boundary",
+    "clear": "Remove boundary",
+    "undo": "Undo point",
+    "points": "{{count}} points",
+    "customLabel": "Custom boundary"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "viewAll": "View all",
+    "empty": "No notifications yet.",
+    "markRead": "Mark read"
+  },
+  "notificationsCenter": {
+    "eyebrow": "Operations Intelligence",
+    "title": "Notifications & Alerts Center",
+    "subtitle": "Every platform event and live operational alert — pest detections, delayed operations, trap servicing, NDVI declines and station status — in one stream.",
+    "markAllRead": "Mark all read",
+    "tabNotifications": "Notifications",
+    "tabAlerts": "Live alerts",
+    "noAlerts": "No active operational alerts — everything is on track.",
+    "open": "Open",
+    "alert": {
+      "ndvi": "Vegetation decline · {{name}}",
+      "ndviHint": "12-month NDVI trend {{pct}}%",
+      "delayedOp": "Delayed operation · {{farm}}",
+      "pest": "Active pest detection · {{farm}}",
+      "trap": "Trap needs attention · {{code}}",
+      "station": "Station not operational · {{name}}"
+    }
+  },
+  "auditPage": {
+    "eyebrow": "Administration",
+    "title": "Audit Log",
+    "subtitle": "Chronological, filterable record of every administrative and operational action on the platform.",
+    "export": "Export CSV",
+    "searchPlaceholder": "Search actions…",
+    "allActors": "All actors",
+    "empty": "No audit entries match your filters."
+  },
+  "searchPage": {
+    "eyebrow": "Enterprise Search",
+    "title": "Search the Platform",
+    "subtitle": "One search across farms, operations, pest detections, traps, stations, operators, regions and users.",
+    "placeholder": "Search farms, operations, traps, operators…",
+    "search": "Search",
+    "hint": "Type at least 2 characters to search every module.",
+    "noResults": "No results for “{{q}}”.",
+    "resultCount": "{{count}} results for “{{q}}”",
+    "kind": {
+      "farm": "Farms",
+      "operation": "Operations",
+      "pest_detection": "Pest detections",
+      "trap": "Traps",
+      "station": "Recycling stations",
+      "operator": "Farm operators",
+      "region": "Regions",
+      "user": "Users"
     }
   }
 }

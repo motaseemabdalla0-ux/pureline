@@ -191,6 +191,7 @@ export interface RegistryFarm {
   area_hectares: number | null
   crop_type: string | null
   owner_name: string | null
+  boundary_json: [number, number][] | null
   created_at: string
 }
 
@@ -649,4 +650,45 @@ export interface RecyclingDashboard {
   by_status: Record<string, number>
   intake_month_kg: number
   intake_by_material_kg: Record<string, number>
+}
+
+/* ---------- Notifications Center ---------- */
+
+export type NotificationKind = 'info' | 'pest' | 'operation' | 'irrigation' | 'recycling' | 'user' | 'system'
+
+export interface PlatformNotification {
+  id: number
+  kind: NotificationKind
+  title: string
+  body: string | null
+  link: string | null
+  audience: string
+  created_at: string
+  read: boolean
+}
+
+/* ---------- Audit log ---------- */
+
+export interface AuditEntry {
+  id: number
+  actor: string
+  action: string
+  meta: Record<string, unknown>
+  created_at: string
+}
+
+/* ---------- Enterprise search ---------- */
+
+export interface SearchHit {
+  kind: 'farm' | 'operation' | 'pest_detection' | 'trap' | 'station' | 'operator' | 'region' | 'user'
+  ref: string
+  title: string
+  subtitle: string | null
+  link: string
+}
+
+export interface SearchResult {
+  query: string
+  total: number
+  hits: SearchHit[]
 }

@@ -198,6 +198,7 @@ class FarmOut(BaseModel):
     coordinates_lng: float | None
     area_hectares: float | None
     owner_name: str | None
+    boundary_json: list[list[float]] | None = None
     created_at: datetime
 
     class Config:
@@ -638,3 +639,51 @@ class RecyclingIntakeIn(BaseModel):
     quantity_kg: float
     source_farm_code: str | None = None
     notes: str | None = None
+
+
+# ---- Notifications Center ----
+class NotificationOut(BaseModel):
+    id: int
+    kind: str
+    title: str
+    body: str | None
+    link: str | None
+    audience: str
+    created_at: datetime
+    read: bool = False
+
+    class Config:
+        from_attributes = True
+
+
+# ---- Audit log ----
+class AuditEntryOut(BaseModel):
+    id: int
+    actor: str
+    action: str
+    meta: dict
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ---- Enterprise search ----
+class SearchHit(BaseModel):
+    kind: str          # farm | operation | pest_detection | trap | station | operator | region | user
+    ref: str           # code / id used to build the link
+    title: str
+    subtitle: str | None = None
+    link: str          # in-app route
+
+
+class SearchOut(BaseModel):
+    query: str
+    total: int
+    hits: list[SearchHit]
+
+
+# ---- Farm boundary editor ----
+class FarmBoundaryIn(BaseModel):
+    """Closed ring of [lat, lng] pairs (>= 3 points)."""
+    ring: list[list[float]]
