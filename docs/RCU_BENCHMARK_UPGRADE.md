@@ -183,3 +183,90 @@ Operations Dashboard gained Active-traps and Recycled-this-month KPIs (loaded no
 5. Report builder: scheduled PDF/Excel exports combining NDVI + operations + irrigation per farm.
 6. Named Cloudflare tunnel (permanent URL) — needs the user's Cloudflare account.
 7. Route-level code splitting for the main bundle (882 kB minified / 233 kB gzip).
+
+---
+
+# Phase 3 — Enterprise Completion (2026-07-13, commit `9477014`)
+
+## Authenticated RCU audit (partial, via screen capture)
+
+The Chrome extension remained unreachable, but the user opened the **authenticated RCU
+Agriculture Center** (agriculture.rcu.gov.sa, admin session) on screen, which was audited
+read-only via screenshots. Captured findings from the live portal's Regions module:
+
+- Top nav: Pest Management ▾, Regions, Farms, Traps, Recycling Stations, Farm Operators ▾,
+  User Management ▾, Reports, More ▾ — Pure Line now has an equivalent for every item.
+- **Notifications bell with unread badge** (312) in the header → closed this phase.
+- Regions = tabbed per-region dashboards with dense KPI cards: SubRegions, Operation Teams,
+  Farms, Date Palm Trees; trap-type breakdown (RPW Dry Pheromone / Borers Electric Dry Light /
+  Humira Delta Pheromone); Pest Control & Surveillance (infested-treated / not-treated farms,
+  treated/not-treated palm counts) over a "Last 3 Months" window.
+- Table toolbar pattern: search by farm code/operator + Filter + **Export** + bulk-select → the
+  Export pattern was adopted platform-wide this phase.
+
+No RCU code, text, imagery or assets were copied — observed capabilities only.
+
+## Gap analysis result & what was implemented
+
+| Priority item | Status |
+|---|---|
+| Notifications Center | **Built** — `Notification`/`NotificationRead` tables; role-targeted audiences (all/staff/admin); auto-generated on pest detections, delayed operations, trap damage/service, boundary edits, user creation; API: list / unread-count / mark-read / read-all; navbar bell with unread badge + dropdown (60 s polling); full-page center at `/platform/notifications`. |
+| Alerts Center | **Built** — second tab of the Notifications Center: live severity-graded alert cards aggregated from NDVI declines, delayed operations, active pest detections, traps needing service, non-operational stations, each deep-linking to its module. |
+| Audit Logs + Activity Timeline | **Built** — existing `ActivityLog` table wired into every mutation (users, traps, recycling intake, regions, operators, operations status, pest detections, boundaries); admin-only `/api/platform/audit` with actor/search filters; timeline UI with action-family color chips + CSV export at `/platform/audit`. |
+| Enterprise Search | **Built** — federated `/api/platform/search?q=` across farms, operations, pest detections, traps, stations, operators, regions (+users for admins), 5 hits/type; search icon in platform nav; grouped results page at `/platform/search`. |
+| Advanced GIS Editing / Farm Boundary Editor | **Built** — click-to-draw polygon mode in `FarmGisMap` (no new dependency), parent-controlled points, undo/cancel/save; `farms.boundary_json` column (+`IF NOT EXISTS` migration); `PATCH/DELETE /farms/{code}/boundary` with coordinate validation (staff/admin); saved boundaries render as labeled custom rings on the farm detail map. |
+| Role-based Permissions Matrix | **Built** — 13-capability × 3-role matrix rendered on User Management, mirroring actual API enforcement. |
+| Report/table Export | **Built** — shared `exportCsv` util; Export buttons on Users, Traps, Operators, Audit (adds to Phase-2 NDVI CSV export). |
+| Task Management / Work Orders | **Covered by existing modules** — Field Operations + TaskAssignment already implement the create → assign → schedule → status-log → complete work-order lifecycle; documented as the equivalent rather than duplicating. |
+| Asset Management | Already existed (Phase 1 module 8). |
+| Workflow Engine, Report Builder, Document/Knowledge-Base Management UI | **Deferred** (see recommendations) — KB ingestion already exists via the RAG chatbot's watched folder. |
+
+## Files created / modified (Phase 3)
+
+Backend: `models.py` (+`Notification`, `NotificationRead`, `farms.boundary_json`), `schemas.py`
+(+notification/audit/search/boundary schemas), `farm_ops_routers.py` (+section 18: notifications,
+audit, search, boundary routers; `notify()`/`log_activity()` helpers wired into 8 mutation
+endpoints), `routers.py` (mounts), `scripts/phase3_migrate.sql`.
+
+Frontend: `components/enterprise/NotificationsBell.tsx`, `pages/NotificationsCenterPage.tsx`,
+`pages/AuditLogPage.tsx`, `pages/EnterpriseSearchPage.tsx`, `lib/exportCsv.ts`,
+`components/gis/FarmGisMap.tsx` (draw mode + custom rings), `pages/FarmRegistryDetailPage.tsx`
+(boundary editor UI), `pages/UserManagementPage.tsx` (permissions matrix + export),
+`pages/TrapsManagementPage.tsx` + `pages/FarmOperatorsPage.tsx` (export), `lib/platformApi.ts`,
+`types/platform.ts`, `main.tsx`, `components/Navbar.tsx`, `locales/{en,ar}.json`.
+
+## New routes
+
+`/platform/notifications` · `/platform/audit` (admin) · `/platform/search` — plus 4 new API
+groups: `/api/platform/notifications*`, `/api/platform/audit`, `/api/platform/search`,
+`/api/platform/farms/{code}/boundary`.
+
+## Verification (all passed, live stack)
+
+- Build: `tsc -b && vite build` clean, 2,065 modules, **zero TypeScript errors**.
+- Deploy: images rebuilt, `boundary_json` migration applied, backend restarted.
+- End-to-end (scripts/verify_phase3.ps1): pest detection created → **notification auto-generated**
+  (kind=pest) → unread 1 → mark read → unread 0; **audit log** captured both actions with actor;
+  **search "UDH"** → 12 hits across 5 entity kinds; **boundary** saved (3 points) then cleared;
+  **customer role correctly blocked** from the audit endpoint; routes
+  `/platform/{notifications,audit,search,traps}` + `/` all 200.
+- Public tunnel serving the new build: **https://rick-analog-glenn-stationery.trycloudflare.com**
+  (`/platform/notifications` → 200, `/api/health` → ok).
+- Visual evidence (headless-Chrome captures of the running platform) committed under
+  `docs/evidence/`: `ndvi_analytics.png` (live Esri map + real field boundary + NDVI scale +
+  comparison/export/status-distribution panels), `home.png`, `platform_login.png`.
+- Mobile: new pages reuse the responsive shell (KPI grids collapse, tables scroll, all new links
+  present in the mobile menu; bell rendered in the authenticated desktop bar).
+
+## Remaining recommendations (beyond RCU parity)
+
+1. Workflow engine: configurable state machines per request/operation type (currently fixed
+   status workflows with logged transitions).
+2. Report builder: user-composed PDF/Excel reports combining NDVI + operations + irrigation
+   (Reporting Center currently offers fixed report types).
+3. Document management UI over the existing KB folder (list/upload/delete + index status).
+4. Notification delivery channels (email/WhatsApp) on top of the in-app stream.
+5. Named Cloudflare tunnel for a permanent public URL.
+6. Route-level code splitting (main bundle 916 kB minified / 241 kB gzip).
+7. Complete the RCU walkthrough (Pest Management submenu, Reports, More, mobile) whenever the
+   Chrome extension connects, to catch any remaining capability not yet observed.
