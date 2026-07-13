@@ -1050,7 +1050,11 @@
     "workforce": "القوى العاملة",
     "reports": "التقارير",
     "logout": "تسجيل الخروج",
-    "users": "إدارة المستخدمين"
+    "users": "إدارة المستخدمين",
+    "traps": "المصائد",
+    "recycling": "إعادة التدوير",
+    "regions": "المناطق",
+    "operators": "المشغّلون"
   },
   "serviceDetail": {
     "requestCta": "اطلب هذه الخدمة",
@@ -1201,7 +1205,10 @@
     "selectFarm": "اختر مزرعة",
     "trendTitle": "اتجاه 36 شهرًا",
     "comparisonTitle": "مقارنة المزارع",
-    "comparisonHint": "اختر حتى 3 مزارع للمقارنة جنبًا إلى جنب."
+    "comparisonHint": "اختر حتى 3 مزارع للمقارنة جنبًا إلى جنب.",
+    "periodComparison": "التغير خلال 12 / 36 شهرًا لكل مزرعة",
+    "exportCsv": "تصدير CSV",
+    "statusDistribution": "توزيع الحالة الصحية"
   },
   "satelliteIntelPage": {
     "eyebrow": "مركز الاستخبارات الفضائية",
@@ -1396,7 +1403,9 @@
       "irrigationToday": "أحداث الري اليوم",
       "pestAlerts": "تنبيهات الآفات",
       "ndviAlerts": "تنبيهات NDVI",
-      "teamActivities": "أنشطة الفريق"
+      "teamActivities": "أنشطة الفريق",
+      "activeTraps": "المصائد النشطة",
+      "recycledMonth": "المعاد تدويره هذا الشهر (كجم)"
     },
     "statusBreakdown": "العمليات حسب الحالة",
     "activityTimeline": "النشاط الأخير",
@@ -1714,7 +1723,15 @@
     "ndviMapHint": "حدود الحقول الحقيقية ملوّنة حسب أحدث قراءة NDVI لكل مزرعة. انقر على أي حقل للتفاصيل.",
     "irrigationMapTitle": "خريطة المزارع المروية",
     "gridView": "شبكة",
-    "mapView": "خريطة"
+    "mapView": "خريطة",
+    "fullscreen": "ملء الشاشة",
+    "exitFullscreen": "إنهاء ملء الشاشة",
+    "measure": "قياس المسافة",
+    "measureHint": "انقر على الخريطة لإضافة نقاط القياس",
+    "markerKind": {
+      "trap": "مصيدة",
+      "station": "محطة"
+    }
   },
   "weather": {
     "title": "الطقس المباشر",
@@ -1770,6 +1787,144 @@
       "created": "تاريخ الإنشاء",
       "status": "الحالة",
       "actions": "إجراءات"
+    }
+  },
+  "trapsPage": {
+    "eyebrow": "المكافحة المتكاملة للآفات",
+    "title": "إدارة المصائد",
+    "subtitle": "سجل لكل مصيدة ميدانية — الموقع وحالة الصيانة وأحدث أعداد الصيد.",
+    "newTrap": "تسجيل مصيدة",
+    "create": "حفظ المصيدة",
+    "mapTitle": "خريطة مواقع المصائد",
+    "allStatuses": "كل الحالات",
+    "empty": "لا توجد مصائد مطابقة لهذا الفلتر.",
+    "neverChecked": "لم تُفحص بعد",
+    "count": "تم صيد {{count}}",
+    "pickPest": "اختر نوع الآفة",
+    "kpi": {
+      "total": "إجمالي المصائد",
+      "active": "نشطة",
+      "checksWeek": "فحوصات هذا الأسبوع",
+      "catchWeek": "الصيد هذا الأسبوع"
+    },
+    "status": {
+      "active": "نشطة",
+      "needs_service": "تحتاج صيانة",
+      "damaged": "تالفة",
+      "removed": "مُزالة"
+    },
+    "fields": {
+      "code": "رمز المصيدة",
+      "farm": "المزرعة",
+      "pestType": "الآفة المستهدفة",
+      "lat": "خط العرض (اختياري)",
+      "lng": "خط الطول (اختياري)",
+      "notes": "ملاحظات (اختياري)"
+    },
+    "columns": {
+      "trap": "المصيدة",
+      "farm": "المزرعة",
+      "pest": "الآفة المستهدفة",
+      "lastCheck": "آخر فحص",
+      "installed": "تاريخ التركيب",
+      "status": "الحالة"
+    }
+  },
+  "recyclingPage": {
+    "eyebrow": "الاستدامة",
+    "title": "محطات إعادة التدوير",
+    "subtitle": "محطات المخلفات الزراعية — السعة وكميات الاستلام المباشرة والمواد المقبولة.",
+    "newStation": "محطة جديدة",
+    "create": "حفظ المحطة",
+    "mapTitle": "خريطة المحطات",
+    "month": "شهر",
+    "logIntake": "تسجيل استلام",
+    "saveIntake": "حفظ",
+    "noSourceFarm": "بدون مزرعة مصدر",
+    "kpi": {
+      "stations": "المحطات",
+      "operational": "تعمل",
+      "monthKg": "الاستلام هذا الشهر (كجم)",
+      "materials": "أنواع المواد"
+    },
+    "status": {
+      "operational": "تعمل",
+      "maintenance": "صيانة",
+      "closed": "مغلقة"
+    },
+    "card": {
+      "monthKg": "هذا الشهر (كجم)",
+      "totalKg": "الإجمالي (كجم)",
+      "capacity": "السعة (طن/شهر)"
+    },
+    "materials": {
+      "palm_fronds": "سعف النخيل",
+      "green_waste": "مخلفات خضراء",
+      "compost_feedstock": "مواد سماد عضوي",
+      "plastic_mulch": "أغطية بلاستيكية",
+      "irrigation_pipe": "أنابيب ري",
+      "other": "أخرى"
+    },
+    "fields": {
+      "code": "رمز المحطة",
+      "name": "اسم المحطة",
+      "region": "المنطقة",
+      "capacity": "السعة (طن/شهر)"
+    }
+  },
+  "regionsPage": {
+    "eyebrow": "الإدارة",
+    "title": "إدارة المناطق",
+    "subtitle": "المناطق الزراعية الإدارية — عدد المزارع والوصف وحالة التفعيل.",
+    "newRegion": "منطقة جديدة",
+    "create": "حفظ المنطقة",
+    "farmCount": "{{count}} مزارع",
+    "active": "مفعّلة",
+    "inactive": "غير مفعّلة",
+    "activate": "تفعيل المنطقة",
+    "deactivate": "إيقاف المنطقة",
+    "fields": {
+      "code": "الرمز (مثل UDH)",
+      "name": "الاسم (إنجليزي)",
+      "nameAr": "الاسم (عربي)",
+      "description": "الوصف"
+    }
+  },
+  "operatorsPage": {
+    "eyebrow": "الشبكة الميدانية",
+    "title": "مشغّلو المزارع",
+    "subtitle": "الأشخاص والشركات الذين يشغّلون المزارع المسجلة — التراخيص وجهات الاتصال والتكليفات.",
+    "newOperator": "مشغّل جديد",
+    "create": "حفظ المشغّل",
+    "searchPlaceholder": "ابحث بالاسم أو الشركة أو الرمز…",
+    "allStatuses": "كل الحالات",
+    "empty": "لا يوجد مشغّلون مطابقون للفلاتر.",
+    "stats": {
+      "total": "المشغّلون",
+      "active": "نشطون",
+      "farms": "المزارع المُشغّلة"
+    },
+    "status": {
+      "active": "نشط",
+      "suspended": "موقوف",
+      "retired": "متقاعد"
+    },
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "company": "الشركة (اختياري)",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "region": "المنطقة",
+      "license": "رقم الترخيص",
+      "farms": "المزارع المُشغّلة"
+    },
+    "columns": {
+      "operator": "المشغّل",
+      "region": "المنطقة",
+      "farms": "المزارع",
+      "contact": "التواصل",
+      "license": "الترخيص",
+      "status": "الحالة"
     }
   }
 }

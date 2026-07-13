@@ -41,6 +41,22 @@ import type {
   PlatformManagedUser,
   CreatePlatformUserPayload,
   UpdatePlatformUserPayload,
+  Region,
+  CreateRegionPayload,
+  UpdateRegionPayload,
+  FarmOperator,
+  CreateFarmOperatorPayload,
+  UpdateFarmOperatorPayload,
+  TrapStatus,
+  CreateTrapPayload,
+  Trap,
+  TrapsDashboard,
+  RecyclingStation,
+  StationStatus,
+  CreateRecyclingStationPayload,
+  RecyclingIntake,
+  CreateRecyclingIntakePayload,
+  RecyclingDashboard,
 } from '../types/platform'
 
 const BASE = '/api/platform'
@@ -471,4 +487,89 @@ export function createPlatformUser(payload: CreatePlatformUserPayload) {
 
 export function updatePlatformUser(userId: number, payload: UpdatePlatformUserPayload) {
   return platformRequest<PlatformManagedUser>(`/users/${userId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+/* ---------- Regions Management ---------- */
+
+export function listRegions(includeInactive = false) {
+  return platformRequest<Region[]>(`/regions${includeInactive ? '?include_inactive=true' : ''}`)
+}
+
+export function createRegion(payload: CreateRegionPayload) {
+  return platformRequest<Region>('/regions', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateRegion(regionId: number, payload: UpdateRegionPayload) {
+  return platformRequest<Region>(`/regions/${regionId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+/* ---------- Farm Operators ---------- */
+
+export function listFarmOperators(params?: { region?: string; status?: string; search?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.region) qs.set('region', params.region)
+  if (params?.status) qs.set('status', params.status)
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString()
+  return platformRequest<FarmOperator[]>(`/operators${query ? `?${query}` : ''}`)
+}
+
+export function createFarmOperator(payload: CreateFarmOperatorPayload) {
+  return platformRequest<FarmOperator>('/operators', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateFarmOperator(operatorId: number, payload: UpdateFarmOperatorPayload) {
+  return platformRequest<FarmOperator>(`/operators/${operatorId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+/* ---------- Traps Management (registry) ---------- */
+
+export function listTraps(params?: { farm_code?: string; status?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.farm_code) qs.set('farm_code', params.farm_code)
+  if (params?.status) qs.set('status', params.status)
+  const query = qs.toString()
+  return platformRequest<Trap[]>(`/traps-registry${query ? `?${query}` : ''}`)
+}
+
+export function createTrap(payload: CreateTrapPayload) {
+  return platformRequest<Trap>('/traps-registry', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateTrap(trapCode: string, payload: { status?: TrapStatus; lat?: number; lng?: number; notes?: string }) {
+  return platformRequest<Trap>(`/traps-registry/${encodeURIComponent(trapCode)}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+export function getTrapsDashboard() {
+  return platformRequest<TrapsDashboard>('/traps-registry/dashboard')
+}
+
+/* ---------- Recycling Stations ---------- */
+
+export function listRecyclingStations(params?: { region?: string; status?: string }) {
+  const qs = new URLSearchParams()
+  if (params?.region) qs.set('region', params.region)
+  if (params?.status) qs.set('status', params.status)
+  const query = qs.toString()
+  return platformRequest<RecyclingStation[]>(`/recycling/stations${query ? `?${query}` : ''}`)
+}
+
+export function createRecyclingStation(payload: CreateRecyclingStationPayload) {
+  return platformRequest<RecyclingStation>('/recycling/stations', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function updateRecyclingStation(stationId: number, payload: Partial<CreateRecyclingStationPayload> & { status?: StationStatus }) {
+  return platformRequest<RecyclingStation>(`/recycling/stations/${stationId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+}
+
+export function listRecyclingIntakes(stationId: number) {
+  return platformRequest<RecyclingIntake[]>(`/recycling/stations/${stationId}/intakes`)
+}
+
+export function createRecyclingIntake(stationId: number, payload: CreateRecyclingIntakePayload) {
+  return platformRequest<RecyclingIntake>(`/recycling/stations/${stationId}/intakes`, { method: 'POST', body: JSON.stringify(payload) })
+}
+
+export function getRecyclingDashboard() {
+  return platformRequest<RecyclingDashboard>('/recycling/dashboard')
 }

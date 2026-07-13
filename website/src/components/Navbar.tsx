@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, Moon, Sun, Languages, Bot, ChevronDown, LayoutGrid, Send, Gauge,
-  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor, Bug, Droplets, Wrench, Users, UserCog,
+  ScanLine, Satellite, Map, FileText, ClipboardList, ShieldCheck, LogIn, LogOut, LayoutDashboard, Tractor, Bug, Droplets, Wrench, Users, UserCog, Crosshair, Recycle, Contact,
 } from 'lucide-react'
 import Logo from './ui/Logo'
 import { applyLangSideEffects } from '../i18n'
@@ -147,6 +147,18 @@ export default function Navbar() {
               <Link to="/platform/irrigation" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
                 <Droplets className="h-4 w-4" /> {t('navPlatform.irrigationManagement')}
               </Link>
+              <Link to="/platform/traps" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <Crosshair className="h-4 w-4" /> {t('navPlatform.traps')}
+              </Link>
+              <Link to="/platform/recycling" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <Recycle className="h-4 w-4" /> {t('navPlatform.recycling')}
+              </Link>
+              <Link to="/platform/regions" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <Map className="h-4 w-4" /> {t('navPlatform.regions')}
+              </Link>
+              <Link to="/platform/operators" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
+                <Contact className="h-4 w-4" /> {t('navPlatform.operators')}
+              </Link>
               <Link to="/platform/assets" className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-semibold text-neutral-dark/80 transition hover:bg-primary/10 hover:text-primary dark:text-neutral-light/80 dark:hover:text-secondary">
                 <Wrench className="h-4 w-4" /> {t('navPlatform.assetManagement')}
               </Link>
@@ -236,6 +248,18 @@ export default function Navbar() {
                   </Link>
                   <Link to="/platform/irrigation" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
                     <Droplets className="h-4 w-4 shrink-0" /> {t('navPlatform.irrigationManagement')}
+                  </Link>
+                  <Link to="/platform/traps" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Crosshair className="h-4 w-4 shrink-0" /> {t('navPlatform.traps')}
+                  </Link>
+                  <Link to="/platform/recycling" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Recycle className="h-4 w-4 shrink-0" /> {t('navPlatform.recycling')}
+                  </Link>
+                  <Link to="/platform/regions" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Map className="h-4 w-4 shrink-0" /> {t('navPlatform.regions')}
+                  </Link>
+                  <Link to="/platform/operators" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
+                    <Contact className="h-4 w-4 shrink-0" /> {t('navPlatform.operators')}
                   </Link>
                   <Link to="/platform/assets" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-neutral-dark/80 hover:bg-primary/10 dark:text-neutral-light/80">
                     <Wrench className="h-4 w-4 shrink-0" /> {t('navPlatform.assetManagement')}

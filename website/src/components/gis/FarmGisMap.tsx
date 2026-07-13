@@ -1,13 +1,26 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { Maximize2, Minimize2, Ruler, X } from 'lucide-react'
 import {
-  MapContainer, TileLayer, LayersControl, Polygon, CircleMarker, Popup, useMap,
+  MapContainer, TileLayer, LayersControl, Polygon, Polyline, CircleMarker, Popup, Tooltip,
+  useMap, useMapEvents,
 } from 'react-leaflet'
 import { ndviColor } from '../../lib/ndvi'
 import type { GisFarm } from '../../lib/gisData'
+
+/** Extra point overlay (trap, recycling station, ...) rendered on top of farms. */
+export interface GisMarker {
+  id: string
+  position: [number, number]
+  kind: 'trap' | 'station' | 'generic'
+  label: string
+  sublabel?: string
+  /** dot color; defaults per kind */
+  color?: string
+}
 
 export interface FarmGisMapProps {
   farms: GisFarm[]
@@ -16,7 +29,16 @@ export interface FarmGisMapProps {
   height?: string
   /** Show "open farm page / NDVI / satellite" links inside popups. */
   showLinks?: boolean
+  markers?: GisMarker[]
+  /** Enable the advanced toolbar (fullscreen + measure). Default true. */
+  tools?: boolean
   className?: string
+}
+
+const MARKER_COLORS: Record<GisMarker['kind'], string> = {
+  trap: '#e0913a',
+  station: '#3b82f6',
+  generic: '#ffffff',
 }
 
 /** Fits the viewport to the rendered farm geometry (or the focused farm). */
@@ -32,16 +54,71 @@ function FitBounds({ farms, focusFarmId }: { farms: GisFarm[]; focusFarmId?: str
   return null
 }
 
+/** Re-measures the container after fullscreen toggles. */
+function InvalidateOnResize({ dep }: { dep: boolean }) {
+  const map = useMap()
+  useEffect(() => {
+    const id = setTimeout(() => map.invalidateSize(), 150)
+    return () => clearTimeout(id)
+  }, [map, dep])
+  return null
+}
+
+function haversineMeters(a: [number, number], b: [number, number]): number {
+  const R = 6371000
+  const dLat = ((b[0] - a[0]) * Math.PI) / 180
+  const dLng = ((b[1] - a[1]) * Math.PI) / 180
+  const la1 = (a[0] * Math.PI) / 180
+  const la2 = (b[0] * Math.PI) / 180
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2
+  return 2 * R * Math.asin(Math.sqrt(h))
+}
+
+/** Click-to-measure distance tool. */
+function MeasureLayer({ active, points, setPoints }: {
+  active: boolean
+  points: [number, number][]
+  setPoints: (p: [number, number][]) => void
+}) {
+  useMapEvents({
+    click(e) {
+      if (active) setPoints([...points, [e.latlng.lat, e.latlng.lng]])
+    },
+  })
+  if (points.length === 0) return null
+  let total = 0
+  for (let i = 1; i < points.length; i++) total += haversineMeters(points[i - 1], points[i])
+  const label = total >= 1000 ? `${(total / 1000).toFixed(2)} km` : `${Math.round(total)} m`
+  return (
+    <>
+      <Polyline positions={points} pathOptions={{ color: '#D4AF37', weight: 2.5, dashArray: '6 6' }}>
+        {points.length > 1 && (
+          <Tooltip permanent direction="top" offset={[0, -6]}>{label}</Tooltip>
+        )}
+      </Polyline>
+      {points.map((p, i) => (
+        <CircleMarker key={i} center={p} radius={3.5}
+          pathOptions={{ color: '#D4AF37', weight: 2, fillColor: '#0b1512', fillOpacity: 1 }} />
+      ))}
+    </>
+  )
+}
+
 /**
  * Interactive GIS map (Leaflet): real Esri World Imagery / OSM base layers,
  * real field-boundary polygons colored by each farm's latest NDVI reading,
- * clickable popups with live vegetation stats and cross-module links.
+ * clickable popups with live vegetation stats and cross-module links, plus
+ * advanced tools: point overlays (traps / recycling stations), fullscreen,
+ * and click-to-measure distances.
  */
 export default function FarmGisMap({
-  farms, focusFarmId, height = '420px', showLinks = true, className = '',
+  farms, focusFarmId, height = '420px', showLinks = true, markers = [], tools = true, className = '',
 }: FarmGisMapProps) {
   const { t, i18n } = useTranslation()
   const lang = i18n.language.startsWith('ar') ? 'ar' : 'en'
+  const [fullscreen, setFullscreen] = useState(false)
+  const [measuring, setMeasuring] = useState(false)
+  const [measurePoints, setMeasurePoints] = useState<[number, number][]>([])
 
   const initialCenter = useMemo<[number, number]>(() => {
     if (farms.length === 0) return [26.6, 37.9] // AlUla region
@@ -49,11 +126,20 @@ export default function FarmGisMap({
     return f.center
   }, [farms, focusFarmId])
 
+  const stopMeasure = () => {
+    setMeasuring(false)
+    setMeasurePoints([])
+  }
+
   return (
     <div
       dir="ltr"
-      className={`relative overflow-hidden rounded-3xl border border-black/10 shadow-sm dark:border-white/10 ${className}`}
-      style={{ height }}
+      className={
+        fullscreen
+          ? 'fixed inset-0 z-[1000] bg-neutral-dark'
+          : `relative overflow-hidden rounded-3xl border border-black/10 shadow-sm dark:border-white/10 ${className}`
+      }
+      style={fullscreen ? undefined : { height }}
     >
       <MapContainer center={initialCenter} zoom={13} scrollWheelZoom style={{ height: '100%', width: '100%', background: '#0b1512' }}>
         <LayersControl position="topright">
@@ -74,6 +160,8 @@ export default function FarmGisMap({
         </LayersControl>
 
         <FitBounds farms={farms} focusFarmId={focusFarmId} />
+        <InvalidateOnResize dep={fullscreen} />
+        <MeasureLayer active={measuring} points={measurePoints} setPoints={setMeasurePoints} />
 
         {farms.map((f) => {
           const color = ndviColor(f.ndviValue)
@@ -127,7 +215,55 @@ export default function FarmGisMap({
             pathOptions={{ color: '#ffffff', weight: 1.5, fillColor: ndviColor(f.ndviValue), fillOpacity: 1 }}
           />
         ))}
+
+        {markers.map((m) => (
+          <CircleMarker
+            key={m.id}
+            center={m.position}
+            radius={6}
+            pathOptions={{
+              color: '#0b1512',
+              weight: 1.5,
+              fillColor: m.color ?? MARKER_COLORS[m.kind],
+              fillOpacity: 0.95,
+            }}
+          >
+            <Popup>
+              <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="min-w-[140px] text-[13px] leading-snug">
+                <div className="text-sm font-bold">{m.label}</div>
+                {m.sublabel && <div className="mt-0.5 text-[11px] opacity-60">{m.sublabel}</div>}
+              </div>
+            </Popup>
+          </CircleMarker>
+        ))}
       </MapContainer>
+
+      {/* Advanced tools */}
+      {tools && (
+        <div className="absolute start-3 top-3 z-[500] flex flex-col gap-1.5">
+          <button
+            type="button"
+            onClick={() => setFullscreen((v) => !v)}
+            title={fullscreen ? t('gisMap.exitFullscreen') : t('gisMap.fullscreen')}
+            className="rounded-lg bg-black/60 p-2 text-white backdrop-blur transition hover:bg-black/80"
+          >
+            {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </button>
+          <button
+            type="button"
+            onClick={() => (measuring ? stopMeasure() : setMeasuring(true))}
+            title={t('gisMap.measure')}
+            className={`rounded-lg p-2 backdrop-blur transition ${measuring ? 'bg-accent text-neutral-dark' : 'bg-black/60 text-white hover:bg-black/80'}`}
+          >
+            {measuring ? <X className="h-4 w-4" /> : <Ruler className="h-4 w-4" />}
+          </button>
+        </div>
+      )}
+      {measuring && (
+        <div className="pointer-events-none absolute start-1/2 top-3 z-[500] -translate-x-1/2 rounded-full bg-accent px-3 py-1.5 text-[11px] font-bold text-neutral-dark">
+          {t('gisMap.measureHint')}
+        </div>
+      )}
 
       {/* NDVI legend */}
       <div className="pointer-events-none absolute bottom-3 start-3 z-[500] rounded-xl bg-black/60 px-3 py-2 text-[10px] font-semibold text-white backdrop-blur">
@@ -139,6 +275,16 @@ export default function FarmGisMap({
               {(v * 100).toFixed(0)}%
             </span>
           ))}
+          {markers.length > 0 && (
+            <>
+              {(['trap', 'station'] as const).filter((k) => markers.some((m) => m.kind === k)).map((k) => (
+                <span key={k} className="flex items-center gap-1">
+                  <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: MARKER_COLORS[k] }} />
+                  {t(`gisMap.markerKind.${k}`)}
+                </span>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -896,3 +896,311 @@ def update_user(user_id: int, payload: schemas.PlatformUserUpdateIn,
     db.commit()
     db.refresh(user)
     return user
+
+
+# ======================================================================
+# 14. Regions Management
+# ======================================================================
+regions_router = APIRouter(prefix="/regions", tags=["regions"])
+
+
+@regions_router.get("", response_model=list[schemas.RegionOut])
+def list_regions(include_inactive: bool = False, db: Session = Depends(get_db)):
+    q = db.query(models.Region)
+    if not include_inactive:
+        q = q.filter(models.Region.is_active.is_(True))
+    regions = q.order_by(models.Region.name).all()
+    counts = dict(
+        db.query(models.Farm.region, func.count(models.Farm.id))
+        .group_by(models.Farm.region).all()
+    )
+    out = []
+    for r in regions:
+        item = schemas.RegionOut.model_validate(r)
+        item.farm_count = counts.get(r.name, 0)
+        out.append(item)
+    return out
+
+
+@regions_router.post("", response_model=schemas.RegionOut)
+def create_region(payload: schemas.RegionIn, db: Session = Depends(get_db),
+                  _admin: models.PlatformUser = Depends(require_platform_user(["admin"]))):
+    if db.query(models.Region).filter(models.Region.code == payload.code).first():
+        raise HTTPException(409, "Region code already exists")
+    region = models.Region(**payload.model_dump())
+    db.add(region)
+    db.commit()
+    db.refresh(region)
+    return region
+
+
+@regions_router.patch("/{region_id}", response_model=schemas.RegionOut)
+def update_region(region_id: int, payload: schemas.RegionUpdateIn, db: Session = Depends(get_db),
+                  _admin: models.PlatformUser = Depends(require_platform_user(["admin"]))):
+    region = db.query(models.Region).filter(models.Region.id == region_id).first()
+    if not region:
+        raise HTTPException(404, "Region not found")
+    for field, value in payload.model_dump(exclude_unset=True).items():
+        setattr(region, field, value)
+    db.commit()
+    db.refresh(region)
+    return region
+
+
+# ======================================================================
+# 15. Farm Operators Management
+# ======================================================================
+operators_router = APIRouter(prefix="/operators", tags=["operators"])
+
+
+def _gen_operator_code() -> str:
+    return f"PL-OPR-{datetime.utcnow().year}-{uuid.uuid4().hex[:6].upper()}"
+
+
+@operators_router.get("", response_model=list[schemas.FarmOperatorOut])
+def list_operators(region: str | None = None, status: str | None = None,
+                   search: str | None = None, db: Session = Depends(get_db)):
+    q = db.query(models.FarmOperator)
+    if region:
+        q = q.filter(models.FarmOperator.region == region)
+    if status:
+        q = q.filter(models.FarmOperator.status == status)
+    if search:
+        like = f"%{search}%"
+        q = q.filter((models.FarmOperator.full_name.ilike(like))
+                     | (models.FarmOperator.operator_code.ilike(like))
+                     | (models.FarmOperator.company.ilike(like)))
+    return q.order_by(models.FarmOperator.full_name).all()
+
+
+@operators_router.post("", response_model=schemas.FarmOperatorOut)
+def create_operator(payload: schemas.FarmOperatorIn, db: Session = Depends(get_db),
+                    _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    op = models.FarmOperator(operator_code=_gen_operator_code(), **payload.model_dump())
+    db.add(op)
+    db.commit()
+    db.refresh(op)
+    return op
+
+
+@operators_router.patch("/{operator_id}", response_model=schemas.FarmOperatorOut)
+def update_operator(operator_id: int, payload: schemas.FarmOperatorUpdateIn,
+                    db: Session = Depends(get_db),
+                    _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    op = db.query(models.FarmOperator).filter(models.FarmOperator.id == operator_id).first()
+    if not op:
+        raise HTTPException(404, "Operator not found")
+    valid_status = {"active", "suspended", "retired"}
+    data = payload.model_dump(exclude_unset=True)
+    if "status" in data and data["status"] not in valid_status:
+        raise HTTPException(422, f"status must be one of: {', '.join(sorted(valid_status))}")
+    for field, value in data.items():
+        setattr(op, field, value)
+    db.commit()
+    db.refresh(op)
+    return op
+
+
+# ======================================================================
+# 16. Traps Management (registry)
+# ======================================================================
+traps_registry_router = APIRouter(prefix="/traps-registry", tags=["traps-registry"])
+
+TRAP_STATUSES = {"active", "needs_service", "damaged", "removed"}
+
+
+def _trap_out(db: Session, trap: models.Trap) -> schemas.TrapOut:
+    out = schemas.TrapOut.model_validate(trap)
+    last = (
+        db.query(models.TrapRecord)
+        .filter(models.TrapRecord.trap_code == trap.trap_code)
+        .order_by(models.TrapRecord.checked_date.desc())
+        .first()
+    )
+    if last:
+        out.last_checked = last.checked_date
+        out.last_count = last.count
+    return out
+
+
+@traps_registry_router.get("", response_model=list[schemas.TrapOut])
+def list_traps(farm_code: str | None = None, status: str | None = None,
+               db: Session = Depends(get_db)):
+    q = db.query(models.Trap)
+    if farm_code:
+        q = q.filter(models.Trap.farm_code == farm_code)
+    if status:
+        q = q.filter(models.Trap.status == status)
+    return [_trap_out(db, t) for t in q.order_by(models.Trap.trap_code).all()]
+
+
+@traps_registry_router.post("", response_model=schemas.TrapOut)
+def create_trap(payload: schemas.TrapIn, db: Session = Depends(get_db),
+                _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    if db.query(models.Trap).filter(models.Trap.trap_code == payload.trap_code).first():
+        raise HTTPException(409, "Trap code already exists")
+    if not db.query(models.PestType).filter(models.PestType.id == payload.pest_type_id).first():
+        raise HTTPException(422, "Unknown pest_type_id")
+    trap = models.Trap(**payload.model_dump())
+    db.add(trap)
+    db.commit()
+    db.refresh(trap)
+    return _trap_out(db, trap)
+
+
+@traps_registry_router.patch("/{trap_code}", response_model=schemas.TrapOut)
+def update_trap(trap_code: str, payload: schemas.TrapUpdateIn, db: Session = Depends(get_db),
+                _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    trap = db.query(models.Trap).filter(models.Trap.trap_code == trap_code).first()
+    if not trap:
+        raise HTTPException(404, "Trap not found")
+    data = payload.model_dump(exclude_unset=True)
+    if "status" in data and data["status"] not in TRAP_STATUSES:
+        raise HTTPException(422, f"status must be one of: {', '.join(sorted(TRAP_STATUSES))}")
+    for field, value in data.items():
+        setattr(trap, field, value)
+    db.commit()
+    db.refresh(trap)
+    return _trap_out(db, trap)
+
+
+@traps_registry_router.get("/dashboard")
+def traps_dashboard(db: Session = Depends(get_db)):
+    total = db.query(func.count(models.Trap.id)).scalar() or 0
+    by_status = dict(
+        db.query(models.Trap.status, func.count(models.Trap.id))
+        .group_by(models.Trap.status).all()
+    )
+    week_ago = datetime.utcnow() - timedelta(days=7)
+    checks_this_week = (
+        db.query(func.count(models.TrapRecord.id))
+        .filter(models.TrapRecord.checked_date >= week_ago).scalar() or 0
+    )
+    catch_this_week = (
+        db.query(func.coalesce(func.sum(models.TrapRecord.count), 0))
+        .filter(models.TrapRecord.checked_date >= week_ago).scalar() or 0
+    )
+    return {
+        "total_traps": total,
+        "by_status": by_status,
+        "checks_this_week": checks_this_week,
+        "catch_this_week": int(catch_this_week),
+    }
+
+
+# ======================================================================
+# 17. Recycling Stations
+# ======================================================================
+recycling_router = APIRouter(prefix="/recycling", tags=["recycling"])
+
+STATION_STATUSES = {"operational", "maintenance", "closed"}
+
+
+def _station_out(db: Session, s: models.RecyclingStation) -> schemas.RecyclingStationOut:
+    out = schemas.RecyclingStationOut.model_validate(s)
+    month_start = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    out.intake_month_kg = float(
+        db.query(func.coalesce(func.sum(models.RecyclingIntake.quantity_kg), 0))
+        .filter(models.RecyclingIntake.station_id == s.id,
+                models.RecyclingIntake.received_date >= month_start).scalar() or 0
+    )
+    out.intake_total_kg = float(
+        db.query(func.coalesce(func.sum(models.RecyclingIntake.quantity_kg), 0))
+        .filter(models.RecyclingIntake.station_id == s.id).scalar() or 0
+    )
+    return out
+
+
+@recycling_router.get("/stations", response_model=list[schemas.RecyclingStationOut])
+def list_stations(region: str | None = None, status: str | None = None,
+                  db: Session = Depends(get_db)):
+    q = db.query(models.RecyclingStation)
+    if region:
+        q = q.filter(models.RecyclingStation.region == region)
+    if status:
+        q = q.filter(models.RecyclingStation.status == status)
+    return [_station_out(db, s) for s in q.order_by(models.RecyclingStation.name).all()]
+
+
+@recycling_router.post("/stations", response_model=schemas.RecyclingStationOut)
+def create_station(payload: schemas.RecyclingStationIn, db: Session = Depends(get_db),
+                   _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    if db.query(models.RecyclingStation).filter(
+            models.RecyclingStation.station_code == payload.station_code).first():
+        raise HTTPException(409, "Station code already exists")
+    station = models.RecyclingStation(**payload.model_dump())
+    db.add(station)
+    db.commit()
+    db.refresh(station)
+    return _station_out(db, station)
+
+
+@recycling_router.patch("/stations/{station_id}", response_model=schemas.RecyclingStationOut)
+def update_station(station_id: int, payload: schemas.RecyclingStationUpdateIn,
+                   db: Session = Depends(get_db),
+                   _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    station = db.query(models.RecyclingStation).filter(
+        models.RecyclingStation.id == station_id).first()
+    if not station:
+        raise HTTPException(404, "Station not found")
+    data = payload.model_dump(exclude_unset=True)
+    if "status" in data and data["status"] not in STATION_STATUSES:
+        raise HTTPException(422, f"status must be one of: {', '.join(sorted(STATION_STATUSES))}")
+    for field, value in data.items():
+        setattr(station, field, value)
+    db.commit()
+    db.refresh(station)
+    return _station_out(db, station)
+
+
+@recycling_router.get("/stations/{station_id}/intakes", response_model=list[schemas.RecyclingIntakeOut])
+def list_intakes(station_id: int, db: Session = Depends(get_db)):
+    return (
+        db.query(models.RecyclingIntake)
+        .filter(models.RecyclingIntake.station_id == station_id)
+        .order_by(models.RecyclingIntake.received_date.desc())
+        .limit(100).all()
+    )
+
+
+@recycling_router.post("/stations/{station_id}/intakes", response_model=schemas.RecyclingIntakeOut)
+def create_intake(station_id: int, payload: schemas.RecyclingIntakeIn,
+                  db: Session = Depends(get_db),
+                  _user: models.PlatformUser = Depends(require_platform_user(STAFF_OR_ADMIN))):
+    station = db.query(models.RecyclingStation).filter(
+        models.RecyclingStation.id == station_id).first()
+    if not station:
+        raise HTTPException(404, "Station not found")
+    if payload.quantity_kg <= 0:
+        raise HTTPException(422, "quantity_kg must be positive")
+    intake = models.RecyclingIntake(station_id=station_id, **payload.model_dump())
+    db.add(intake)
+    db.commit()
+    db.refresh(intake)
+    return intake
+
+
+@recycling_router.get("/dashboard")
+def recycling_dashboard(db: Session = Depends(get_db)):
+    month_start = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    total_stations = db.query(func.count(models.RecyclingStation.id)).scalar() or 0
+    by_status = dict(
+        db.query(models.RecyclingStation.status, func.count(models.RecyclingStation.id))
+        .group_by(models.RecyclingStation.status).all()
+    )
+    month_kg = float(
+        db.query(func.coalesce(func.sum(models.RecyclingIntake.quantity_kg), 0))
+        .filter(models.RecyclingIntake.received_date >= month_start).scalar() or 0
+    )
+    by_material = {
+        m: float(kg) for m, kg in
+        db.query(models.RecyclingIntake.material,
+                 func.coalesce(func.sum(models.RecyclingIntake.quantity_kg), 0))
+        .group_by(models.RecyclingIntake.material).all()
+    }
+    return {
+        "total_stations": total_stations,
+        "by_status": by_status,
+        "intake_month_kg": month_kg,
+        "intake_by_material_kg": by_material,
+    }

@@ -1050,7 +1050,11 @@
     "workforce": "Workforce",
     "reports": "Reports",
     "logout": "Logout",
-    "users": "User Management"
+    "users": "User Management",
+    "traps": "Traps",
+    "recycling": "Recycling",
+    "regions": "Regions",
+    "operators": "Operators"
   },
   "serviceDetail": {
     "requestCta": "Request This Service",
@@ -1201,7 +1205,10 @@
     "selectFarm": "Select a farm",
     "trendTitle": "36-Month Trend",
     "comparisonTitle": "Farm Comparison",
-    "comparisonHint": "Select up to 3 farms to compare side by side."
+    "comparisonHint": "Select up to 3 farms to compare side by side.",
+    "periodComparison": "12 / 36-month change by farm",
+    "exportCsv": "Export CSV",
+    "statusDistribution": "Health status distribution"
   },
   "satelliteIntelPage": {
     "eyebrow": "Satellite Intelligence Center",
@@ -1397,7 +1404,9 @@
       "irrigationToday": "Irrigation Events Today",
       "pestAlerts": "Pest Alerts",
       "ndviAlerts": "NDVI Alerts",
-      "teamActivities": "Team Activities"
+      "teamActivities": "Team Activities",
+      "activeTraps": "Active traps",
+      "recycledMonth": "Recycled this month (kg)"
     },
     "statusBreakdown": "Operations by Status",
     "activityTimeline": "Recent Activity",
@@ -1715,7 +1724,15 @@
     "ndviMapHint": "Real field boundaries colored by each farm’s latest NDVI reading. Click a field for details.",
     "irrigationMapTitle": "Irrigated farms map",
     "gridView": "Grid",
-    "mapView": "Map"
+    "mapView": "Map",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "measure": "Measure distance",
+    "measureHint": "Click the map to add measurement points",
+    "markerKind": {
+      "trap": "Trap",
+      "station": "Station"
+    }
   },
   "weather": {
     "title": "Live weather",
@@ -1771,6 +1788,144 @@
       "created": "Created",
       "status": "Status",
       "actions": "Actions"
+    }
+  },
+  "trapsPage": {
+    "eyebrow": "Integrated Pest Management",
+    "title": "Traps Management",
+    "subtitle": "Registry of every physical trap in the field — placement, servicing status and latest catch counts.",
+    "newTrap": "Register trap",
+    "create": "Save trap",
+    "mapTitle": "Trap placement map",
+    "allStatuses": "All statuses",
+    "empty": "No traps match this filter.",
+    "neverChecked": "Never checked",
+    "count": "{{count}} caught",
+    "pickPest": "Select a pest type",
+    "kpi": {
+      "total": "Total traps",
+      "active": "Active",
+      "checksWeek": "Checks this week",
+      "catchWeek": "Catch this week"
+    },
+    "status": {
+      "active": "Active",
+      "needs_service": "Needs service",
+      "damaged": "Damaged",
+      "removed": "Removed"
+    },
+    "fields": {
+      "code": "Trap code",
+      "farm": "Farm",
+      "pestType": "Target pest",
+      "lat": "Latitude (optional)",
+      "lng": "Longitude (optional)",
+      "notes": "Notes (optional)"
+    },
+    "columns": {
+      "trap": "Trap",
+      "farm": "Farm",
+      "pest": "Target pest",
+      "lastCheck": "Last check",
+      "installed": "Installed",
+      "status": "Status"
+    }
+  },
+  "recyclingPage": {
+    "eyebrow": "Sustainability",
+    "title": "Recycling Stations",
+    "subtitle": "Agricultural-waste stations — capacity, live intake volumes and accepted materials.",
+    "newStation": "New station",
+    "create": "Save station",
+    "mapTitle": "Stations map",
+    "month": "month",
+    "logIntake": "Log intake",
+    "saveIntake": "Save",
+    "noSourceFarm": "No source farm",
+    "kpi": {
+      "stations": "Stations",
+      "operational": "Operational",
+      "monthKg": "Intake this month (kg)",
+      "materials": "Material types"
+    },
+    "status": {
+      "operational": "Operational",
+      "maintenance": "Maintenance",
+      "closed": "Closed"
+    },
+    "card": {
+      "monthKg": "This month (kg)",
+      "totalKg": "All time (kg)",
+      "capacity": "Capacity (t/mo)"
+    },
+    "materials": {
+      "palm_fronds": "Palm fronds",
+      "green_waste": "Green waste",
+      "compost_feedstock": "Compost feedstock",
+      "plastic_mulch": "Plastic mulch",
+      "irrigation_pipe": "Irrigation pipe",
+      "other": "Other"
+    },
+    "fields": {
+      "code": "Station code",
+      "name": "Station name",
+      "region": "Region",
+      "capacity": "Capacity (tons/month)"
+    }
+  },
+  "regionsPage": {
+    "eyebrow": "Administration",
+    "title": "Regions Management",
+    "subtitle": "Administrative agricultural regions — farm counts, descriptions and activation state.",
+    "newRegion": "New region",
+    "create": "Save region",
+    "farmCount": "{{count}} farms",
+    "active": "Active",
+    "inactive": "Inactive",
+    "activate": "Activate region",
+    "deactivate": "Deactivate region",
+    "fields": {
+      "code": "Code (e.g. UDH)",
+      "name": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "description": "Description"
+    }
+  },
+  "operatorsPage": {
+    "eyebrow": "Field Network",
+    "title": "Farm Operators",
+    "subtitle": "The people and companies operating registered farms — licensing, contacts and assignments.",
+    "newOperator": "New operator",
+    "create": "Save operator",
+    "searchPlaceholder": "Search by name, company or code…",
+    "allStatuses": "All statuses",
+    "empty": "No operators match your filters.",
+    "stats": {
+      "total": "Operators",
+      "active": "Active",
+      "farms": "Farms operated"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended",
+      "retired": "Retired"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "company": "Company (optional)",
+      "phone": "Phone",
+      "email": "Email",
+      "region": "Region",
+      "license": "License no.",
+      "farms": "Farms operated"
+    },
+    "columns": {
+      "operator": "Operator",
+      "region": "Region",
+      "farms": "Farms",
+      "contact": "Contact",
+      "license": "License",
+      "status": "Status"
     }
   }
 }

@@ -498,3 +498,155 @@ export interface UpdatePlatformUserPayload {
   is_active?: boolean
   new_password?: string
 }
+
+/* ---------- Regions Management ---------- */
+
+export interface Region {
+  id: number
+  code: string
+  name: string
+  name_ar: string | null
+  description: string | null
+  is_active: boolean
+  created_at: string
+  farm_count: number
+}
+
+export interface CreateRegionPayload {
+  code: string
+  name: string
+  name_ar?: string
+  description?: string
+}
+
+export interface UpdateRegionPayload {
+  name?: string
+  name_ar?: string
+  description?: string
+  is_active?: boolean
+}
+
+/* ---------- Farm Operators ---------- */
+
+export type OperatorStatus = 'active' | 'suspended' | 'retired'
+
+export interface FarmOperator {
+  id: number
+  operator_code: string
+  full_name: string
+  company: string | null
+  phone: string | null
+  email: string | null
+  region: string | null
+  license_no: string | null
+  status: OperatorStatus
+  farm_codes: string[]
+  notes: string | null
+  created_at: string
+}
+
+export interface CreateFarmOperatorPayload {
+  full_name: string
+  company?: string
+  phone?: string
+  email?: string
+  region?: string
+  license_no?: string
+  farm_codes?: string[]
+  notes?: string
+}
+
+export interface UpdateFarmOperatorPayload extends Partial<CreateFarmOperatorPayload> {
+  status?: OperatorStatus
+}
+
+/* ---------- Traps Management (registry) ---------- */
+
+export type TrapStatus = 'active' | 'needs_service' | 'damaged' | 'removed'
+
+export interface Trap {
+  id: number
+  trap_code: string
+  farm_code: string
+  pest_type_id: number
+  lat: number | null
+  lng: number | null
+  status: TrapStatus
+  installed_date: string
+  notes: string | null
+  last_checked: string | null
+  last_count: number | null
+}
+
+export interface CreateTrapPayload {
+  trap_code: string
+  farm_code: string
+  pest_type_id: number
+  lat?: number
+  lng?: number
+  notes?: string
+}
+
+export interface TrapsDashboard {
+  total_traps: number
+  by_status: Record<string, number>
+  checks_this_week: number
+  catch_this_week: number
+}
+
+/* ---------- Recycling Stations ---------- */
+
+export type StationStatus = 'operational' | 'maintenance' | 'closed'
+
+export interface RecyclingStation {
+  id: number
+  station_code: string
+  name: string
+  name_ar: string | null
+  region: string | null
+  lat: number | null
+  lng: number | null
+  status: StationStatus
+  capacity_tons_month: number | null
+  accepted_materials: string[]
+  notes: string | null
+  created_at: string
+  intake_month_kg: number
+  intake_total_kg: number
+}
+
+export interface CreateRecyclingStationPayload {
+  station_code: string
+  name: string
+  name_ar?: string
+  region?: string
+  lat?: number
+  lng?: number
+  capacity_tons_month?: number
+  accepted_materials?: string[]
+  notes?: string
+}
+
+export interface RecyclingIntake {
+  id: number
+  station_id: number
+  material: string
+  quantity_kg: number
+  source_farm_code: string | null
+  received_date: string
+  notes: string | null
+}
+
+export interface CreateRecyclingIntakePayload {
+  material: string
+  quantity_kg: number
+  source_farm_code?: string
+  notes?: string
+}
+
+export interface RecyclingDashboard {
+  total_stations: number
+  by_status: Record<string, number>
+  intake_month_kg: number
+  intake_by_material_kg: Record<string, number>
+}

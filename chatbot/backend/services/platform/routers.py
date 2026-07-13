@@ -19,7 +19,8 @@ from .database import get_db
 from .platform_auth import router as platform_auth_router
 from .farm_ops_routers import (
     assets_router, farms_router, irrigation_router, operations_router,
-    ops_dashboard_router, pests_router, users_router, workforce_router,
+    operators_router, ops_dashboard_router, pests_router, recycling_router,
+    regions_router, traps_registry_router, users_router, workforce_router,
 )
 
 router = APIRouter(prefix="/api/platform")
@@ -35,6 +36,10 @@ router.include_router(assets_router)
 router.include_router(workforce_router)
 router.include_router(ops_dashboard_router)
 router.include_router(users_router)
+router.include_router(regions_router)
+router.include_router(operators_router)
+router.include_router(traps_registry_router)
+router.include_router(recycling_router)
 
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "/app/data/uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)

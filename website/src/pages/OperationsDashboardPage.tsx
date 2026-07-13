@@ -3,19 +3,19 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import {
   Tractor, Activity, ClipboardList, CheckCircle2, Droplets, Bug, ScanLine, Users,
-  AlertTriangle, Loader2, MapPin, ArrowUpRight,
+  AlertTriangle, Loader2, MapPin, ArrowUpRight, Crosshair, Recycle,
 } from 'lucide-react'
 import PlatformPageShell from '../components/platform/PlatformPageShell'
 import Reveal from '../components/ui/Reveal'
 import { usePlatformAuth } from '../contexts/PlatformAuthContext'
-import { getOpsDashboard, listOperations, listRegistryFarms, PlatformApiError } from '../lib/platformApi'
+import { getOpsDashboard, getRecyclingDashboard, getTrapsDashboard, listOperations, listRegistryFarms, PlatformApiError } from '../lib/platformApi'
 import { OPERATION_STATUSES, operationStatusChartColor, operationStatusDot } from '../lib/operations'
 import LazyFarmGisMap from '../components/gis/LazyFarmGisMap'
 import WeatherWidget from '../components/gis/WeatherWidget'
 import { getGisFarms } from '../lib/gisData'
 import dataset from '../data/ndvi-farms.json'
 import type { NdviDataset } from '../types/ndvi'
-import type { Operation, OpsDashboard, RegistryFarm } from '../types/platform'
+import type { Operation, OpsDashboard, RecyclingDashboard, RegistryFarm, TrapsDashboard } from '../types/platform'
 
 const ndviData = dataset as NdviDataset
 
@@ -45,6 +45,8 @@ export default function OperationsDashboardPage() {
   const [dash, setDash] = useState<OpsDashboard | null>(null)
   const [operations, setOperations] = useState<Operation[] | null>(null)
   const [farms, setFarms] = useState<RegistryFarm[] | null>(null)
+  const [trapsDash, setTrapsDash] = useState<TrapsDashboard | null>(null)
+  const [recyclingDash, setRecyclingDash] = useState<RecyclingDashboard | null>(null)
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -56,6 +58,11 @@ export default function OperationsDashboardPage() {
         setDash(d)
         setOperations(ops)
         setFarms(f)
+      })
+      .then(() => Promise.allSettled([getTrapsDashboard(), getRecyclingDashboard()]))
+      .then((extra) => {
+        if (extra && extra[0]?.status === 'fulfilled') setTrapsDash(extra[0].value)
+        if (extra && extra[1]?.status === 'fulfilled') setRecyclingDash(extra[1].value)
       })
       .catch((err) => {
         // A 401 here means the session went stale mid-visit; surface a plain error,
@@ -116,6 +123,8 @@ export default function OperationsDashboardPage() {
     { key: 'pestAlerts', value: dash.active_pest_alerts, icon: Bug },
     { key: 'ndviAlerts', value: ndviAlerts.length, icon: ScanLine },
     { key: 'teamActivities', value: dash.recent_activity.length, icon: Users },
+    ...(trapsDash ? [{ key: 'activeTraps', value: trapsDash.by_status?.active ?? 0, icon: Crosshair } as const] : []),
+    ...(recyclingDash ? [{ key: 'recycledMonth', value: `${Math.round(recyclingDash.intake_month_kg).toLocaleString(lang)}`, icon: Recycle } as const] : []),
   ] as const
 
   return (

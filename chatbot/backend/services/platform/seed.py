@@ -124,7 +124,111 @@ def seed_platform_users(db: Session) -> None:
     db.commit()
 
 
+
+
+REGIONS = [
+    {"code": "UDH", "name": "Al Udhayb", "name_ar": "العذيب",
+     "description": "Primary date-palm production cluster; 4 satellite-monitored farms."},
+    {"code": "KHB", "name": "Khaybar", "name_ar": "خيبر",
+     "description": "Northern oasis plots; 2 satellite-monitored farms."},
+    {"code": "ALV", "name": "AlUla Valley", "name_ar": "وادي العلا",
+     "description": "Mixed orchards and experimental plots along the valley floor."},
+]
+
+FARM_OPERATORS = [
+    {"full_name": "Khalid Al-Harbi", "company": "Harbi Agricultural Services", "phone": "+966500000101",
+     "email": "khalid@harbi-ag.example", "region": "Al Udhayb", "license_no": "AGR-2024-0113",
+     "farm_codes": ["UDH-000338", "UDH-000373"],
+     "notes": "Operates the two largest Al Udhayb plots; drip-irrigation specialist."},
+    {"full_name": "Mona Al-Anazi", "company": None, "phone": "+966500000102",
+     "email": "mona.anazi@example.com", "region": "Al Udhayb", "license_no": "AGR-2025-0027",
+     "farm_codes": ["UDH-000337", "UDH-000002"],
+     "notes": "Independent operator; organic certification in progress."},
+    {"full_name": "Fahad Al-Juhani", "company": "Khaybar Oasis Co.", "phone": "+966500000103",
+     "email": "fahad@khaybar-oasis.example", "region": "Khaybar", "license_no": "AGR-2023-0451",
+     "farm_codes": ["KHP-00007", "KHP-00002"],
+     "notes": "Manages both Khaybar plots under a cooperative agreement."},
+]
+
+# lat/lng offsets are within each farm's real boundary vicinity.
+TRAPS = [
+    {"trap_code": "TRP-UDH338-01", "farm_code": "UDH-000338", "pest": "Red Palm Weevil"},
+    {"trap_code": "TRP-UDH338-02", "farm_code": "UDH-000338", "pest": "Red Palm Weevil"},
+    {"trap_code": "TRP-UDH373-01", "farm_code": "UDH-000373", "pest": "Red Palm Weevil"},
+    {"trap_code": "TRP-UDH337-01", "farm_code": "UDH-000337", "pest": "Dubas Bug"},
+    {"trap_code": "TRP-UDH002-01", "farm_code": "UDH-000002", "pest": "Red Palm Weevil"},
+    {"trap_code": "TRP-KHP07-01", "farm_code": "KHP-00007", "pest": "Dubas Bug"},
+    {"trap_code": "TRP-KHP07-02", "farm_code": "KHP-00007", "pest": "Red Palm Weevil"},
+    {"trap_code": "TRP-KHP02-01", "farm_code": "KHP-00002", "pest": "Red Palm Weevil"},
+]
+
+RECYCLING_STATIONS = [
+    {"station_code": "RCY-UDH-01", "name": "Al Udhayb Green-Waste Station", "name_ar": "محطة العذيب للمخلفات الخضراء",
+     "region": "Al Udhayb", "lat": 26.593, "lng": 37.885, "capacity_tons_month": 120.0,
+     "accepted_materials": ["palm_fronds", "green_waste", "compost_feedstock"],
+     "notes": "Primary composting intake for the Al Udhayb cluster."},
+    {"station_code": "RCY-KHB-01", "name": "Khaybar Agri-Recycling Point", "name_ar": "نقطة خيبر لإعادة التدوير الزراعي",
+     "region": "Khaybar", "lat": 25.706, "lng": 39.292, "capacity_tons_month": 60.0,
+     "accepted_materials": ["palm_fronds", "plastic_mulch", "irrigation_pipe"],
+     "notes": "Handles plastic mulch and worn drip-line recovery for Khaybar plots."},
+]
+
+
+def seed_regions(db: Session) -> None:
+    if db.query(models.Region).first():
+        return
+    for r in REGIONS:
+        db.add(models.Region(**r))
+    db.commit()
+    print(f"[seed] inserted {len(REGIONS)} regions", flush=True)
+
+
+def seed_operators(db: Session) -> None:
+    if db.query(models.FarmOperator).first():
+        return
+    import uuid as _uuid
+    from datetime import datetime as _dt
+    for o in FARM_OPERATORS:
+        code = f"PL-OPR-{_dt.utcnow().year}-{_uuid.uuid4().hex[:6].upper()}"
+        db.add(models.FarmOperator(operator_code=code, **o))
+    db.commit()
+    print(f"[seed] inserted {len(FARM_OPERATORS)} farm operators", flush=True)
+
+
+def seed_traps(db: Session) -> None:
+    if db.query(models.Trap).first():
+        return
+    pest_ids = {p.name: p.id for p in db.query(models.PestType).all()}
+    farms = {f.farm_code: f for f in db.query(models.Farm).all()}
+    inserted = 0
+    for i, t in enumerate(TRAPS):
+        pest_id = pest_ids.get(t["pest"]) or next(iter(pest_ids.values()), None)
+        if pest_id is None:
+            break
+        farm = farms.get(t["farm_code"])
+        lat = (farm.coordinates_lat + (0.0006 * (i % 3 - 1))) if farm and farm.coordinates_lat else None
+        lng = (farm.coordinates_lng + (0.0006 * (i % 2))) if farm and farm.coordinates_lng else None
+        db.add(models.Trap(trap_code=t["trap_code"], farm_code=t["farm_code"],
+                           pest_type_id=pest_id, lat=lat, lng=lng, status="active"))
+        inserted += 1
+    db.commit()
+    print(f"[seed] inserted {inserted} traps", flush=True)
+
+
+def seed_recycling(db: Session) -> None:
+    if db.query(models.RecyclingStation).first():
+        return
+    for s in RECYCLING_STATIONS:
+        db.add(models.RecyclingStation(**s))
+    db.commit()
+    print(f"[seed] inserted {len(RECYCLING_STATIONS)} recycling stations", flush=True)
+
+
 def seed_all(db: Session) -> None:
     seed_farms(db)
     seed_pest_types(db)
     seed_platform_users(db)
+    seed_regions(db)
+    seed_operators(db)
+    seed_traps(db)
+    seed_recycling(db)

@@ -470,3 +470,171 @@ class TaskAssignmentOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ---- Regions Management ----
+class RegionOut(BaseModel):
+    id: int
+    code: str
+    name: str
+    name_ar: str | None
+    description: str | None
+    is_active: bool
+    created_at: datetime
+    farm_count: int = 0
+
+    class Config:
+        from_attributes = True
+
+
+class RegionIn(BaseModel):
+    code: str
+    name: str
+    name_ar: str | None = None
+    description: str | None = None
+
+
+class RegionUpdateIn(BaseModel):
+    name: str | None = None
+    name_ar: str | None = None
+    description: str | None = None
+    is_active: bool | None = None
+
+
+# ---- Farm Operators Management ----
+class FarmOperatorOut(BaseModel):
+    id: int
+    operator_code: str
+    full_name: str
+    company: str | None
+    phone: str | None
+    email: str | None
+    region: str | None
+    license_no: str | None
+    status: str
+    farm_codes: list[str]
+    notes: str | None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class FarmOperatorIn(BaseModel):
+    full_name: str
+    company: str | None = None
+    phone: str | None = None
+    email: str | None = None
+    region: str | None = None
+    license_no: str | None = None
+    farm_codes: list[str] = []
+    notes: str | None = None
+
+
+class FarmOperatorUpdateIn(BaseModel):
+    full_name: str | None = None
+    company: str | None = None
+    phone: str | None = None
+    email: str | None = None
+    region: str | None = None
+    license_no: str | None = None
+    status: str | None = None
+    farm_codes: list[str] | None = None
+    notes: str | None = None
+
+
+# ---- Traps Management (registry) ----
+class TrapOut(BaseModel):
+    id: int
+    trap_code: str
+    farm_code: str
+    pest_type_id: int
+    lat: float | None
+    lng: float | None
+    status: str
+    installed_date: datetime
+    notes: str | None
+    last_checked: datetime | None = None
+    last_count: int | None = None
+
+    class Config:
+        from_attributes = True
+
+
+class TrapIn(BaseModel):
+    trap_code: str
+    farm_code: str
+    pest_type_id: int
+    lat: float | None = None
+    lng: float | None = None
+    notes: str | None = None
+
+
+class TrapUpdateIn(BaseModel):
+    status: str | None = None
+    lat: float | None = None
+    lng: float | None = None
+    notes: str | None = None
+
+
+# ---- Recycling Stations ----
+class RecyclingIntakeOut(BaseModel):
+    id: int
+    station_id: int
+    material: str
+    quantity_kg: float
+    source_farm_code: str | None
+    received_date: datetime
+    notes: str | None
+
+    class Config:
+        from_attributes = True
+
+
+class RecyclingStationOut(BaseModel):
+    id: int
+    station_code: str
+    name: str
+    name_ar: str | None
+    region: str | None
+    lat: float | None
+    lng: float | None
+    status: str
+    capacity_tons_month: float | None
+    accepted_materials: list[str]
+    notes: str | None
+    created_at: datetime
+    intake_month_kg: float = 0
+    intake_total_kg: float = 0
+
+    class Config:
+        from_attributes = True
+
+
+class RecyclingStationIn(BaseModel):
+    station_code: str
+    name: str
+    name_ar: str | None = None
+    region: str | None = None
+    lat: float | None = None
+    lng: float | None = None
+    capacity_tons_month: float | None = None
+    accepted_materials: list[str] = []
+    notes: str | None = None
+
+
+class RecyclingStationUpdateIn(BaseModel):
+    name: str | None = None
+    name_ar: str | None = None
+    region: str | None = None
+    status: str | None = None
+    capacity_tons_month: float | None = None
+    accepted_materials: list[str] | None = None
+    notes: str | None = None
+
+
+class RecyclingIntakeIn(BaseModel):
+    material: str
+    quantity_kg: float
+    source_farm_code: str | None = None
+    notes: str | None = None

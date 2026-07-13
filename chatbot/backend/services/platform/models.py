@@ -494,3 +494,102 @@ class ActivityLog(Base):
     action = Column(String(200), nullable=False)
     meta = Column(JSON, default=dict)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+# ======================================================================
+# Regions Management
+# ======================================================================
+class Region(Base):
+    """Administrative agricultural region (e.g. Al Udhayb, Khaybar). Farms
+    reference regions by name string (kept loose to match the existing
+    ``farms.region`` column without a migration)."""
+    __tablename__ = "regions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    code = Column(String(40), unique=True, index=True, nullable=False)
+    name = Column(String(150), nullable=False)
+    name_ar = Column(String(150), nullable=True)
+    description = Column(Text, nullable=True)
+    is_active = Column(Boolean, default=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+# ======================================================================
+# Farm Operators Management
+# ======================================================================
+class FarmOperator(Base):
+    """A person/company operating one or more registered farms."""
+    __tablename__ = "farm_operators"
+
+    id = Column(Integer, primary_key=True, index=True)
+    operator_code = Column(String(60), unique=True, index=True, nullable=False)
+    full_name = Column(String(200), nullable=False)
+    company = Column(String(200), nullable=True)
+    phone = Column(String(50), nullable=True)
+    email = Column(String(200), nullable=True)
+    region = Column(String(150), nullable=True, index=True)
+    license_no = Column(String(100), nullable=True)
+    status = Column(String(30), default="active", index=True)  # active | suspended | retired
+    farm_codes = Column(JSON, default=list)  # farms this operator runs
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+# ======================================================================
+# Traps Management (registry — complements pest TrapRecord check logs)
+# ======================================================================
+class Trap(Base):
+    """Physical pest trap installed in a field. ``TrapRecord`` rows (check
+    logs) reference the same ``trap_code``."""
+    __tablename__ = "traps"
+
+    id = Column(Integer, primary_key=True, index=True)
+    trap_code = Column(String(80), unique=True, index=True, nullable=False)
+    farm_code = Column(String(60), index=True, nullable=False)
+    pest_type_id = Column(Integer, ForeignKey("pest_types.id"), nullable=False)
+    pest_type = relationship("PestType")
+    lat = Column(Float, nullable=True)
+    lng = Column(Float, nullable=True)
+    status = Column(String(30), default="active", index=True)  # active | needs_service | damaged | removed
+    installed_date = Column(DateTime, default=datetime.utcnow)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+# ======================================================================
+# Recycling Stations
+# ======================================================================
+class RecyclingStation(Base):
+    """Agricultural-waste recycling station (green waste, palm fronds,
+    plastic mulch, compost intake)."""
+    __tablename__ = "recycling_stations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    station_code = Column(String(60), unique=True, index=True, nullable=False)
+    name = Column(String(200), nullable=False)
+    name_ar = Column(String(200), nullable=True)
+    region = Column(String(150), nullable=True, index=True)
+    lat = Column(Float, nullable=True)
+    lng = Column(Float, nullable=True)
+    status = Column(String(30), default="operational", index=True)  # operational | maintenance | closed
+    capacity_tons_month = Column(Float, nullable=True)
+    accepted_materials = Column(JSON, default=list)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    intakes = relationship("RecyclingIntake", back_populates="station",
+                           order_by="RecyclingIntake.received_date.desc()")
+
+
+class RecyclingIntake(Base):
+    """One delivery of material into a recycling station."""
+    __tablename__ = "recycling_intakes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    station_id = Column(Integer, ForeignKey("recycling_stations.id"), nullable=False, index=True)
+    station = relationship("RecyclingStation", back_populates="intakes")
+    material = Column(String(100), nullable=False)
+    quantity_kg = Column(Float, nullable=False, default=0)
+    source_farm_code = Column(String(60), nullable=True, index=True)
+    received_date = Column(DateTime, default=datetime.utcnow, index=True)
+    notes = Column(String(500), nullable=True)
