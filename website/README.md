@@ -45,3 +45,4 @@ Fonts (Google Fonts, loaded in `index.html`): **Inter** (Latin) and **Tajawal / 
 
 ## Notes
 - The contact form and chat UI are client-side. The chat page `fetch`es `/api/chat` — point it at the FastAPI backend in `../chatbot/backend`.
+test
