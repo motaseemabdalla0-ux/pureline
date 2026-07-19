@@ -6,26 +6,38 @@ sustainable farms powered by technology, data and innovation.
 > Tagline: **Future Agriculture Starts Here** · **مستقبل الزراعة يبدأ من هنا**
 
 ## Project structure
+
+The repo is split in two: `website/` is the **public static site** (deployed standalone to
+Vercel — https://website-delta-three-30.vercel.app), and `app/` is the **full application**
+(chatbot, backend, database, deployment stack) used for local/full-stack development. Only
+`website/` is hosted publicly; nothing in `app/` is deployed to Vercel.
+
 ```
 pureline/
 ├── website/            Vite + React 18 + TS + Tailwind + Framer Motion + i18n (EN/AR, RTL, dark mode)
 │   ├── src/            components, sections, ui, pages (/chat, /admin), locales
 │   ├── public/         favicon.svg, og-image.svg
-│   ├── Dockerfile      multi-stage build -> nginx
+│   ├── Dockerfile      multi-stage build -> nginx (used by app/deployment's full stack)
+│   ├── vercel.json      SPA rewrites for the standalone Vercel deployment
 │   ├── README.md  SEO.md
-├── branding/
-│   ├── logo/           3 concepts x 6 SVG variants + LOGO_CONCEPTS.md
-│   └── ai-image-prompts.md   10 photo prompts + 5 satellite + 5 UI mockup prompts
-├── chatbot/
-│   ├── frontend/       React + Vite + TS + Tailwind chat UI (PURE LINE AI)
-│   ├── backend/        FastAPI /api/chat + /health (rule-based stub, LLM-ready)
-│   └── README.md
-├── deployment/
-│   ├── docker-compose.yml     website, chatbot-frontend, chatbot-backend, db, nginx (+cloudflared)
-│   ├── nginx/nginx.conf        edge reverse proxy
-│   ├── cloudflared/            tunnel config + guide
-│   ├── scripts/                install.bat start.bat stop.bat update.bat
-│   └── README.md               architecture diagram
+│   └── (deployed as-is to Vercel — this is the public site)
+├── app/                 Full application — NOT publicly hosted, main dev focus
+│   ├── branding/
+│   │   ├── logo/               3 concepts x 6 SVG variants + LOGO_CONCEPTS.md
+│   │   └── ai-image-prompts.md
+│   ├── chatbot/
+│   │   ├── frontend/           React + Vite + TS + Tailwind chat UI (PURE LINE AI)
+│   │   ├── backend/            FastAPI /api/chat + /health (RAG + LLM)
+│   │   └── README.md
+│   ├── deployment/
+│   │   ├── docker-compose.yml  website, chatbot-frontend, chatbot-backend, db, nginx (+cloudflared)
+│   │   ├── nginx/nginx.conf    edge reverse proxy
+│   │   ├── cloudflared/        tunnel config + guide
+│   │   ├── scripts/            install.bat start.bat stop.bat update.bat
+│   │   └── README.md           architecture diagram
+│   ├── docs/
+│   ├── scripts/                dev/ops PowerShell + SQL utility scripts
+│   └── tunnel_url.txt          current public tunnel URL (local full-stack testing)
 └── README.md          (this file)
 ```
 
@@ -38,17 +50,26 @@ npm run dev        # http://localhost:5173
 ```
 Chatbot (optional, two terminals):
 ```bash
-cd chatbot/backend  && pip install -r requirements.txt && uvicorn main:app --port 8000
-cd chatbot/frontend && npm install && npm run dev     # http://localhost:5174/chat/
+cd app/chatbot/backend  && pip install -r requirements.txt && uvicorn main:app --port 8000
+cd app/chatbot/frontend && npm install && npm run dev     # http://localhost:5174/chat/
 ```
 
 ## Quick start — full production (Windows 11)
 ```bat
-cd deployment\scripts
+cd app\deployment\scripts
 install.bat     :: checks Docker + cloudflared, builds all images
 start.bat       :: brings the stack up + Cloudflare Tunnel, prints URLs
 ```
-Then edit `deployment\.env` (POSTGRES_PASSWORD, TUNNEL_TOKEN, optional LLM_API_KEY).
+Then edit `app\deployment\.env` (POSTGRES_PASSWORD, TUNNEL_TOKEN, optional LLM_API_KEY).
+
+## Publishing the static website
+The public site at `website/` deploys independently of `app/`. After making changes there:
+```bash
+cd website
+npx vercel deploy --prod --yes
+```
+Or connect the Vercel project to this GitHub repo (Vercel dashboard → Settings → Git) so every
+push to `master` touching `website/` auto-deploys.
 
 ## Routing map
 | Path | Serves |

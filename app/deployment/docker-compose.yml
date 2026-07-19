@@ -9,7 +9,7 @@
 services:
   website:
     build:
-      context: ../website
+      context: ../../website
     image: pureline/website:latest
     restart: unless-stopped
     expose: ["80"]
